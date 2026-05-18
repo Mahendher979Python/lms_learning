@@ -107,6 +107,8 @@ if not DEBUG:
 # ROOT URL
 ROOT_URLCONF = 'lms.urls'
 
+# RAZORPAY SETTINGS 💳
+# -----------------------
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_SlwV9Vy26UoaY6')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'VKNQeiPnBuL82ZCdrrnnYVq7')
 RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', '')
