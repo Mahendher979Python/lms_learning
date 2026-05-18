@@ -38,8 +38,8 @@ body {
 
 /* Card */
 .card {
-    width: 380px;
-    padding: 25px;
+    width: 320px;
+    padding: 20px;
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
@@ -192,11 +192,11 @@ button[type="submit"]:hover {
     display: flex;
 }
 
-/* Modal Card (Glass Box) */
+/* Modal Card (Glass Box) - Same size as login/register card */
 .terms-modal {
-    width: min(900px, 95vw);
+    width: 320px;
     max-height: 85vh;
-    padding: 30px;
+    padding: 20px;
     border-radius: 30px;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(30px);
