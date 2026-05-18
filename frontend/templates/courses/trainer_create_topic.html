@@ -1,0 +1,61 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/trainer_create_topic.css' %}">
+
+<div class="form-container">
+
+    <h2>📘 Create Topic</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- Topic Name -->
+        <div class="form-group">
+            <label>Topic Name</label>
+            <input type="text" name="name" placeholder="Enter topic name" required>
+        </div>
+
+        <!-- Course -->
+        <div class="form-group">
+            <label>Assign Course</label>
+            <select name="course">
+                <option value="">-- Select Course --</option>
+                {% for c in courses %}
+                    <option value="{{ c.id }}">{{ c.title }}</option>
+                {% endfor %}
+            </select>
+            <div class="hint">Optional: You can assign later also</div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="row">
+
+            <div class="form-group">
+                <label>🎥 Video</label>
+                <input type="file" name="video" accept="video/*">
+            </div>
+
+            <div class="form-group">
+                <label>📄 PDF Material</label>
+                <input type="file" name="pdf" accept="application/pdf">
+            </div>
+
+            <div class="form-group">
+                <label>🖼 Thumbnail</label>
+                <input type="file" name="thumbnail" accept="image/*">
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn">
+            ➕ Create Topic
+        </button>
+
+    </form>
+
+</div>
+<script src="{% static 'courses/js/trainer_create_topic.js' %}"></script>
+{% endblock %}

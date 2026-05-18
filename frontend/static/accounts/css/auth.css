@@ -1,0 +1,169 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10%;
+    background: url("/static/accounts/images/lms.jpg") no-repeat center center;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(25, 20, 80, 0.25);
+    z-index: 1;
+}
+
+/* Shapes */
+.shape {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    z-index: 1;
+}
+.shape1 { width: 150px; height: 150px; top: 10%; right: 35%; }
+.shape2 { width: 100px; height: 100px; bottom: 10%; right: 5%; }
+
+/* Card */
+.card {
+    width: 380px;
+    padding: 25px;
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    z-index: 5;
+    position: relative;
+}
+
+.card h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1b1b4b;
+}
+
+/* Form spacing */
+form p {
+    margin-bottom: 10px;
+}
+
+form label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: #1b1b4b;
+    margin-bottom: 3px;
+    margin-left: 15px;
+}
+
+/* Inputs */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+form select {
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: none;
+    background: rgba(255, 255, 255, 0.85);
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+input:focus {
+    background: #fff;
+    box-shadow: 0 0 15px rgba(91, 75, 255, 0.2);
+}
+
+/* =========================
+   CAPTCHA FIX (IMPORTANT)
+========================= */
+
+/* wrapper for captcha row */
+.captcha-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 8px 0;
+}
+
+/* captcha image */
+.captcha-box img {
+    border-radius: 12px;
+    transform: scale(0.85);
+    transform-origin: left center;
+}
+
+/* refresh button */
+.captcha-refresh-btn {
+    border: none;
+    background: #5b4bff;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.captcha-refresh-btn:hover {
+    background: #4736f0;
+}
+
+/* Submit button */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    border-radius: 50px;
+    border: none;
+    background: #5b4bff;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0 10px 20px rgba(91, 75, 255, 0.3);
+    transition: 0.3s;
+}
+
+button[type="submit"]:hover {
+    background: #4736f0;
+    transform: translateY(-2px);
+}
+
+/* Links */
+.card a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #1b1b4b;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* Errors */
+.errorlist {
+    color: #ff4d4d;
+    font-size: 12px;
+    list-style: none;
+    margin-left: 15px;
+    margin-top: 5px;
+}

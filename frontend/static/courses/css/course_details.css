@@ -1,0 +1,340 @@
+/* =========================
+   RESET
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f1f5f9;
+    font-family:Arial,sans-serif;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.course-container{
+
+    width:42%;
+    max-width:460px;
+
+    margin:15px 0 15px 15px;
+
+    background:#fff;
+
+    padding:10px;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.course-header{
+
+    text-align:left;
+}
+
+.course-header h2{
+
+    font-size:18px;
+
+    color:#0f172a;
+
+    margin-bottom:4px;
+}
+
+.trainer{
+
+    color:#64748b;
+
+    font-size:12px;
+}
+
+/* =========================
+   PRICE
+========================= */
+
+.price-box{
+
+    display:inline-block;
+
+    margin-top:8px;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    background:#16a34a;
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:600;
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.thumbnail{
+
+    width:100%;
+
+    height:140px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    margin-top:10px;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.description{
+
+    margin-top:10px;
+
+    padding:10px;
+
+    background:#f8fafc;
+
+    border-radius:8px;
+
+    line-height:1.5;
+
+    color:#334155;
+
+    font-size:12px;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+h3{
+
+    margin-top:14px;
+
+    margin-bottom:8px;
+
+    color:#0f172a;
+
+    font-size:15px;
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+.video-player{
+
+    width:100%;
+
+    height:170px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+
+    background:black;
+}
+
+video{
+
+    max-height:170px;
+}
+
+/* =========================
+   PDF BOX
+========================= */
+
+.pdf-box{
+
+    margin-top:10px;
+
+    padding:10px;
+
+    background:#f8fafc;
+
+    border-radius:8px;
+}
+
+/* =========================
+   LOCK
+========================= */
+
+.lock-box{
+
+    margin-top:10px;
+
+    padding:10px;
+
+    background:#fff7ed;
+
+    border-left:3px solid #f59e0b;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    color:#92400e;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn{
+
+    display:inline-block;
+
+    padding:7px 12px;
+
+    border-radius:6px;
+
+    text-decoration:none;
+
+    color:white;
+
+    margin-top:10px;
+
+    margin-right:5px;
+
+    border:none;
+
+    cursor:pointer;
+
+    font-size:12px;
+
+    transition:0.3s;
+}
+
+.btn:hover{
+
+    transform:translateY(-1px);
+}
+
+.view{
+    background:#2563eb;
+}
+
+.download{
+    background:#16a34a;
+}
+
+.buy{
+    background:#16a34a;
+    width:100%;
+    text-align:center;
+}
+
+.success{
+    background:#059669;
+    width:100%;
+}
+
+.edit{
+    background:#f59e0b;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+
+.actions{
+
+    margin-top:10px;
+
+    display:flex;
+
+    gap:6px;
+
+    flex-wrap:wrap;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .course-container{
+
+        width:96%;
+
+        margin:10px auto;
+    }
+
+    .thumbnail{
+
+        height:130px;
+    }
+
+    .video-player{
+
+        height:160px;
+    }
+
+    video{
+
+        max-height:160px;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .course-container{
+
+        width:98%;
+
+        padding:8px;
+    }
+
+    .course-header h2{
+
+        font-size:16px;
+    }
+
+    .thumbnail{
+
+        height:120px;
+    }
+
+    .video-player{
+
+        height:150px;
+    }
+
+    video{
+
+        max-height:150px;
+    }
+
+    .btn{
+
+        width:100%;
+
+        text-align:center;
+
+        margin-right:0;
+    }
+
+}

@@ -1,0 +1,177 @@
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* FULL PAGE FIX */
+html, body {
+    width: 100%;
+    height: 100%;
+}
+
+/* BACKGROUND */
+body {
+    min-height: 100vh;
+
+    background: url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d")
+    no-repeat center center;
+
+    background-size: cover;
+}
+
+/* DARK OVERLAY */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 30, 0.65);
+    z-index: 1;
+}
+
+/* FORCE FULL WIDTH WRAPPER */
+.page-wrapper {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: flex-end;   /* RIGHT SIDE */
+    align-items: center;
+
+    padding: 40px 80px;
+}
+
+/* GLASS CARD */
+.form-container {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 28px;
+
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+}
+
+/* TITLE */
+.form-title {
+    text-align: center;
+    margin-bottom: 18px;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+/* FORM GROUP */
+.form-group {
+    margin-bottom: 12px;
+}
+
+/* LABEL */
+label {
+    display: block;
+    margin-bottom: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* INPUTS */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+
+    border-radius: 8px;
+    border: none;
+    outline: none;
+
+    font-size: 13px;
+
+    background: rgba(255, 255, 255, 0.92);
+    color: #111827;
+
+    transition: 0.2s ease;
+}
+
+/* FOCUS */
+input:focus,
+select:focus,
+textarea:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.35);
+    transform: translateY(-1px);
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 11px;
+
+    margin-top: 12px;
+
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+}
+
+/* ERROR BOX */
+.error-box {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fecaca;
+
+    padding: 10px;
+    border-radius: 8px;
+
+    margin-bottom: 12px;
+    font-size: 12px;
+}
+
+/* FIX FOR BOOTSTRAP / CONTAINER ISSUE */
+.container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .page-wrapper {
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .form-container {
+        max-width: 100%;
+    }
+}

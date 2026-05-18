@@ -1,0 +1,55 @@
+{% extends 'dashboard/trainer_base.html' %}
+
+{% block content %}
+
+<h2>✍️ Grade Submission</h2>
+
+<p><strong>Student:</strong> {{ submission.student.username }}</p>
+<p><strong>Assignment:</strong> {{ submission.assignment.title }}</p>
+
+<!-- ✅ SHOW FILE / SCREENSHOT -->
+{% if submission.screenshot %}
+    <p><strong>Google Form Screenshot:</strong></p>
+    <img src="{{ submission.screenshot.url }}" width="300" style="border:1px solid #ccc; padding:5px;">
+{% elif submission.file_submission %}
+    <p><strong>PDF Submission:</strong></p>
+    <a href="{{ submission.file_submission.url }}" target="_blank">
+        📄 Open PDF
+    </a>
+{% else %}
+    <p style="color:red;">No file uploaded</p>
+{% endif %}
+
+<br><br>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <!-- ✅ SCORE -->
+    <label><strong>Marks:</strong></label><br>
+    <input type="number" name="score" value="{{ submission.score|default:0 }}" required>
+
+    <br><br>
+
+    <!-- ✅ MANUAL PASS / FAIL -->
+    <label><strong>Result:</strong></label><br>
+    <select name="result" required>
+        <option value="">Select</option>
+        <option value="pass" {% if submission.result == "pass" %}selected{% endif %}>Pass</option>
+        <option value="fail" {% if submission.result == "fail" %}selected{% endif %}>Fail</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit" style="
+        background-color:#4CAF50;
+        color:white;
+        padding:10px 20px;
+        border:none;
+        border-radius:5px;
+        cursor:pointer;">
+        Save Grade
+    </button>
+</form>
+
+{% endblock %}

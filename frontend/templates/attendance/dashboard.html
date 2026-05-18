@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Attendance Dashboard</h2>
+
+<p>Login Time: {{ attendance.login_time }}</p>
+<p>Logout Time: {{ attendance.logout_time }}</p>
+<p>Total Hours: {{ attendance.total_hours }}</p>
+
+<a href="{% url 'login_time' %}">
+    <button>✅ Login</button>
+</a>
+
+<a href="{% url 'logout_time' %}">
+    <button>❌ Logout</button>
+</a>
+
+{% endblock %}

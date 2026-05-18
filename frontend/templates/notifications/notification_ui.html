@@ -1,0 +1,206 @@
+<!-- templates/notifications/notification_ui.html -->
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f4f7fc;
+}
+
+.notify-container{
+    max-width:950px;
+    margin:30px auto;
+    padding:20px;
+}
+
+.notify-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.notify-title{
+    font-size:28px;
+    font-weight:700;
+    color:#111827;
+}
+
+.mark-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.notify-card{
+    background:white;
+    padding:22px;
+    border-radius:16px;
+    margin-bottom:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.notify-card:hover{
+    transform:translateY(-3px);
+}
+
+.unread{
+    border-left:5px solid #2563eb;
+}
+
+.notify-type{
+    font-size:13px;
+    font-weight:bold;
+    color:#2563eb;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.notify-message{
+    color:#111827;
+    margin-bottom:12px;
+    line-height:1.6;
+}
+
+.notify-course{
+    display:inline-block;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:8px 14px;
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.notify-time{
+    color:gray;
+    font-size:13px;
+}
+
+.empty{
+    background:white;
+    padding:60px;
+    text-align:center;
+    border-radius:16px;
+    color:gray;
+}
+
+@media(max-width:768px){
+
+    .notify-header{
+        flex-direction:column;
+        gap:15px;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+
+<div class="notify-container">
+
+    <div class="notify-header">
+
+        <div class="notify-title">
+            🔔 Notifications
+        </div>
+
+        <button class="mark-btn"
+                onclick="markAllRead()">
+
+            Mark All Read
+
+        </button>
+
+    </div>
+
+    {% for n in notifications %}
+
+    <div class="notify-card {% if not n.is_read %}unread{% endif %}">
+
+        <div class="notify-type">
+            {{ n.type }}
+        </div>
+
+        <div class="notify-message">
+            {{ n.message }}
+        </div>
+
+        {% if n.course_name %}
+        <div class="notify-course">
+            📚 {{ n.course_name }}
+        </div>
+        {% endif %}
+
+        <div class="notify-time">
+            {{ n.created_at|date:"d M Y h:i A" }}
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty">
+        🔕 No notifications available
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<script>
+
+function getCSRFToken() {
+
+    let cookieValue = null;
+
+    const cookies =
+        document.cookie.split(';');
+
+    for(let cookie of cookies){
+
+        cookie = cookie.trim();
+
+        if(cookie.startsWith('csrftoken=')){
+
+            cookieValue =
+                cookie.substring('csrftoken='.length);
+
+        }
+
+    }
+
+    return cookieValue;
+}
+
+function markAllRead(){
+
+    fetch("/notifications/read-all/", {
+
+        method:"POST",
+
+        headers:{
+            "X-CSRFToken": getCSRFToken()
+        }
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        location.reload();
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

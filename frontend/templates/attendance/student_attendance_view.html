@@ -1,0 +1,28 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'attendance/css/students_assigned_view.css' %}">
+<h2>{{ student.username }} - Attendance</h2>
+
+<table class="table">
+<tr>
+<th>Date</th>
+<th>Login</th>
+<th>Logout</th>
+<th>Hours</th>
+<th>Break</th>
+</tr>
+
+{% for r in records %}
+<tr>
+<td>{{ r.date }}</td>
+<td>{{ r.login_time|date:"H:i" }}</td>
+<td>{{ r.logout_time|date:"H:i" }}</td>
+<td>{{ r.total_hours }}</td>
+<td>{{ r.break_hours }}</td>
+</tr>
+{% endfor %}
+<script src="{% static 'attendance/js/assigned_students.js' %}"></script>
+</table>

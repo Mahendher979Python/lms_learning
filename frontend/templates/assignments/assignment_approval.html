@@ -1,0 +1,403 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Approve Assignments | LMS Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="header-text">
+        <h1>Approval Queue</h1>
+        <p>Review and publish pending assignments to the student portal.</p>
+    </div>
+
+    <div>
+        <a href="{% url 'assignments:admin_create_assignment' %}" 
+           style="background: #2563eb; 
+                  color: white; 
+                  padding: 10px 18px; 
+                  text-decoration: none; 
+                  border-radius: 8px; 
+                  font-size: 14px; 
+                  font-weight: 600;">
+            ➕ Create Assignment
+        </a>
+    </div>
+</div>
+
+<div class="table-card" style="margin-top: 20px;">
+    <h3>Pending Review</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Date Created</th>
+                <th>Title</th>
+                <th>Trainer</th>
+                <th>Subject</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in assignments %}
+            <tr>
+                <td>{{ a.created_at|date:"M d, Y" }}</td>
+                <td><strong>{{ a.title }}</strong></td>
+                <td>{{ a.trainer.name }}</td>
+                <td>{{ a.subject.name }}</td>
+                <td>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="{% url 'assignments:approve_assignment' a.id %}" class="btn-login" style="background-color: #2ecc71; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-size: 13px;">
+                            <i class="fas fa-check"></i> Approve
+                        </a>
+                        <a href="{% url 'assignments:reject_assignment' a.id %}" class="btn-outline" style="color: #e74c3c; border-color: #e74c3c; padding: 8px 15px; text-decoration: none; border-radius: 5px; font-size: 13px;">
+                            <i class="fas fa-times"></i> Reject
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 40px; color: #95a5a6;">
+                    <i class="fas fa-check-circle" style="font-size: 30px; display: block; margin-bottom: 10px;"></i>
+                    All caught up! No assignments pending approval.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 20px;">
+    <a href="{% url 'admin_dashboard' %}" style="color: #6c5ce7; text-decoration: none;">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+</div>
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:
+        radial-gradient(circle at top left,#dbeafe 0%,transparent 25%),
+        radial-gradient(circle at bottom right,#ede9fe 0%,transparent 25%),
+        #f4f7fb;
+}
+
+/* HEADER */
+
+.dashboard-header{
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #4f46e5,
+            #7c3aed
+        );
+
+    padding:35px;
+
+    border-radius:32px;
+
+    color:white;
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 25px 60px rgba(79,70,229,0.28);
+
+    margin-bottom:30px;
+}
+
+.dashboard-header::before{
+    content:'';
+
+    position:absolute;
+
+    width:300px;
+    height:300px;
+
+    background:rgba(255,255,255,0.08);
+
+    border-radius:50%;
+
+    top:-120px;
+    right:-80px;
+}
+
+.dashboard-header::after{
+    content:'';
+
+    position:absolute;
+
+    top:0;
+    left:-150%;
+
+    width:60%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.18),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+
+    animation:shine 6s infinite;
+}
+
+@keyframes shine{
+    100%{
+        left:180%;
+    }
+}
+
+.header-text h1{
+    font-size:2.4rem;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.header-text p{
+    opacity:0.9;
+    font-size:1rem;
+}
+
+/* CREATE BUTTON */
+
+.dashboard-header a{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.18),
+            rgba(255,255,255,0.08)
+        ) !important;
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,0.25);
+
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.12);
+
+    transition:0.35s ease;
+}
+
+.dashboard-header a:hover{
+    transform:
+        translateY(-3px)
+        scale(1.03);
+}
+
+/* TABLE CARD */
+
+.table-card{
+    background:
+        rgba(255,255,255,0.72);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,0.45);
+
+    box-shadow:
+        0 20px 45px rgba(15,23,42,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+    position:relative;
+}
+
+.table-card h3{
+    font-size:1.5rem;
+    margin-bottom:25px;
+    font-weight:700;
+
+    background:
+        linear-gradient(
+            to right,
+            #2563eb,
+            #7c3aed
+        );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* TABLE */
+
+table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 14px;
+}
+
+thead th{
+    text-align:left;
+    padding:14px;
+    font-size:0.85rem;
+    text-transform:uppercase;
+    color:#64748b;
+    letter-spacing:0.6px;
+}
+
+/* TABLE ROWS */
+
+tbody tr{
+    background:
+        linear-gradient(
+            to right,
+            rgba(255,255,255,0.95),
+            rgba(248,250,252,0.9)
+        );
+
+    box-shadow:
+        0 12px 25px rgba(15,23,42,0.05);
+
+    transition:0.35s ease;
+
+    border:1px solid rgba(255,255,255,0.5);
+}
+
+tbody tr:hover{
+    transform:translateY(-4px) scale(1.01);
+
+    box-shadow:
+        0 18px 35px rgba(15,23,42,0.08);
+}
+
+tbody td{
+    padding:18px 14px;
+    color:#0f172a;
+}
+
+tbody tr td:first-child{
+    border-top-left-radius:18px;
+    border-bottom-left-radius:18px;
+}
+
+tbody tr td:last-child{
+    border-top-right-radius:18px;
+    border-bottom-right-radius:18px;
+}
+
+/* ACTION BUTTONS */
+
+.btn-login,
+.btn-outline{
+    font-weight:700 !important;
+
+    transition:0.3s ease !important;
+
+    box-shadow:
+        0 8px 18px rgba(0,0,0,0.08);
+
+    border:none !important;
+}
+
+.btn-login{
+    background:
+        linear-gradient(
+            135deg,
+            #22c55e,
+            #16a34a
+        ) !important;
+}
+
+.btn-outline{
+    background:white !important;
+}
+
+.btn-login:hover,
+.btn-outline:hover{
+    transform:
+        translateY(-3px)
+        scale(1.04);
+}
+
+/* EMPTY STATE */
+
+tbody td[colspan="5"]{
+    background:
+        linear-gradient(
+            to right,
+            rgba(219,234,254,0.45),
+            rgba(237,233,254,0.45)
+        );
+
+    border-radius:24px;
+
+    font-weight:500;
+}
+
+/* BACK BUTTON */
+
+div a[href*="admin_dashboard"]{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    padding:14px 22px;
+
+    background:white;
+
+    border-radius:18px;
+
+    font-weight:600;
+
+    box-shadow:
+        0 10px 22px rgba(15,23,42,0.06);
+
+    transition:0.3s ease;
+}
+
+div a[href*="admin_dashboard"]:hover{
+    transform:
+        translateY(-3px);
+
+    background:#2563eb;
+    color:white !important;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:992px){
+
+    .dashboard-header{
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start !important;
+    }
+
+    .header-text h1{
+        font-size:2rem;
+    }
+
+    table{
+        display:block;
+        overflow-x:auto;
+    }
+}
+
+@media(max-width:768px){
+
+    .dashboard-header{
+        padding:25px;
+        border-radius:24px;
+    }
+
+    .table-card{
+        padding:20px;
+    }
+
+    tbody td{
+        padding:14px 10px;
+    }
+}
+
+</style>
+{% endblock %}

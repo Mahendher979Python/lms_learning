@@ -1,0 +1,271 @@
+/* =========================
+   BODY
+========================= */
+
+body {
+    background: #f1f5f9;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.learning-container {
+    max-width: 1400px;
+    margin: auto;
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 25px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    width: 250px !important;
+    max-width: 250px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 14px;
+    background: white;
+    display: block;
+}
+/* =========================
+   GRID
+========================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+    gap: 18px;
+    justify-content: start;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.course-card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+    min-height: auto;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.course-link {
+    text-decoration: none;
+    color: #2563eb;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.course-link:hover {
+    color: #1d4ed8;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #16a34a;
+}
+
+.badge {
+    background: #dcfce7;
+    color: #166534;
+    padding: 5px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.course-desc {
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+/* =========================
+   PROGRESS
+========================= */
+
+.progress-wrapper {
+    margin-top: 20px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 20px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.open-btn,
+.pdf-btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.open-btn:hover,
+.pdf-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   VIDEO
+========================= */
+
+video {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 12px;
+    max-height: 160px;
+    object-fit: cover;
+}
+
+/* =========================
+   TOPICS
+========================= */
+
+.topic-title {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    font-size: 19px;
+    color: #111827;
+    font-weight: 700;
+}
+
+.topic-list {
+    padding: 0;
+    margin: 0;
+}
+
+.topic-item {
+    list-style: none;
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+    border-radius: 10px;
+}
+
+.topic-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.topic-status {
+    margin-top: 8px;
+}
+
+.pending {
+    color: #f59e0b;
+    font-weight: 700;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.no-data {
+    color: #64748b;
+    padding: 20px;
+    text-align: center;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .course-card {
+        padding: 18px;
+    }
+
+    .course-link {
+        font-size: 20px;
+    }
+
+    .top-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .open-btn,
+    .pdf-btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    video {
+        max-height: 200px;
+    }
+}

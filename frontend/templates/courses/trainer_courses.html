@@ -1,0 +1,165 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% load static %}
+
+{% block title %}Trainer Courses{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'courses/css/trainer_courses.css' %}">
+
+<h2 class="page-title">
+📚 My Courses ({{ total_courses }})
+</h2>
+
+<!-- SEARCH -->
+<div class="search-box">
+
+    <form method="GET">
+
+        <input type="text"
+               name="q"
+               value="{{ search_query }}"
+               placeholder="🔍 Search your courses">
+
+        <button type="submit">
+            Search
+        </button>
+
+    </form>
+
+</div>
+
+<!-- COURSES -->
+<div class="cards">
+
+{% for course in courses %}
+
+<div class="card">
+
+    <h1>Admin Created</h1>
+
+    <h3>{{ course.title }}</h3>
+
+    <p>{{ course.description }}</p>
+
+    <p>
+        <b>Price:</b> ₹{{ course.price }}
+    </p>
+
+    <!-- ACTIONS -->
+    <a href="{% url 'course_detail' course.id %}"
+       class="btn view-btn">
+
+        📖 View Course
+
+    </a>
+
+    <a href="{% url 'trainer_create_topic' %}?course={{ course.id }}"
+       class="btn add-btn">
+
+        ➕ Add Topic
+
+    </a>
+
+    <hr>
+
+    <h4 class="topics-title">
+        📘 Topics
+    </h4>
+
+    <!-- TOPICS -->
+    <div class="topics-grid">
+
+    {% for t in course.topics.all %}
+
+        <div class="topic-box">
+
+            <b>{{ t.name }}</b>
+
+            {% if t.thumbnail %}
+                <img src="{{ t.thumbnail.url }}" class="topic-img">
+            {% endif %}
+
+            <div style="margin-top:12px;">
+
+                {% if t.video %}
+                    <p>🎥 Video Uploaded</p>
+                {% endif %}
+
+                {% if t.pdf %}
+                    <p>📄 PDF Uploaded</p>
+                {% endif %}
+
+            </div>
+
+            <div class="topic-actions">
+
+                <a href="{% url 'edit_topic' t.id %}"
+                   class="btn edit-btn">
+
+                    Edit
+
+                </a>
+
+                <a href="{% url 'delete_topic' t.id %}"
+                   class="btn delete-btn">
+
+                    Delete
+
+                </a>
+
+                <!-- 👁 VIEW BUTTON ADDED -->
+                <a href="{% url 'view_topic' t.id %}"
+                   class="btn view-btn">view
+                </a>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <p class="empty-text">
+            No topics added yet.
+        </p>
+
+    {% endfor %}
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<p class="empty-text">
+    No courses assigned to you yet.
+</p>
+
+{% endfor %}
+
+</div>
+
+<!-- PAGINATION -->
+<div class="pagination">
+
+    {% if courses.has_previous %}
+        <a href="?page={{ courses.previous_page_number }}&q={{ search_query }}">
+            ⬅ Previous
+        </a>
+    {% endif %}
+
+    <span>
+        Page {{ courses.number }} of {{ courses.paginator.num_pages }}
+    </span>
+
+    {% if courses.has_next %}
+        <a href="?page={{ courses.next_page_number }}&q={{ search_query }}">
+            Next ➡
+        </a>
+    {% endif %}
+
+</div>
+
+<script src="{% static 'courses/js/trainer_courses.js' %}"></script>
+
+{% endblock %}

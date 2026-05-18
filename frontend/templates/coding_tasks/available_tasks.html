@@ -1,0 +1,190 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2 class="mb-4">Coding Practice Tasks</h2>
+
+    <div class="row">
+
+        {% for task in tasks %}
+
+        <div class="col-md-6 mb-4">
+
+            <div class="card shadow border-0 rounded-4 h-100">
+
+                <div class="card-body">
+
+                    <h4>{{ task.title }}</h4>
+
+                    <p>{{ task.description|truncatewords:20 }}</p>
+
+                    <span class="badge bg-primary">
+                        {{ task.difficulty }}
+                    </span>
+
+                    <hr>
+
+                    <a href="{% url 'coding_tasks:submit_task' task.id %}"
+                       class="btn btn-dark">
+                        Solve Now
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <h5>No coding tasks available.</h5>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<style>
+/* =========================
+   SKY + SOFT 3D PRODUCT UI
+   ========================= */
+
+body {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+    font-family: "Segoe UI", sans-serif;
+    color: #0f172a;
+}
+
+/* container spacing like app */
+.container {
+    max-width: 1100px;
+    padding-top: 30px;
+}
+
+/* =========================
+   GRID SPACING (CLEAN LAYOUT)
+   ========================= */
+.row {
+    gap: 18px;
+}
+
+/* =========================
+   CARD (SOFT 3D FLOAT STYLE)
+   ========================= */
+.card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid rgba(148,163,184,0.25);
+    border-radius: 16px !important;
+
+    /* real soft depth */
+    box-shadow:
+        0 12px 25px rgba(15,23,42,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* hover lift (3D feel) */
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 20px 45px rgba(15,23,42,0.12);
+}
+
+/* subtle top glow line (premium touch) */
+.card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: linear-gradient(90deg, #38bdf8, #60a5fa);
+    opacity: 0.9;
+}
+
+/* =========================
+   CARD CONTENT
+   ========================= */
+.card-body {
+    padding: 22px;
+}
+
+/* TITLE */
+.card h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+/* DESCRIPTION */
+.card p {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.4;
+}
+
+/* =========================
+   BADGE (CLEAN SKY STYLE)
+   ========================= */
+.badge {
+    background: #e0f2fe !important;
+    color: #0369a1 !important;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* =========================
+   BUTTON (MODERN CTA)
+   ========================= */
+.btn-dark {
+    background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-weight: 500;
+
+    box-shadow: 0 10px 20px rgba(14,165,233,0.25);
+
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.btn-dark:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(14,165,233,0.35);
+}
+
+/* =========================
+   EMPTY STATE
+   ========================= */
+h5 {
+    color: #64748b;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 16px;
+    }
+
+    .card {
+        transform: none !important;
+    }
+}
+</style>
+{% endblock %}

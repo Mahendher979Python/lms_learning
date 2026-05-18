@@ -1,0 +1,140 @@
+/* =========================
+   PAGE TITLE
+========================= */
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #111827;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+    gap: 24px;
+    justify-content: left;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.course-card {
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+    width: 100%;
+    max-width: 320px;
+}
+
+.course-card:hover {
+    transform: translateY(-6px);
+}
+
+/* =========================
+   IMAGE
+========================= */
+
+.course-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+/* =========================
+   CONTENT
+========================= */
+
+.course-content {
+    padding: 18px;
+}
+
+.course-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #111827;
+}
+
+.course-desc {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.trainer-name {
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 18px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.view-btn {
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.view-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   EMPTY BOX
+========================= */
+
+.empty-box {
+    background: white;
+    padding: 50px 20px;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.empty-box h3 {
+    color: #6b7280;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-card {
+        max-width: 100%;
+    }
+
+    .course-title {
+        font-size: 20px;
+    }
+
+    .view-btn {
+        width: 100%;
+        text-align: center;
+    }
+}

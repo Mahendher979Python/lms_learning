@@ -1,0 +1,21 @@
+{% extends "dashboard/base.html" %}
+
+{% block content %}
+
+<div style="width:400px;margin:50px auto;background:white;padding:20px;border-radius:10px;">
+
+<h2>Create Batch</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {{ form.name }}
+    {{ form.trainer }}
+    {{ form.students }}
+
+    <button type="submit">Create</button>
+</form>
+
+</div>
+
+{% endblock %}

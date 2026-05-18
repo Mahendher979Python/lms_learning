@@ -1,0 +1,157 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet"
+href="{% static 'certificate/css/view_certificate.css' %}">
+<div style="padding: 32px;">
+
+  <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 10px;">
+    🏆 My Certificates
+  </h2>
+
+  <!-- Top action bar -->
+  <div style="
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 28px;
+    border-left: 5px solid #22c55e;
+    max-width: 900px;
+    margin-bottom: 24px;
+  ">
+    <div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 6px;">
+        {{ cert.course.title }}
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; color: #22c55e; font-weight: 600; font-size: 0.9rem;">
+        ✅ Completed
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <a href="{% url 'download_certificate' cert.id %}"
+         style="background:#22c55e;color:#fff;padding:10px 20px;border-radius:8px;
+                text-decoration:none;font-weight:600;font-size:0.88rem;
+                display:flex;align-items:center;gap:6px;"
+         target="_blank"
+         rel="noopener">
+        ⬇ Download Certificate
+      </a>
+      <a href="{% url 'my_certificates' %}"
+         style="background:#6b7280;color:#fff;padding:10px 20px;border-radius:8px;
+                text-decoration:none;font-weight:600;font-size:0.88rem;
+                display:flex;align-items:center;gap:6px;">
+        ← Back
+      </a>
+    </div>
+  </div>
+
+  <!-- Certificate Preview Card -->
+  <div style="
+    max-width: 900px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 40px 40px 36px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    position: relative;
+    border: 3px solid gold;
+  ">
+
+    <!-- Corner stars -->
+    <div style="position:absolute;top:14px;left:14px;font-size:1.4rem;color:gold;opacity:0.7;">✦</div>
+    <div style="position:absolute;top:14px;right:14px;font-size:1.4rem;color:gold;opacity:0.7;">✦</div>
+    <div style="position:absolute;bottom:14px;left:14px;font-size:1.4rem;color:gold;opacity:0.7;">✦</div>
+    <div style="position:absolute;bottom:14px;right:14px;font-size:1.4rem;color:gold;opacity:0.7;">✦</div>
+
+    <!-- Two-column layout: left = text, right = photo -->
+    <div style="display:flex;align-items:center;gap:36px;margin-bottom:24px;">
+
+      <!-- LEFT: Certificate text -->
+      <div style="flex:1;text-align:center;">
+        <div style="font-size:2.2rem;margin-bottom:4px;">🏆</div>
+        <h1 style="font-size:2rem;letter-spacing:6px;margin:0 0 4px;color:gold;">CERTIFICATE</h1>
+        <p style="color:#aaa;font-size:0.8rem;letter-spacing:2px;margin-bottom:20px;">OF COMPLETION</p>
+
+        <hr style="border:none;border-top:1px solid rgba(255,215,0,0.35);width:80%;margin:0 auto 18px;">
+
+        <p style="font-size:0.95rem;color:#ccc;margin-bottom:6px;">This certifies that</p>
+        <h2 style="font-size:1.8rem;color:gold;margin:0 0 10px;">
+          {{ cert.user.get_full_name|default:cert.user.username }}
+        </h2>
+
+        <p style="font-size:0.95rem;color:#ccc;margin-bottom:6px;">has successfully completed</p>
+        <h3 style="font-size:1.4rem;color:#7efff5;margin:0 0 20px;">{{ cert.course.title }}</h3>
+
+        <hr style="border:none;border-top:1px solid rgba(255,215,0,0.35);width:80%;margin:0 auto 16px;">
+
+        <p style="color:#aaa;font-size:0.85rem;margin-bottom:3px;">
+          📅 Date: {{ cert.completed_at.date|default:cert.created_at.date }}
+        </p>
+        <p style="color:#d6cc13;font-size:0.7rem;">
+          Certificate ID: {{ cert.certificate_id }}
+        </p>
+      </div>
+
+      <!-- RIGHT: Student photo in square frame -->
+      <div style="flex-shrink:0;text-align:center;">
+        <div style="
+          width: 160px;
+          height: 160px;
+          border: 3px solid gold;
+          border-radius: 8px;
+          overflow: hidden;
+          background: rgba(255,215,0,0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 20px rgba(255,215,0,0.2);
+        ">
+          {% if cert.student_photo %}
+            <img src="{{ cert.student_photo.url }}"
+                 alt="student"
+                 style="width:100%;height:100%;object-fit:cover;" />
+          {% else %}
+            <div style="color:rgba(255,215,0,0.3);font-size:0.75rem;padding:10px;">
+              No Photo
+            </div>
+          {% endif %}
+        </div>
+        <div style="color:#aaa;font-size:0.8rem;margin-top:8px;"></div>
+      </div>
+
+    </div>
+
+    <!-- Signature row at bottom -->
+    <div style="
+      display:flex;
+      justify-content:flex-end;
+      padding: 0 12px;
+      margin-top: 4px;
+    ">
+      <div style="text-align:center;width:180px;">
+
+        <!-- 1. Director name on top -->
+        <div style="color:#ffd700;font-size:0.88rem;font-weight:700;margin-bottom:6px;">
+          {{ cert.director_name|default:"Director" }}
+        </div>
+
+        <!-- 2. Gold line -->
+        <div style="border-top:1px solid rgba(255,215,0,0.55);margin-bottom:6px;"></div>
+
+        <!-- 3. "Director's Signature" label at bottom -->
+        <div style="color:#aaa;font-size:0.75rem;letter-spacing:0.5px;">
+          Director's Signature
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+<script src="{% static 'certificate/js/view_certificate.js' %}"></script>
+{% endblock %}

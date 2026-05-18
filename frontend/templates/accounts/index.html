@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LMS eLearning Home</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="#home" aria-label="LMS home">
+            <span class="logo-icon">L</span>
+            <span>LMS</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="#courses">Courses</a>
+            <a href="#blog">Blog</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <form class="searchbar" role="search">
+            <input type="search" placeholder="Search ..." aria-label="Search courses">
+        </form>
+
+        <div class="nav-actions">
+            <a class="button-secondary" href="{% url 'login' %}">Login</a>
+            
+        </div>
+    </header>
+
+    <main id="home">
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">LMS eLearning Platform</p>
+                <h1>Learn smarter with online courses, exams, and live classes.</h1>
+                <p class="hero-text">Access quality learning resources, track your progress, join instructor-led sessions, and complete assignments from one simple LMS dashboard.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-solid" href="student_dashboard.html">Get Started</a>
+                    <a class="btn btn-outline" href="instructor_dashboard.html">Demo</a>
+                    <a class="btn btn-light" href="#courses">Explore Courses</a>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Students learning together online">
+            </div>
+        </section>
+
+        <section class="image-marquee" aria-label="Learning gallery">
+            <div class="marquee-track">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="Online learning workspace">
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Students studying together">
+                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80" alt="Student using laptop for learning">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Group learning session">
+                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=80" alt="Modern study environment">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="Online learning workspace">
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Students studying together">
+                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80" alt="Student using laptop for learning">
+            </div>
+        </section>
+
+        <section class="section immersive-section">
+            <div class="section-heading">
+                <p class="eyebrow">Interactive Learning</p>
+                <h2>Move through courses like a guided digital campus.</h2>
+                <p>Students can discover lessons, join live sessions, attempt exams, and review progress from a visually organized learning space.</p>
+            </div>
+
+            <div class="immersive-layout">
+                <div class="learning-steps">
+                    <div class="step-card">
+                        <strong>01</strong>
+                        <h3>Choose your path</h3>
+                        <p>Browse course tracks by skill level, subject, and learning goals.</p>
+                    </div>
+                    <div class="step-card">
+                        <strong>02</strong>
+                        <h3>Attend live classes</h3>
+                        <p>Join instructor sessions, discussions, and scheduled class activities.</p>
+                    </div>
+                    <div class="step-card">
+                        <strong>03</strong>
+                        <h3>Complete exams</h3>
+                        <p>Practice assignments and assessments with clear progress tracking.</p>
+                    </div>
+                </div>
+
+                <div class="stage-3d" aria-label="3D course showcase">
+                    <div class="cube">
+                        <div class="cube-face cube-front">Courses</div>
+                        <div class="cube-face cube-back">Exams</div>
+                        <div class="cube-face cube-right">Live</div>
+                        <div class="cube-face cube-left">Skills</div>
+                        <div class="cube-face cube-top">LMS</div>
+                        <div class="cube-face cube-bottom">Track</div>
+                    </div>
+                    <div class="floating-card card-one">Progress 82%</div>
+                    <div class="floating-card card-two">12 Lessons</div>
+                    <div class="floating-card card-three">Live Class</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="courses">
+            <div class="section-heading">
+                <p class="eyebrow">Courses</p>
+                <h2>Explore Popular Courses</h2>
+                <p>Start learning with practical courses built for students, instructors, and working professionals.</p>
+            </div>
+
+            <div class="course-grid">
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Laptop showing an online course">
+                    <div class="course-content">
+                        <span>Beginner</span>
+                        <h3>Web Development</h3>
+                        <p>Learn HTML, CSS, JavaScript, and responsive website design with guided lessons.</p>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Team learning business skills">
+                    <div class="course-content">
+                        <span>Professional</span>
+                        <h3>Business Skills</h3>
+                        <p>Improve leadership, communication, planning, and teamwork for career growth.</p>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80" alt="Instructor helping students with laptops">
+                    <div class="course-content">
+                        <span>Advanced</span>
+                        <h3>Data Analytics</h3>
+                        <p>Practice dashboards, spreadsheets, charts, and insights for better decisions.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section feature-band">
+            <div class="feature-panel">
+                <p class="eyebrow">What You Get</p>
+                <h2>Everything needed for a complete LMS experience.</h2>
+                <p>From student onboarding to certificates, this homepage now introduces the full learning flow clearly and visually.</p>
+            </div>
+            <div class="feature-list-grid">
+                <div>
+                    <h3>Smart Dashboard</h3>
+                    <p>Students can see classes, exams, learning progress, and upcoming activities at a glance.</p>
+                </div>
+                <div>
+                    <h3>Instructor Tools</h3>
+                    <p>Teachers can create assignments, schedule sessions, and guide learners through structured lessons.</p>
+                </div>
+                <div>
+                    <h3>Course Library</h3>
+                    <p>Organize subjects, videos, reading material, quizzes, and project work in one clean system.</p>
+                </div>
+                <div>
+                    <h3>Certificates</h3>
+                    <p>Reward learners after course completion with achievements that motivate continued learning.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section split-section" id="about">
+            <div>
+                <p class="eyebrow">About Us</p>
+                <h2>Built for simple and effective online learning.</h2>
+                <p>Our LMS helps students attend live classes, explore courses, submit exams, and stay organized. Instructors can schedule classes, create assignments, and manage learning activities from one place.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" alt="Students studying in a classroom">
+        </section>
+
+        <section class="section blog-section" id="blog">
+            <div class="section-heading">
+                <p class="eyebrow">Blog</p>
+                <h2>Latest Learning Insights</h2>
+                <p>Read helpful articles about online learning, course planning, exam preparation, and student success.</p>
+            </div>
+
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80" alt="Notebook and laptop for online study planning">
+                    <div class="blog-content">
+                        <p>Study Tips</p>
+                        <h3>How to plan your weekly online learning schedule</h3>
+                        <a href="#blog">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80" alt="Learner taking notes during an online class">
+                    <div class="blog-content">
+                        <p>eLearning</p>
+                        <h3>Why interactive courses improve student engagement</h3>
+                        <a href="#blog">Read More</a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80" alt="Students collaborating around a table">
+                    <div class="blog-content">
+                        <p>Exams</p>
+                        <h3>Simple ways to prepare for online assessments</h3>
+                        <a href="#blog">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section contact-section" id="contact">
+            <div class="section-heading">
+                <p class="eyebrow">Contact Us</p>
+                <h2>Need help with your learning journey?</h2>
+                <p>Email, call, or visit us to learn more about courses, registration, and platform support.</p>
+            </div>
+            <div class="contact-grid">
+                <div>
+                    <h3>Email</h3>
+                    <p>support@lmslearning.com</p>
+                </div>
+                <div>
+                    <h3>Phone</h3>
+                    <p>9998887776</p>
+                </div>
+                <div>
+                    <h3>Location</h3>
+                    <p>Digital Learning Campus, India</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div>
+            <h3>LMS eLearning</h3>
+            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+            </div>
+        </div>
+
+        <div>
+            <h3>Courses</h3>
+            <a href="#courses">Web Development</a>
+            <a href="#courses">Business Skills</a>
+            <a href="#courses">Data Analytics</a>
+            <a href="#blog">Blog</a>
+        </div>
+
+        <div>
+            <h3>About Us</h3>
+            <a href="#about">Our Platform</a>
+            <a href="student_dashboard.html">Student Dashboard</a>
+            <a href="instructor_dashboard.html">Instructor Dashboard</a>
+        </div>
+
+        <div>
+            <h3>Contact Us</h3>
+            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
+            <a href="tel:9998887776">9998887776</a>
+            <a href="#contact">Help Center</a>
+        </div>
+
+        <div>
+            <h3>Legal</h3>
+            <a href="#privacy-notice">Privacy Notice</a>
+            <a href="#terms">Terms</a>
+            <a href="#candidate-privacy-notice">Candidate Privacy Notice</a>
+            <a href="#cookies">Cookies</a>
+            <a href="#sitemap">Sitemap</a>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Student Dashboard{% endblock %}</title>
+
+<link rel="stylesheet" href="{% static 'dashboard/css/student_base.css' %}">
+
+</head>
+<style>
+
+.notification-wrapper{
+    position:relative;
+}
+
+.notification-link{
+    position:relative;
+    text-decoration:none;
+    font-size:24px;
+}
+
+#notif-count{
+
+    position:absolute;
+
+    top:-8px;
+
+    right:-10px;
+
+    background:red;
+
+    color:white;
+
+    min-width:20px;
+
+    height:20px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    padding:2px 6px;
+}
+
+</style>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <!-- LEFT -->
+    <div style="display:flex; align-items:center; gap:12px;">
+        <div onclick="toggleSidebar()" style="cursor:pointer; font-size:22px;">☰</div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+            <img src="{% static 'accounts/images/spylogo.png' %}"
+                 style="height:45px; width:45px; border-radius:8px; object-fit:cover;">
+            <strong>Student LMS</strong>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="display:flex; align-items:center; gap:18px;">
+
+        <!-- 🔔 NOTIFICATIONS -->
+        <div class="notification-wrapper">
+
+    <a href="{% url 'student_notifications' %}"
+       class="notification-link">
+
+        🔔
+
+        <span id="notif-count">
+            0
+        </span>
+
+    </a>
+
+</div>
+
+        <!-- USER -->
+        <span class="username">👤 {{ request.user.username }}</span>
+
+        <!-- DARK MODE -->
+        <button onclick="toggleDark()">🌙</button>
+
+        <!-- LOGOUT -->
+        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <a href="{% url 'student_dashboard' %}">Dashboard</a>
+    <a href="{% url 'student_courses' %}" >All Courses</a>
+    <a href="{% url 'assigned_courses' %}" >My Assigned Courses</a>
+    <a href="{% url 'student_courses' %}">Videos & PDFs</a>
+    <a href="{% url 'teams:student_course_slides' %}">Classes</a>
+    <a href="{% url 'assignments:student_assignments' %}">Assignments</a>
+    <a href="{% url 'student_progress' %}">My Progress</a>
+    <a href="{% url 'coding_tasks:my_submissions' %}">Coding</a>
+    <a href="{% url 'student_attendance' %}">My Attendance</a>
+    <a href="{% url 'my_certificates' %}"> My Certificates</a>
+    <a href="{% url 'student_settings' %}">Settings</a>
+    
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+<script src="{% static 'dashboard/js/student_base.js' %}"></script>
+<script>
+
+function loadNotifications(){
+
+    fetch("/notifications/")
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        const badge =
+            document.getElementById(
+                "notif-count"
+            );
+
+        if(data.unread_count > 0){
+
+            badge.innerText =
+                data.unread_count;
+
+            badge.style.display =
+                "flex";
+
+        }else{
+
+            badge.style.display =
+                "none";
+        }
+
+    });
+
+}
+
+loadNotifications();
+
+setInterval(loadNotifications, 5000);
+
+</script>
+</body>
+</html>

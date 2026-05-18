@@ -1,0 +1,451 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}Google Form Exam | {{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<div class="gform-wrapper">
+
+    <!-- Ambient blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="gform-container">
+
+        <!-- Header Card -->
+        <div class="header-card">
+            <div class="header-icon">🔗</div>
+            <div class="header-text">
+                <h1 class="exam-title">{{ assignment.title }}</h1>
+                <span class="exam-chip">Google Form Exam</span>
+            </div>
+        </div>
+
+        <!-- Steps Card -->
+        <div class="steps-card">
+
+            <!-- Step 1 -->
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <div class="step-body">
+                    <h3 class="step-title">Open & Complete the Google Form</h3>
+                    <p class="step-desc">Click the button below to open your exam in a new tab. Complete all questions before returning here.</p>
+
+                    {% if assignment.google_form_link %}
+                        <a href="{{ assignment.google_form_link }}" target="_blank" class="btn-open-form">
+                            <span class="btn-icon">↗</span> Open Google Form
+                        </a>
+                    {% else %}
+                        <div class="error-box">
+                            ⚠️ Google Form link is not available. Please contact your trainer.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <!-- Step 2 -->
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <div class="step-body">
+                    <h3 class="step-title">Take a Screenshot of Your Submission</h3>
+                    <p class="step-desc">After submitting the Google Form, take a screenshot of the confirmation page as proof of submission.</p>
+                    <div class="tip-box">
+                        💡 <strong>Tip:</strong> Make sure the screenshot shows your name and the submission confirmation message.
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <!-- Step 3 -->
+            <div class="step-row">
+                <div class="step-num">3</div>
+                <div class="step-body">
+                    <h3 class="step-title">Upload Your Screenshot</h3>
+                    <p class="step-desc">Upload your proof of submission below. Accepted formats: JPG, PNG, PDF.</p>
+
+                    <form method="POST"
+                          enctype="multipart/form-data"
+                          action="{% url 'assignments:submit_gform_exam' assignment.id %}">
+                        {% csrf_token %}
+
+                        <label class="upload-area" id="uploadArea">
+                            <input type="file" name="screenshot" accept="image/*,.pdf"
+                                   required id="fileInput" class="file-input">
+                            <div class="upload-content" id="uploadContent">
+                                <div class="upload-icon">📁</div>
+                                <p class="upload-label">Click to upload or drag & drop</p>
+                                <p class="upload-hint">JPG, PNG, PDF accepted</p>
+                            </div>
+                            <div class="upload-preview" id="uploadPreview" style="display:none;">
+                                <span class="preview-icon">✅</span>
+                                <span class="preview-name" id="previewName"></span>
+                                <span class="preview-change">Click to change</span>
+                            </div>
+                        </label>
+
+                        <button type="submit" class="btn-submit" id="submitBtn" disabled>
+                            Submit Proof & Finish
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Back link -->
+        <div class="footer-actions">
+            <a href="{% url 'assignments:student_assignments' %}" class="btn-back">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --accent: #4f46e5;
+    --accent-light: #eef2ff;
+    --accent-hover: #4338ca;
+    --green: #059669;
+    --green-light: #d1fae5;
+    --green-hover: #047857;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.gform-wrapper {
+    min-height: 100vh;
+    background: #f1f5f9;
+    padding: 40px 20px 60px;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.2;
+    pointer-events: none;
+    z-index: 0;
+}
+.blob-1 { width: 380px; height: 380px; background: #818cf8; top: -80px; right: -80px; }
+.blob-2 { width: 300px; height: 300px; background: #34d399; bottom: 80px; left: -60px; }
+
+.gform-container {
+    max-width: 720px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header Card */
+.header-card {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+    animation: slideDown 0.5s ease;
+}
+
+.header-icon { font-size: 2.6rem; flex-shrink: 0; }
+
+.exam-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.exam-chip {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+}
+
+/* Steps Card */
+.steps-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.step-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-body { flex: 1; }
+
+.step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.step-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.step-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 24px 0;
+}
+
+/* Open Form Button */
+.btn-open-form {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green);
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+}
+.btn-open-form:hover {
+    background: var(--green-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4);
+}
+.btn-icon { font-size: 1.1rem; }
+
+/* Tip & Error boxes */
+.tip-box {
+    background: #fefce8;
+    border: 1px solid #fef08a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    color: #854d0e;
+    line-height: 1.5;
+}
+
+.error-box {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* Upload Area */
+.upload-area {
+    display: block;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 32px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 16px;
+    background: #f8fafc;
+    position: relative;
+}
+.upload-area:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+}
+.upload-area.has-file {
+    border-color: var(--green);
+    background: var(--green-light);
+}
+
+.file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.upload-icon { font-size: 2.2rem; margin-bottom: 10px; }
+.upload-label { font-weight: 600; color: var(--text-primary); font-size: 0.95rem; margin-bottom: 4px; }
+.upload-hint { color: var(--text-secondary); font-size: 0.82rem; }
+
+.upload-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.preview-icon { font-size: 1.6rem; }
+.preview-name { font-weight: 600; color: var(--green); font-size: 0.95rem; word-break: break-all; }
+.preview-change { font-size: 0.8rem; color: var(--text-secondary); }
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+}
+.btn-submit:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+.btn-submit:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Footer */
+.footer-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-back {
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+.btn-back:hover {
+    background: var(--text-primary);
+    color: white;
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+    .header-card { flex-direction: column; text-align: center; }
+    .step-row { flex-direction: column; }
+    .step-num { margin: 0 auto; }
+    .step-body { text-align: center; }
+    .btn-open-form { width: 100%; justify-content: center; }
+}
+
+</style>
+
+<script>
+const fileInput = document.getElementById('fileInput');
+const uploadArea = document.getElementById('uploadArea');
+const uploadContent = document.getElementById('uploadContent');
+const uploadPreview = document.getElementById('uploadPreview');
+const previewName = document.getElementById('previewName');
+const submitBtn = document.getElementById('submitBtn');
+
+fileInput.addEventListener('change', function () {
+    if (this.files && this.files[0]) {
+        const fileName = this.files[0].name;
+        previewName.textContent = fileName;
+        uploadContent.style.display = 'none';
+        uploadPreview.style.display = 'flex';
+        uploadArea.classList.add('has-file');
+        submitBtn.disabled = false;
+    }
+});
+
+// Drag & drop
+uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.style.borderColor = '#4f46e5';
+    uploadArea.style.background = '#eef2ff';
+});
+uploadArea.addEventListener('dragleave', () => {
+    if (!uploadArea.classList.contains('has-file')) {
+        uploadArea.style.borderColor = '#cbd5e1';
+        uploadArea.style.background = '#f8fafc';
+    }
+});
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) {
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        fileInput.files = dt.files;
+        fileInput.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+
+{% endblock %}

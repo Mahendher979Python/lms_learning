@@ -1,0 +1,131 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/course_details.css' %}">
+
+<div class="course-container">
+
+    <!-- HEADER -->
+    <div class="course-header">
+
+        <h2>{{ course.title }}</h2>
+
+        <p class="trainer">
+            👨‍🏫 {{ course.trainer.username }}
+        </p>
+
+    </div>
+
+    <!-- THUMBNAIL -->
+    {% if course.thumbnail %}
+        <img src="{{ course.thumbnail.url }}"
+             class="thumbnail">
+    {% endif %}
+
+    <!-- DESCRIPTION -->
+    <p class="description">
+        {{ course.description }}
+    </p>
+
+    <!-- CHECK PURCHASE -->
+    {% if course in request.user.courses.all or course in request.user.enrolled_courses.all %}
+
+        <!-- COURSE VIDEO -->
+        {% if course.video and is_enrolled %}
+        <h3>🎥 Course Video</h3>
+
+        <video controls class="video-player">
+            <source src="{{ course.video.url }}">
+        </video>
+        {% endif %}
+
+        <!-- MATERIAL -->
+        {% if course.material and is_enrolled %}
+        <div class="pdf-box">
+
+            <h4>📚 Course Material</h4>
+
+            <a href="{{ course.material.url }}"
+               target="_blank"
+               class="btn view">
+               View PDF
+            </a>
+
+            <a href="{{ course.material.url }}"
+               download
+               class="btn download">
+               Download PDF
+            </a>
+
+        </div>
+        {% endif %}
+
+        <!-- TOPICS -->
+<h3>📚 Topics</h3>
+
+{% if is_enrolled %}
+
+<div class="topics-list">
+
+    {% for topic in course.topics.all %}
+
+        <div class="topic-card">
+
+            <h4>{{ topic.name }}</h4>
+
+            {% if topic.video %}
+            <video controls width="100%">
+                <source src="{{ topic.video.url }}">
+            </video>
+            {% endif %}
+
+            {% if topic.pdf %}
+            <a href="{{ topic.pdf.url }}"
+               target="_blank"
+               class="btn view">
+                📄 View PDF
+            </a>
+            {% endif %}
+
+        </div>
+
+    {% empty %}
+
+        <p>No topics available</p>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="pdf-box">
+    <h4>🔒 Premium Content</h4>
+
+    <p>
+        Please complete payment to access:
+    </p>
+
+    <ul>
+        <li>🎥 Course Videos</li>
+        <li>📚 Course Materials</li>
+        <li>📝 Topics</li>
+    </ul>
+
+    <a href="{% url 'create_payment' course.id %}"
+       class="btn download">
+       💳 Buy Now
+    </a>
+</div>
+
+{% endif %}
+        
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

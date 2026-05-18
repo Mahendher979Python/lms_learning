@@ -1,0 +1,273 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet"
+href="{% static 'certificate/css/send_certificate.css' %}">
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f4f7fb;
+    font-family:Arial, sans-serif;
+    padding:20px;
+}
+
+/* FORM CONTAINER */
+.form-container{
+    width:100%;
+    max-width:850px;
+    margin:30px auto;
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+    animation:fadeIn 0.7s ease;
+}
+
+/* TITLE */
+.title{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:30px;
+    color:#111827;
+    text-align:center;
+}
+
+/* FORM GROUP */
+.form-group{
+    margin-bottom:22px;
+}
+
+/* LABEL */
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#334155;
+    font-size:15px;
+}
+
+/* INPUTS */
+.form-group input,
+.form-group textarea,
+.form-group select{
+    width:100%;
+    padding:14px;
+    border:1px solid #d1d5db;
+    border-radius:12px;
+    font-size:15px;
+    transition:0.3s;
+    background:#fff;
+}
+
+/* TEXTAREA */
+.form-group textarea{
+    min-height:130px;
+    resize:vertical;
+}
+
+/* FOCUS */
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.15);
+    outline:none;
+}
+
+/* FILE INPUT */
+input[type="file"]{
+    padding:12px;
+    background:#f8fafc;
+    cursor:pointer;
+}
+
+/* BUTTON */
+.submit-btn{
+    width:100%;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:14px;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(37,99,235,0.25);
+}
+
+/* HELP TEXT */
+.help-text{
+    margin-top:6px;
+    font-size:13px;
+    color:#64748b;
+}
+
+/* ERROR */
+.errorlist{
+    list-style:none;
+    margin-top:8px;
+    color:#dc2626;
+    font-size:14px;
+}
+
+/* SUCCESS MESSAGE */
+.success-message{
+    display:none;
+    margin-top:20px;
+    background:#dcfce7;
+    color:#166534;
+    padding:14px;
+    border-radius:10px;
+    text-align:center;
+    font-weight:600;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* TABLET */
+@media(max-width:768px){
+
+    body{
+        padding:12px;
+    }
+
+    .form-container{
+        padding:22px;
+        border-radius:16px;
+    }
+
+    .title{
+        font-size:24px;
+        margin-bottom:24px;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select{
+        padding:12px;
+        font-size:14px;
+    }
+
+    .submit-btn{
+        padding:13px;
+        font-size:15px;
+    }
+
+}
+
+/* MOBILE */
+@media(max-width:480px){
+
+    .title{
+        font-size:22px;
+    }
+
+    .form-container{
+        padding:18px;
+    }
+
+}
+</style>
+<div class="form-container">
+
+    <div class="title">
+        📤 Send Certificate To Admin
+    </div>
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit"
+                class="submit-btn">
+            Send For Approval
+        </button>
+
+    </form>
+
+</div>
+<script src="{% static 'certificate/js/send_certificate.js' %}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+    // FORM
+    const form = document.getElementById("certificateForm");
+
+    // BUTTON
+    const submitBtn = document.getElementById("submitBtn");
+
+    // SUCCESS
+    const successMessage =
+    document.getElementById("successMessage");
+
+    // FILE INPUT EFFECT
+    document.querySelectorAll('input[type="file"]')
+    .forEach(input => {
+
+        input.addEventListener("change", function(){
+
+            if(this.files.length > 0){
+
+                this.style.borderColor = "#16a34a";
+
+            }
+
+        });
+
+    });
+
+    // FORM SUBMIT EFFECT
+    if(form){
+
+        form.addEventListener("submit", function(){
+
+            submitBtn.innerHTML =
+            "Sending...";
+
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+
+                successMessage.style.display =
+                "block";
+
+            }, 1000);
+
+        });
+
+    }
+
+    // AUTO FOCUS
+    const firstInput =
+    document.querySelector("input, textarea, select");
+
+    if(firstInput){
+        firstInput.focus();
+    }
+
+});
+</script>
+{% endblock %}

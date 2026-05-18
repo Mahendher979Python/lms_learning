@@ -1,0 +1,82 @@
+{% extends "dashboard/student_base.html" %}
+
+{% block content %}
+
+<style>
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#fff;
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.thumb{
+    width:100%;
+    height:140px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.title{
+    font-weight:bold;
+    margin-top:10px;
+}
+
+button{
+    margin-top:10px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#2575fc;
+    color:#fff;
+    cursor:pointer;
+}
+
+.empty{
+    text-align:center;
+    margin-top:50px;
+    color:#777;
+}
+</style>
+
+<h2>📚 My Courses</h2>
+
+{% if enrollments %}
+<div class="grid">
+    {% for e in enrollments %}
+    <div class="card">
+
+        {% if e.course.thumbnail %}
+            <img src="{{ e.course.thumbnail.url }}" class="thumb">
+        {% endif %}
+
+        <div class="title">{{ e.course.title }}</div>
+
+        <form action="{% url 'course_detail' e.course.id %}">
+            <button>Continue Learning</button>
+        </form>
+
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<div class="empty">
+    <h3>No courses yet</h3>
+    <p>Purchase a course to see it here</p>
+</div>
+{% endif %}
+
+{% endblock %}

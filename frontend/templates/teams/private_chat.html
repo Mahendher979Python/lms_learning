@@ -1,0 +1,9 @@
+<div style="height:60vh; overflow-y:scroll; border:1px solid gray;">
+
+    {% for msg in messages %}
+        <p>
+            <b>{{ msg.sender.username }}:</b> {{ msg.message }}
+        </p>
+    {% endfor %}
+
+</div>

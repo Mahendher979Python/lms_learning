@@ -1,0 +1,39 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+<h2>Teams / Classes</h2>
+
+<a href="{% url 'teams:course_slides' %}">
+    <button>Go to Courses</button>
+</a>
+
+<hr>
+
+<table border="1" cellpadding="10" width="100%">
+    <tr>
+        <th>Team Name</th>
+        <th>Trainer</th>
+        <th>Students</th>
+        <th>Open</th>
+    </tr>
+
+    {% for team in teams %}
+    <tr>
+        <td>{{ team.name }}</td>
+        <td>{{ team.trainer }}</td>
+        <td>{{ team.students.count }}</td>
+        <td>
+            <a href="{% url 'teams:course_teams' team.course.id %}?team_id={{ team.id }}">
+                <button>Open</button>
+            </a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="4">No teams available</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

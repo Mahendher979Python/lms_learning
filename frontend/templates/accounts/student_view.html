@@ -1,0 +1,155 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+<h2>
+    {% if request.GET.role == 'trainer' %}
+        Trainers List
+    {% elif request.GET.role == 'student' %}
+        Students List
+    {% else %}
+        All Users
+    {% endif %}
+</h2>
+
+<style>
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th {
+    background: #1e293b;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+tr:nth-child(even) {
+    background: #f4f6f9;
+}
+
+tr:hover {
+    background: #e2e8f0;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+.edit {
+    background: #22c55e;
+}
+
+.delete {
+    background: #ef4444;
+}
+
+.top-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.search-box {
+    padding: 8px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.search-btn {
+    padding: 8px 15px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+</style>
+
+<!-- TOP ACTIONS -->
+<div class="top-actions">
+    <a href="{% url 'view_users' %}?role=student">
+        <button>Students</button>
+    </a>
+
+    <!-- Search Form -->
+    <form method="get">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="Search by username/email"
+            value="{{ request.GET.search }}"
+            class="search-box"
+        >
+
+        <input type="hidden" name="role" value="{{ request.GET.role }}">
+
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+
+    
+    <a href="{% url 'add_student' %}">
+        <button>➕ Add New User</button>
+    </a>
+
+</div>
+
+<div class="table-container">
+
+<table>
+    <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phone }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+            <a href="{% url 'edit_user' user.id %}" class="action-btn edit">Edit</a>
+            <a href="{% url 'delete_user' user.id %}" class="action-btn delete">Delete</a>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="5">No users found</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</div>
+<script>
+document.getElementById("searchInput").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        document.getElementById("searchForm").submit();
+    }
+});
+</script>
+{% endblock %}

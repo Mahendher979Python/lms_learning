@@ -1,0 +1,196 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-11 11:31+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Tamil <LL@li.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\settings\settings.html:133
+msgid "Account Settings"
+msgstr "கணக்கு அமைப்புகள்"
+
+#: .\templates\settings\settings.html:137
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr "உங்கள் மொழி, பாதுகாப்பு, அறிவிப்புகள் மற்றும் கற்றல் விருப்பங்களை நிர்வகிக்கவும்."
+
+#: .\templates\settings\settings.html:147
+msgid "Language & Appearance"
+msgstr "மொழி மற்றும் தோற்றம்"
+
+#: .\templates\settings\settings.html:153
+#: .\templates\settings\student_settings.html:259
+msgid "Language"
+msgstr "மொழி"
+
+#: .\templates\settings\settings.html:154
+msgid "Select your preferred application language."
+msgstr "உங்களுக்கு விருப்பமான பயன்பாட்டு மொழியைத் தேர்ந்தெடுக்கவும்."
+
+#: .\templates\settings\settings.html:178
+msgid "Dark Mode"
+msgstr "இருண்ட முறை"
+
+#: .\templates\settings\settings.html:179
+msgid "Enable dark theme for better night viewing."
+msgstr "இரவு நேர பார்வைக்கு இருண்ட தீமை இயக்கவும்."
+
+#: .\templates\settings\settings.html:192
+msgid "Notifications"
+msgstr "அறிவிப்புகள்"
+
+#: .\templates\settings\settings.html:198
+msgid "Email Notifications"
+msgstr "மின்னஞ்சல் அறிவிப்புகள்"
+
+#: .\templates\settings\settings.html:199
+msgid "Receive updates through email."
+msgstr "மின்னஞ்சல் மூலம் புதுப்பிப்புகளைப் பெறவும்."
+
+#: .\templates\settings\settings.html:209
+msgid "Push Notifications"
+msgstr "புஷ் அறிவிப்புகள்"
+
+#: .\templates\settings\settings.html:210
+msgid "Get instant browser/app alerts."
+msgstr "உடனடி உலாவி/பயன்பாட்டு எச்சரிக்கைகளைப் பெறவும்."
+
+#: .\templates\settings\settings.html:220
+msgid "Live Class Reminders"
+msgstr "நேரலை வகுப்பு நினைவூட்டல்கள்"
+
+#: .\templates\settings\settings.html:221
+msgid "Receive reminders before live classes."
+msgstr "நேரலை வகுப்புகளுக்கு முன் நினைவூட்டல்களைப் பெறவும்."
+
+#: .\templates\settings\settings.html:234
+msgid "Security"
+msgstr "பாதுகாப்பு"
+
+#: .\templates\settings\settings.html:240
+msgid "Fingerprint Login"
+msgstr "கைரேகை உள்நுழைவு"
+
+#: .\templates\settings\settings.html:241
+msgid "Use biometric authentication to login."
+msgstr "உள்நுழைய பயோமெட்ரிக் அங்கீகாரத்தைப் பயன்படுத்தவும்."
+
+#: .\templates\settings\settings.html:251
+msgid "Two Factor Authentication"
+msgstr "இரு நிலை அங்கீகாரம்"
+
+#: .\templates\settings\settings.html:252
+msgid "Add extra security to your account."
+msgstr "உங்கள் கணக்கிற்கு கூடுதல் பாதுகாப்பைச் சேர்க்கவும்."
+
+#: .\templates\settings\settings.html:265
+msgid "Learning Preferences"
+msgstr "கற்றல் விருப்பங்கள்"
+
+#: .\templates\settings\settings.html:271
+msgid "Autoplay Videos"
+msgstr "தானாக இயங்கும் வீடியோக்கள்"
+
+#: .\templates\settings\settings.html:272
+msgid "Automatically play next lesson videos."
+msgstr "அடுத்த பாட வீடியோக்களை தானாக இயக்கவும்."
+
+#: .\templates\settings\settings.html:282
+msgid "Offline Downloads"
+msgstr "ஆஃப்லைன் பதிவிறக்கங்கள்"
+
+#: .\templates\settings\settings.html:283
+msgid "Allow downloading lessons for offline use."
+msgstr "ஆஃப்லைன் பயன்பாட்டிற்கு பாடங்களை பதிவிறக்க அனுமதிக்கவும்."
+
+#: .\templates\settings\settings.html:296
+msgid "Community"
+msgstr "சமூகம்"
+
+#: .\templates\settings\settings.html:302
+msgid "Allow Chat"
+msgstr "அரட்டை அனுமதி"
+
+#: .\templates\settings\settings.html:303
+msgid "Enable messaging with students and trainers."
+msgstr "மாணவர்கள் மற்றும் பயிற்சியாளர்களுடன் செய்தி பரிமாற்றத்தை இயக்கவும்."
+
+#: .\templates\settings\settings.html:313
+msgid "Allow Discussions"
+msgstr "விவாதங்களை அனுமதி"
+
+#: .\templates\settings\settings.html:314
+msgid "Participate in community discussions."
+msgstr "சமூக விவாதங்களில் பங்கேற்கவும்."
+
+#: .\templates\settings\settings.html:324
+msgid "Save Settings"
+msgstr "அமைப்புகளை சேமிக்கவும்"
+
+#: .\templates\settings\student_settings.html:152
+msgid "Student Profile Settings"
+msgstr "மாணவர் சுயவிவர அமைப்புகள்"
+
+#: .\templates\settings\student_settings.html:156
+msgid "Update your account information, preferences, and language settings."
+msgstr "உங்கள் கணக்கு தகவல், விருப்பங்கள் மற்றும் மொழி அமைப்புகளை புதுப்பிக்கவும்."
+
+#: .\templates\settings\student_settings.html:185
+msgid "Username"
+msgstr "பயனர் பெயர்"
+
+#: .\templates\settings\student_settings.html:196
+msgid "Email Address"
+msgstr "மின்னஞ்சல் முகவரி"
+
+#: .\templates\settings\student_settings.html:207
+msgid "Phone Number"
+msgstr "தொலைபேசி எண்"
+
+#: .\templates\settings\student_settings.html:218
+msgid "Date of Birth"
+msgstr "பிறந்த தேதி"
+
+#: .\templates\settings\student_settings.html:229
+msgid "Gender"
+msgstr "பாலினம்"
+
+#: .\templates\settings\student_settings.html:234
+msgid "Select Gender"
+msgstr "பாலினத்தைத் தேர்ந்தெடுக்கவும்"
+
+#: .\templates\settings\student_settings.html:239
+msgid "Male"
+msgstr "ஆண்"
+
+#: .\templates\settings\student_settings.html:244
+msgid "Female"
+msgstr "பெண்"
+
+#: .\templates\settings\student_settings.html:249
+msgid "Other"
+msgstr "மற்றவை"
+
+#: .\templates\settings\student_settings.html:281
+msgid "Profile Photo"
+msgstr "சுயவிவர படம்"
+
+#: .\templates\settings\student_settings.html:291
+msgid "Address"
+msgstr "முகவரி"
+
+#: .\templates\settings\student_settings.html:304
+msgid "Save Changes"
+msgstr "மாற்றங்களை சேமிக்கவும்"

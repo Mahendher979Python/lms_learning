@@ -1,0 +1,411 @@
+{% extends 'dashboard/trainer_base.html' %}
+
+{% block content %}
+<div class="container">
+
+    <h2>✍️ Grade Submission</h2>
+
+    <p><b>Student:</b> {{ submission.student.username }}</p>
+    <p><b>Assignment:</b> {{ submission.assignment.title }}</p>
+
+    <!-- ✅ SHOW PDF OR SCREENSHOT -->
+    {% if submission.screenshot %}
+        <p><b>Google Form Screenshot:</b></p>
+        <img src="{{ submission.screenshot.url }}" width="300" style="border:1px solid #ccc; padding:5px;">
+    {% elif submission.file_submission %}
+        <p>
+            <a href="{{ submission.file_submission.url }}" target="_blank">
+                📄 View PDF
+            </a>
+        </p>
+    {% else %}
+        <p style="color:red;">No file uploaded</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- ✅ SCORE -->
+        <label><b>Score</b></label><br>
+        <input type="number" name="score" value="{{ submission.score|default:0 }}" required>
+
+        <br><br>
+
+        <!-- ✅ PASS / FAIL -->
+        <label><b>Result</b></label><br>
+        <select name="result" required>
+            <option value="">Select</option>
+            <option value="pass" {% if submission.result == "pass" %}selected{% endif %}>Pass</option>
+            <option value="fail" {% if submission.result == "fail" %}selected{% endif %}>Fail</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Save Grade</button>
+    </form>
+
+</div>
+<style>
+/* =========================================
+   PREMIUM 3D GRADE SUBMISSION UI
+   ADD BELOW YOUR EXISTING CODE
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+body{
+    background:
+        radial-gradient(circle at top left, rgba(99,102,241,0.18), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(16,185,129,0.16), transparent 25%),
+        linear-gradient(135deg,#eef2ff 0%,#f8fafc 45%,#f1f5f9 100%);
+}
+
+/* MAIN CONTAINER */
+.container{
+    max-width: 760px;
+    margin: 45px auto;
+    padding: 40px;
+    border-radius: 34px;
+    position: relative;
+    overflow: hidden;
+
+    font-family: 'Inter', sans-serif;
+
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,0.95),
+        rgba(255,255,255,0.82));
+
+    border: 1px solid rgba(255,255,255,0.7);
+
+    box-shadow:
+        0 25px 60px rgba(15,23,42,0.12),
+        inset 0 1px 1px rgba(255,255,255,0.8),
+        inset 0 -1px 2px rgba(255,255,255,0.3);
+
+    backdrop-filter: blur(18px);
+
+    animation: fadeSlide .6s ease;
+}
+
+/* GLOW EFFECTS */
+.container::before{
+    content:"";
+    position:absolute;
+    width:240px;
+    height:240px;
+    border-radius:50%;
+    background:rgba(99,102,241,0.18);
+    top:-120px;
+    right:-80px;
+    filter: blur(45px);
+}
+
+.container::after{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    background:rgba(16,185,129,0.15);
+    bottom:-120px;
+    left:-70px;
+    filter: blur(50px);
+}
+
+/* HEADING */
+.container h2{
+    position: relative;
+    z-index: 2;
+
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+
+    margin-bottom: 32px;
+
+    color: #0f172a;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* INFO CARDS */
+.container p{
+    position: relative;
+    z-index: 2;
+
+    margin-bottom: 18px;
+    padding: 18px 20px;
+
+    background: rgba(255,255,255,0.72);
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(255,255,255,0.9);
+
+    color: #334155;
+    font-size: 15px;
+    font-weight: 500;
+
+    box-shadow:
+        0 10px 25px rgba(15,23,42,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.9);
+
+    transition: all .3s ease;
+}
+
+.container p:hover{
+    transform: translateY(-3px);
+    box-shadow:
+        0 18px 35px rgba(15,23,42,0.12),
+        inset 0 1px 0 rgba(255,255,255,1);
+}
+
+/* LABELS */
+.container b{
+    color: #111827;
+    font-weight: 700;
+}
+
+/* IMAGE PREVIEW */
+.container img{
+    width: 100%;
+    max-width: 420px;
+
+    border-radius: 22px !important;
+
+    padding: 10px !important;
+
+    background: rgba(255,255,255,0.7);
+
+    border: 1px solid rgba(255,255,255,0.9);
+
+    box-shadow:
+        0 20px 40px rgba(15,23,42,0.14),
+        inset 0 1px 1px rgba(255,255,255,0.9);
+
+    transition: transform .35s ease, box-shadow .35s ease;
+
+    margin-top: 8px;
+}
+
+.container img:hover{
+    transform: perspective(1000px) rotateX(2deg) rotateY(-3deg) scale(1.02);
+
+    box-shadow:
+        0 30px 60px rgba(15,23,42,0.22),
+        0 0 35px rgba(99,102,241,0.18);
+}
+
+/* PDF LINK */
+.container a{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    text-decoration: none;
+
+    background: linear-gradient(135deg,#4f46e5,#7c3aed);
+    color: white;
+
+    padding: 14px 22px;
+
+    border-radius: 16px;
+
+    font-weight: 700;
+    font-size: 14px;
+
+    box-shadow:
+        0 14px 30px rgba(79,70,229,0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+
+    transition: all .3s ease;
+}
+
+.container a:hover{
+    transform: translateY(-4px) scale(1.02);
+
+    box-shadow:
+        0 22px 45px rgba(79,70,229,0.42),
+        0 0 30px rgba(99,102,241,0.35);
+}
+
+/* FORM */
+form{
+    position: relative;
+    z-index: 2;
+
+    margin-top: 35px;
+
+    background: rgba(255,255,255,0.65);
+
+    padding: 30px;
+
+    border-radius: 26px;
+
+    border: 1px solid rgba(255,255,255,0.9);
+
+    box-shadow:
+        0 18px 45px rgba(15,23,42,0.08),
+        inset 0 1px 0 rgba(255,255,255,1);
+}
+
+/* LABELS */
+form label{
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #111827;
+
+    letter-spacing: .2px;
+}
+
+/* INPUTS */
+form input,
+form select{
+    width: 100%;
+
+    padding: 16px 18px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(203,213,225,0.8);
+
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,0.95),
+        rgba(248,250,252,0.9));
+
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #0f172a;
+
+    outline: none;
+
+    transition: all .3s ease;
+
+    box-shadow:
+        inset 0 2px 5px rgba(15,23,42,0.04),
+        0 6px 18px rgba(15,23,42,0.05);
+}
+
+/* INPUT FOCUS */
+form input:focus,
+form select:focus{
+    border-color: #6366f1;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 0 5px rgba(99,102,241,0.14),
+        0 12px 30px rgba(99,102,241,0.18);
+}
+
+/* BUTTON */
+form button{
+    width: 100%;
+
+    margin-top: 10px;
+
+    border: none;
+    cursor: pointer;
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    color: white;
+
+    background:
+        linear-gradient(135deg,
+        #4f46e5,
+        #7c3aed,
+        #9333ea);
+
+    letter-spacing: .5px;
+
+    box-shadow:
+        0 18px 40px rgba(99,102,241,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+
+    transition: all .35s ease;
+}
+
+/* BUTTON HOVER */
+form button:hover{
+    transform:
+        translateY(-5px)
+        scale(1.01);
+
+    box-shadow:
+        0 28px 60px rgba(99,102,241,0.45),
+        0 0 35px rgba(139,92,246,0.4);
+}
+
+/* BUTTON CLICK */
+form button:active{
+    transform: scale(.98);
+}
+
+/* NO FILE TEXT */
+.container p[style*="red"]{
+    background: rgba(254,226,226,0.8);
+    color: #b91c1c !important;
+    border: 1px solid rgba(248,113,113,0.3);
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb{
+    background: linear-gradient(#6366f1,#8b5cf6);
+    border-radius: 20px;
+}
+
+/* ANIMATION */
+@keyframes fadeSlide{
+    from{
+        opacity:0;
+        transform: translateY(25px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+    .container{
+        margin: 20px;
+        padding: 24px;
+        border-radius: 24px;
+    }
+
+    .container h2{
+        font-size: 1.5rem;
+    }
+
+    form{
+        padding: 22px;
+    }
+
+    form button{
+        padding: 16px;
+    }
+}
+</style>
+{% endblock %}

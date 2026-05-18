@@ -1,0 +1,237 @@
+/* =========================
+   STUDENT DASHBOARD CSS
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f1f5f9;
+    font-family:Arial, sans-serif;
+    color:#1e293b;
+}
+
+/* TITLE */
+.dashboard-title,
+h2{
+    font-size:28px;
+    margin-bottom:20px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* DASHBOARD GRID */
+.dashboard{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+/* CARD */
+.card{
+    background:#ffffff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+    transition:0.3s ease;
+}
+
+.card:hover{
+    transform:translateY(-3px);
+}
+
+/* TIMER CIRCLE */
+.circle{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    border:10px solid #2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:20px auto;
+    font-size:22px;
+    font-weight:bold;
+    color:#2563eb;
+    background:#eff6ff;
+}
+
+/* STATUS */
+.status{
+    text-align:center;
+    font-size:18px;
+    font-weight:600;
+    margin-top:10px;
+}
+
+/* BUTTONS */
+.btn{
+    border:none;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s ease;
+    margin:5px 5px 0 0;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-green{
+    background:#16a34a;
+}
+
+.btn-red{
+    background:#dc2626;
+}
+
+.btn-blue{
+    background:#2563eb;
+}
+
+.btn-yellow{
+    background:#facc15;
+    color:#000;
+}
+
+/* TABLE */
+.table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+    overflow:hidden;
+    border-radius:14px;
+}
+
+.table th{
+    background:#2563eb;
+    color:white;
+    padding:14px;
+    text-align:center;
+    font-size:14px;
+}
+
+.table td{
+    padding:14px;
+    border-bottom:1px solid #e2e8f0;
+    text-align:center;
+    font-size:14px;
+}
+
+.table tr:hover{
+    background:#eff6ff;
+}
+
+/* MAP */
+#map{
+    height:300px;
+    border-radius:14px;
+    margin-top:15px;
+    overflow:hidden;
+}
+
+/* CHART */
+#chart{
+    width:100% !important;
+    height:300px !important;
+}
+
+/* BREAK TIMER */
+.break-box{
+    margin-top:15px;
+    font-size:16px;
+    font-weight:600;
+}
+
+/* FILTER BUTTONS */
+.filter-buttons{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+/* MOBILE */
+@media(max-width:992px){
+
+    .dashboard{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* TABLET */
+@media(max-width:768px){
+
+    h2{
+        font-size:24px;
+    }
+
+    .circle{
+        width:140px;
+        height:140px;
+        font-size:20px;
+    }
+
+    .btn{
+        width:100%;
+        margin-top:10px;
+    }
+
+    .table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+    #map{
+        height:260px;
+    }
+
+}
+
+/* MOBILE */
+@media(max-width:480px){
+
+    body{
+        padding:10px;
+    }
+
+    h2{
+        font-size:20px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .circle{
+        width:120px;
+        height:120px;
+        font-size:18px;
+        border-width:8px;
+    }
+
+    .status{
+        font-size:15px;
+    }
+
+    .table th,
+    .table td{
+        padding:10px;
+        font-size:12px;
+    }
+
+    #map{
+        height:220px;
+    }
+
+}

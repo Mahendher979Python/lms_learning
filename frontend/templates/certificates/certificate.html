@@ -1,0 +1,109 @@
+{% extends 'dashboard/student_base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'certificate/css/certificate.css' %}">
+<div class="certificate-wrapper">
+
+    <!-- HEADER -->
+    <div class="certificate-header">
+
+        <h1>
+            🏆 Certificate of Completion
+        </h1>
+
+        <p>
+            Proudly Presented To
+        </p>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="certificate-body">
+
+        <!-- STUDENT PHOTO -->
+        {% if certificate.student_photo %}
+            <img
+                src="{{ certificate.student_photo.url }}"
+                class="student-photo">
+        {% endif %}
+
+        <!-- STUDENT NAME -->
+        <div class="student-name">
+            {{ certificate.student.username }}
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="description">
+            {{ certificate.description }}
+        </div>
+
+        <!-- COURSE -->
+        <div class="course-title">
+            {{ certificate.course.title }}
+        </div>
+
+        <div class="description">
+            Successfully completed on
+            {{ certificate.completed_at|date:'d M Y' }}
+        </div>
+
+        <!-- BOTTOM -->
+        <div class="bottom-section">
+
+            <!-- DATE -->
+            <div class="bottom-card">
+
+                <h3>Date</h3>
+
+                <p>
+                    {{ certificate.issued_date }}
+                </p>
+
+            </div>
+
+            <!-- SIGNATURE -->
+            <div class="bottom-card signature-box">
+
+                {% if certificate.director_signature %}
+                    <img
+                    src="{{ certificate.director_signature.url }}">
+                {% endif %}
+
+                <h3>
+                    {{ certificate.director_name }}
+                </h3>
+
+                <p>Director</p>
+
+            </div>
+
+        </div>
+
+        <!-- CERTIFICATE ID -->
+        <div class="certificate-id">
+
+            Certificate ID :
+            {{ certificate.certificate_id }}
+
+        </div>
+
+        <!-- DOWNLOAD -->
+        <a href="{% url 'download_certificate' certificate.id %}"
+           class="download-btn"
+           id="downloadBtn"
+           target="_blank"
+           rel="noopener">
+
+            ⬇ Download Certificate
+
+        </a>
+
+    </div>
+
+</div>
+<script src="{% static 'certificate/js/certificate.js' %}"></script>
+
+
+{% endblock %}

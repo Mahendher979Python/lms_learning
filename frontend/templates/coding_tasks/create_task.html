@@ -1,0 +1,575 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+        <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-dark text-white">
+            <h3>Create Coding Task</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Task Title</label>
+        <input type="text" name="title" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        <textarea name="description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Difficulty</label>
+        <select name="difficulty" class="form-control">
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Marks</label>
+        <input type="number" name="marks" class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label>Starter Code</label>
+        <textarea name="starter_code" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Expected Output</label>
+        <textarea name="expected_output" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Course</label>
+
+        <select name="course" class="form-control">
+            {% for course in courses %}
+                <option value="{{ course.id }}">
+                    {{ course.title }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">
+        Create Task
+    </button>
+
+</form>  
+
+            
+
+        </div>
+    </div>
+</div>
+{% comment %} <style>
+/* Page background depth */
+.container {
+    perspective: 1400px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Card layout fix */
+.card {
+    width: 100%;
+    max-width: 900px;
+    background: linear-gradient(145deg, #1c1c2b, #24243a);
+    color: #ffffff;
+    border-radius: 22px !important;
+    transform-style: preserve-3d;
+    transition: all 0.35s ease;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+    overflow: hidden;
+}
+
+/* Hover effect */
+.card:hover {
+    transform: translateY(-6px) rotateX(3deg) rotateY(-3deg);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+}
+
+/* Header improvement */
+.card-header {
+    padding: 18px 25px;
+    background: linear-gradient(135deg, #0f172a, #1f2937) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Body spacing FIX (this solves your main issue) */
+.card-body {
+    padding: 35px 40px;
+}
+
+/* Better field spacing */
+.mb-3 {
+    margin-bottom: 18px !important;
+}
+
+/* Labels */
+label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #cbd5e1;
+    display: block;
+}
+
+/* Inputs */
+.form-control {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 12px;
+    transition: 0.3s ease;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,0.35);
+}
+
+/* Focus glow */
+.form-control:focus {
+    background: rgba(255,255,255,0.08);
+    border-color: #38bdf8;
+    box-shadow: 0 0 14px rgba(56,189,248,0.5);
+    color: #fff;
+    outline: none;
+}
+
+/* Textarea better height */
+textarea.form-control {
+    min-height: 90px;
+}
+
+/* Code-like fields bigger */
+textarea[name="starter_code"],
+textarea[name="expected_output"] {
+    min-height: 140px;
+    font-family: monospace;
+}
+
+/* Select fix */
+select.form-control {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+/* Button upgrade */
+.btn-success {
+    border-radius: 12px;
+    padding: 12px 22px;
+    background: linear-gradient(145deg, #16a34a, #15803d);
+    border: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+    transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.55);
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+    .card {
+        transform: none !important;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+}
+</style>  {% endcomment %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* =========================
+   GLOBAL
+========================= */
+
+body{
+    background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.08), transparent 22%),
+        radial-gradient(circle at bottom right, rgba(99,102,241,0.10), transparent 24%),
+        linear-gradient(180deg,#f8fbff 0%,#eef2ff 100%);
+    font-family:'Inter',sans-serif;
+    color:#0f172a;
+    min-height:100vh;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+.container{
+    max-width:1050px;
+    margin-top:40px;
+    perspective:1800px;
+}
+
+/* =========================
+   ULTRA 3D CARD
+========================= */
+
+.card{
+    position:relative;
+    overflow:hidden;
+
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,0.96),
+        rgba(248,250,252,0.95));
+
+    border-radius:28px !important;
+    border:1px solid rgba(255,255,255,0.7);
+
+    transform-style:preserve-3d;
+
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.9) inset,
+        0 20px 50px rgba(15,23,42,0.08),
+        0 45px 80px rgba(59,130,246,0.08);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    transition:all .45s cubic-bezier(.22,1,.36,1);
+}
+
+/* floating holographic effect */
+.card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            120deg,
+            rgba(255,255,255,0.55) 0%,
+            rgba(255,255,255,0.02) 35%,
+            rgba(99,102,241,0.05) 100%
+        );
+    pointer-events:none;
+}
+
+/* glowing border */
+.card::after{
+    content:"";
+    position:absolute;
+    top:-2px;
+    left:-2px;
+    right:-2px;
+    height:7px;
+    border-radius:30px 30px 0 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #3b82f6,
+            #6366f1,
+            #8b5cf6
+        );
+
+    box-shadow:
+        0 0 18px rgba(99,102,241,0.45);
+}
+
+.card:hover{
+    transform:
+        translateY(-10px)
+        rotateX(2deg)
+        rotateY(-2deg);
+
+    box-shadow:
+        0 1px 0 rgba(255,255,255,0.95) inset,
+        0 35px 70px rgba(15,23,42,0.14),
+        0 70px 120px rgba(99,102,241,0.14);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.card-header{
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15,23,42,0.98),
+            rgba(30,41,59,0.96)
+        ) !important;
+
+    border:none !important;
+    padding:24px 30px;
+
+    position:relative;
+    overflow:hidden;
+}
+
+/* animated glow orb */
+.card-header::before{
+    content:"";
+    position:absolute;
+    width:220px;
+    height:220px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    top:-140px;
+    right:-60px;
+}
+
+/* second orb */
+.card-header::after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    background:rgba(59,130,246,0.18);
+    border-radius:50%;
+    bottom:-70px;
+    left:-30px;
+}
+
+.card-header h3{
+    position:relative;
+    z-index:2;
+
+    margin:0;
+    font-size:1.45rem;
+    font-weight:800;
+    letter-spacing:-0.5px;
+    color:#ffffff;
+
+    text-shadow:
+        0 2px 10px rgba(0,0,0,0.25);
+}
+
+/* =========================
+   BODY
+========================= */
+
+.card-body{
+    padding:38px;
+    position:relative;
+    z-index:2;
+}
+
+/* =========================
+   FORM GROUPS
+========================= */
+
+.mb-3{
+    margin-bottom:24px !important;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+
+    font-size:0.92rem;
+    font-weight:700;
+    color:#334155;
+
+    letter-spacing:0.2px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.form-control{
+    width:100%;
+
+    border-radius:18px;
+    border:1px solid rgba(203,213,225,0.7);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.95),
+            rgba(248,250,252,0.95)
+        );
+
+    padding:14px 16px;
+
+    color:#0f172a;
+    font-size:0.95rem;
+
+    transition:all .28s ease;
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.9),
+        inset 0 -2px 6px rgba(148,163,184,0.08),
+        0 3px 8px rgba(15,23,42,0.03);
+}
+
+/* focus state */
+.form-control:focus{
+    background:#ffffff;
+
+    border-color:#6366f1;
+
+    transform:
+        translateY(-2px)
+        scale(1.01);
+
+    box-shadow:
+        0 0 0 5px rgba(99,102,241,0.12),
+        0 15px 30px rgba(99,102,241,0.12);
+
+    outline:none;
+}
+
+/* =========================
+   TEXTAREA SPECIAL
+========================= */
+
+textarea.form-control{
+    min-height:110px;
+    resize:vertical;
+}
+
+textarea[name="starter_code"],
+textarea[name="expected_output"]{
+    min-height:170px;
+
+    font-family:
+        'JetBrains Mono',
+        'Fira Code',
+        monospace;
+
+    font-size:13px;
+    line-height:1.6;
+
+    background:
+        linear-gradient(
+            145deg,
+            #f8fafc,
+            #eef2ff
+        );
+}
+
+/* =========================
+   SELECT
+========================= */
+
+select.form-control{
+    cursor:pointer;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn-success{
+    position:relative;
+    overflow:hidden;
+
+    border:none;
+    border-radius:18px;
+
+    padding:15px 28px;
+
+    font-size:0.96rem;
+    font-weight:800;
+    letter-spacing:0.3px;
+
+    color:#ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #06b6d4,
+            #3b82f6,
+            #6366f1
+        );
+
+    box-shadow:
+        0 12px 0 rgba(59,130,246,0.18),
+        0 25px 40px rgba(59,130,246,0.22);
+
+    transition:all .22s ease;
+}
+
+/* glossy shine */
+.btn-success::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:60%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.55),
+            transparent
+        );
+
+    transform:skewX(-20deg);
+    transition:0.7s;
+}
+
+.btn-success:hover::before{
+    left:130%;
+}
+
+.btn-success:hover{
+    transform:
+        translateY(-4px)
+        scale(1.02);
+
+    box-shadow:
+        0 18px 0 rgba(59,130,246,0.14),
+        0 38px 60px rgba(59,130,246,0.28);
+}
+
+.btn-success:active{
+    transform:translateY(6px);
+
+    box-shadow:
+        0 6px 0 rgba(59,130,246,0.18),
+        0 12px 20px rgba(59,130,246,0.18);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .container{
+        margin-top:20px;
+        padding:0 10px;
+    }
+
+    .card-body{
+        padding:22px;
+    }
+
+    .card:hover{
+        transform:none;
+    }
+
+    .card-header{
+        padding:20px;
+    }
+
+    .card-header h3{
+        font-size:1.1rem;
+    }
+
+    .btn-success{
+        width:100%;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<link rel="stylesheet" href="{% static 'certificate/css/my_certificates.css' %}">
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+
+    <div class="page-title">
+        🎓 My Certificates
+    </div>
+
+    <div class="page-subtitle">
+        View and download your approved course certificates.
+    </div>
+
+</div>
+
+<!-- CERTIFICATE GRID -->
+<div class="certificates-grid">
+
+{% for certificate in certificates %}
+
+    <div class="certificate-card">
+
+        <!-- ICON -->
+        <div class="cert-icon">
+            📜
+        </div>
+
+        <!-- COURSE TITLE -->
+        <div class="course-title">
+            {{ certificate.course.title }}
+        </div>
+
+        <!-- INFO -->
+        <div class="cert-info">
+
+            <strong>Certificate ID:</strong><br>
+
+            {{ certificate.certificate_id }}
+
+        </div>
+
+        <div class="cert-info">
+
+            <strong>Issued Date:</strong>
+
+            {{ certificate.issued_date }}
+
+        </div>
+
+        <div class="cert-info">
+
+            <strong>Approved By:</strong>
+
+            {{ certificate.approved_by.username }}
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="status">
+
+            ✔ Approved
+
+        </div>
+
+        <!-- BUTTONS -->
+        <div class="certificate-actions">
+
+            <!-- VIEW -->
+            <a href="{% url 'view_certificate' certificate.id %}"
+               class="view-btn">
+
+                👁 View Certificate
+
+            </a>
+
+            <!-- DOWNLOAD -->
+            <a href="{% url 'download_certificate' certificate.id %}"
+               class="download-btn"
+               target="_blank"
+               rel="noopener">
+
+                ⬇ Download Certificate
+
+            </a>
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <!-- EMPTY -->
+    <div class="empty-box">
+
+        <div style="font-size:70px;">
+            📂
+        </div>
+
+        <h3>
+            No Certificates Found
+        </h3>
+
+        <p>
+            Your approved certificates will appear here.
+        </p>
+
+    </div>
+
+{% endfor %}
+
+</div>
+<script src="{% static 'certificate/js/my_certificates.js' %}"></script>
+{% endblock %}

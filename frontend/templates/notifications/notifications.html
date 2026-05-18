@@ -1,0 +1,312 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f3f6fb;
+    font-family:Arial, sans-serif;
+}
+
+.notify-wrapper{
+    max-width:950px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.notify-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.notify-title{
+    font-size:30px;
+    font-weight:700;
+    color:#111827;
+}
+
+.mark-all-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.mark-all-btn:hover{
+    background:#1d4ed8;
+}
+
+.notification-card{
+    background:white;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:18px;
+    display:flex;
+    gap:18px;
+    align-items:flex-start;
+    box-shadow:0 4px 18px rgba(0,0,0,0.08);
+    transition:0.3s;
+    position:relative;
+}
+
+.notification-card:hover{
+    transform:translateY(-3px);
+}
+
+.notification-card.unread{
+    border-left:6px solid #2563eb;
+}
+
+.notify-icon{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    background:#eff6ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+}
+
+.notify-content{
+    flex:1;
+}
+
+.notify-type{
+    font-size:13px;
+    font-weight:700;
+    color:#2563eb;
+    text-transform:uppercase;
+    margin-bottom:6px;
+}
+
+.notify-message{
+    font-size:16px;
+    color:#111827;
+    margin-bottom:10px;
+    line-height:1.5;
+}
+
+.course-box{
+    display:inline-block;
+    background:#f3f4f6;
+    padding:8px 14px;
+    border-radius:10px;
+    margin-bottom:12px;
+    font-size:14px;
+}
+
+.notify-time{
+    color:gray;
+    font-size:13px;
+}
+
+.read-badge{
+    position:absolute;
+    top:18px;
+    right:18px;
+    background:#dcfce7;
+    color:#166534;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+}
+
+.empty-box{
+    background:white;
+    padding:60px;
+    text-align:center;
+    border-radius:18px;
+    color:gray;
+    font-size:18px;
+}
+
+@media(max-width:768px){
+
+    .notify-top{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .notification-card{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+<div class="notify-wrapper">
+
+    <div class="notify-top">
+
+        <div class="notify-title">
+            🔔 Notifications
+        </div>
+
+        <button class="mark-all-btn"
+                onclick="markAllRead()">
+
+            Mark All Read
+
+        </button>
+
+    </div>
+
+    {% for n in notifications %}
+
+    <div class="notification-card {% if not n.is_read %}unread{% endif %}">
+
+        <div class="notify-icon">
+
+            {% if n.type == 'payment' %}
+                💳
+            {% elif n.type == 'assignment_submitted' %}
+                📄
+            {% elif n.type == 'assignment_review' %}
+                ⭐
+            {% elif n.type == 'message' %}
+                💬
+            {% elif n.type == 'progress' %}
+                📈
+            {% elif n.type == 'enrollment' %}
+                🎓
+            {% else %}
+                🔔
+            {% endif %}
+
+        </div>
+
+        <div class="notify-content">
+
+            <div class="notify-type">
+                {{ n.type }}
+            </div>
+
+            <div class="notify-message">
+                {{ n.message }}
+            </div>
+
+            {% if n.course_name %}
+            <div class="course-box">
+                📚 {{ n.course_name }}
+            </div>
+            {% endif %}
+
+            <div class="notify-time">
+                {{ n.created_at|date:"d M Y h:i A" }}
+            </div>
+
+        </div>
+
+        {% if n.is_read %}
+        <div class="read-badge">
+            Read
+        </div>
+        {% endif %}
+
+    </div>
+
+    {% empty %}
+
+    <div class="empty-box">
+
+        🔕 No notifications found
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+<script>
+
+function getCSRFToken() {
+
+    let cookieValue = null;
+
+    const cookies = document.cookie.split(';');
+
+    for(let cookie of cookies){
+
+        cookie = cookie.trim();
+
+        if(cookie.startsWith('csrftoken=')){
+
+            cookieValue =
+                cookie.substring('csrftoken='.length);
+
+        }
+    }
+
+    return cookieValue;
+}
+
+function markAllRead(){
+
+    fetch("/notifications/read-all/", {
+
+        method:"POST",
+
+        headers:{
+            "X-CSRFToken": getCSRFToken()
+        }
+
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        location.reload();
+
+    });
+
+}
+
+
+function loadNotifications(){
+
+    fetch("/notifications/")
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        const badge =
+            document.getElementById("notif-count");
+
+        if(data.unread_count > 0){
+
+            badge.innerText =
+                data.unread_count;
+
+            badge.style.display = "flex";
+
+        }else{
+
+            badge.style.display = "none";
+        }
+
+    });
+
+}
+
+loadNotifications();
+
+setInterval(loadNotifications, 5000);
+
+
+</script>
+
+{% endblock %}

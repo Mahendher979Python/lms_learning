@@ -1,0 +1,63 @@
+{% extends 'dashboard/trainer_base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/edit_topic.css' %}">
+
+<div class="form-container">
+
+    <h2>✏️ Edit Topic</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- TOPIC NAME -->
+        <label>Topic Name</label>
+        <input type="text" name="name" value="{{ topic.name }}" required>
+
+        <!-- THUMBNAIL -->
+        <label>Thumbnail</label>
+        <input type="file" name="thumbnail">
+
+        {% if topic.thumbnail %}
+        <div class="preview-box">
+            <b>Current Thumbnail:</b><br>
+            <img src="{{ topic.thumbnail.url }}" width="150">
+        </div>
+        {% endif %}
+
+        <!-- VIDEO -->
+        <label>Video</label>
+        <input type="file" name="video">
+
+        {% if topic.video %}
+        <div class="preview-box">
+            <b>Current Video:</b>
+            <p>🎥 Video already uploaded</p>
+        </div>
+        {% endif %}
+
+        <!-- PDF -->
+        <label>PDF Material</label>
+        <input type="file" name="pdf">
+
+        {% if topic.pdf %}
+        <div class="preview-box">
+            <b>Current PDF:</b>
+            <p>📄 PDF already uploaded</p>
+        </div>
+        {% endif %}
+
+        <!-- SUBMIT -->
+        <button type="submit">
+            💾 Update Topic
+        </button>
+
+    </form>
+
+</div>
+<script src="{% static 'courses/js/edit_topic.js' %}"></script>
+{% endblock %}

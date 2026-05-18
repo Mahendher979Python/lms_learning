@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Team Chat</title>
+</head>
+
+<body>
+
+<h2>{{ team.name }}</h2>
+
+<!-- MEMBERS -->
+<h3>Members</h3>
+
+<p><b>Trainer:</b> {{ team.trainer.username }}</p>
+
+<h4>Students:</h4>
+
+{% for s in team.students.all %}
+    <p>{{ s.username }}</p>
+{% empty %}
+    <p>No students</p>
+{% endfor %}
+
+<hr>
+
+<!-- CHAT -->
+<div style="height:300px; overflow-y:scroll; border:1px solid black; padding:10px;">
+
+    {% for msg in messages %}
+        <p>
+            <b>{{ msg.sender.username }}:</b> {{ msg.content }}
+        </p>
+    {% empty %}
+        <p>No messages</p>
+    {% endfor %}
+
+</div>
+
+<!-- SEND -->
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="message" placeholder="Type message">
+    <button type="submit">Send</button>
+</form>
+
+</body>
+</html>

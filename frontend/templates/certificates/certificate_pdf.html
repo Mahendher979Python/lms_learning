@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    {% load static %}
+
+<link rel="stylesheet"
+href="{% static 'certificate/css/certificate_pdf.css' %}">
+
+</head>
+
+<body>
+
+    <h1>
+        {{ certificate.certificate_title }}
+    </h1>
+
+    <p>
+        This certificate is proudly presented to
+    </p>
+
+    <h2>
+        {{ certificate.student.username }}
+    </h2>
+
+    {% if certificate.student_photo %}
+        <img
+            src="{{ certificate.student_photo.path }}"
+            class="photo">
+    {% endif %}
+
+    <p>
+        For successfully completing the course
+    </p>
+
+    <h2>
+        {{ certificate.course.title }}
+    </h2>
+
+    <p>
+        {{ certificate.description }}
+    </p>
+
+    <p>
+        Issued on:
+        {{ certificate.issued_date }}
+    </p>
+
+    <div class="signature">
+
+        {% if certificate.director_signature %}
+            <img
+                src="{{ certificate.director_signature.path }}"
+                width="180">
+        {% endif %}
+
+        <h3>
+            {{ certificate.director_name }}
+        </h3>
+
+    </div>
+<script src="{% static 'certificate/js/certificate_pdf.js' %}"></script>
+</body>
+
+</html>

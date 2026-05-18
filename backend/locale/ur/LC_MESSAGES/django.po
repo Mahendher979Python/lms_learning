@@ -1,0 +1,196 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-11 11:31+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Urdu <LL@li.org>\n"
+"Language: ur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\settings\settings.html:133
+msgid "Account Settings"
+msgstr "اکاؤنٹ کی ترتیبات"
+
+#: .\templates\settings\settings.html:137
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr "اپنی زبان، سیکیورٹی، اطلاعات اور سیکھنے کی ترجیحات کو منظم کریں۔"
+
+#: .\templates\settings\settings.html:147
+msgid "Language & Appearance"
+msgstr "زبان اور ظاہری شکل"
+
+#: .\templates\settings\settings.html:153
+#: .\templates\settings\student_settings.html:259
+msgid "Language"
+msgstr "زبان"
+
+#: .\templates\settings\settings.html:154
+msgid "Select your preferred application language."
+msgstr "اپنی پسندیدہ ایپلیکیشن زبان منتخب کریں۔"
+
+#: .\templates\settings\settings.html:178
+msgid "Dark Mode"
+msgstr "ڈارک موڈ"
+
+#: .\templates\settings\settings.html:179
+msgid "Enable dark theme for better night viewing."
+msgstr "رات میں بہتر دیکھنے کے لیے ڈارک تھیم فعال کریں۔"
+
+#: .\templates\settings\settings.html:192
+msgid "Notifications"
+msgstr "اطلاعات"
+
+#: .\templates\settings\settings.html:198
+msgid "Email Notifications"
+msgstr "ای میل اطلاعات"
+
+#: .\templates\settings\settings.html:199
+msgid "Receive updates through email."
+msgstr "ای میل کے ذریعے اپ ڈیٹس حاصل کریں۔"
+
+#: .\templates\settings\settings.html:209
+msgid "Push Notifications"
+msgstr "پش اطلاعات"
+
+#: .\templates\settings\settings.html:210
+msgid "Get instant browser/app alerts."
+msgstr "فوری براؤزر/ایپ الرٹس حاصل کریں۔"
+
+#: .\templates\settings\settings.html:220
+msgid "Live Class Reminders"
+msgstr "لائیو کلاس یاد دہانیاں"
+
+#: .\templates\settings\settings.html:221
+msgid "Receive reminders before live classes."
+msgstr "لائیو کلاس سے پہلے یاد دہانیاں حاصل کریں۔"
+
+#: .\templates\settings\settings.html:234
+msgid "Security"
+msgstr "سیکیورٹی"
+
+#: .\templates\settings\settings.html:240
+msgid "Fingerprint Login"
+msgstr "فنگر پرنٹ لاگ اِن"
+
+#: .\templates\settings\settings.html:241
+msgid "Use biometric authentication to login."
+msgstr "لاگ اِن کے لیے بایومیٹرک تصدیق استعمال کریں۔"
+
+#: .\templates\settings\settings.html:251
+msgid "Two Factor Authentication"
+msgstr "ٹو فیکٹر تصدیق"
+
+#: .\templates\settings\settings.html:252
+msgid "Add extra security to your account."
+msgstr "اپنے اکاؤنٹ میں اضافی سیکیورٹی شامل کریں۔"
+
+#: .\templates\settings\settings.html:265
+msgid "Learning Preferences"
+msgstr "سیکھنے کی ترجیحات"
+
+#: .\templates\settings\settings.html:271
+msgid "Autoplay Videos"
+msgstr "آٹو پلے ویڈیوز"
+
+#: .\templates\settings\settings.html:272
+msgid "Automatically play next lesson videos."
+msgstr "اگلے سبق کی ویڈیوز خود بخود چلائیں۔"
+
+#: .\templates\settings\settings.html:282
+msgid "Offline Downloads"
+msgstr "آف لائن ڈاؤن لوڈز"
+
+#: .\templates\settings\settings.html:283
+msgid "Allow downloading lessons for offline use."
+msgstr "آف لائن استعمال کے لیے اسباق ڈاؤن لوڈ کرنے کی اجازت دیں۔"
+
+#: .\templates\settings\settings.html:296
+msgid "Community"
+msgstr "کمیونٹی"
+
+#: .\templates\settings\settings.html:302
+msgid "Allow Chat"
+msgstr "چیٹ کی اجازت"
+
+#: .\templates\settings\settings.html:303
+msgid "Enable messaging with students and trainers."
+msgstr "طلبہ اور ٹرینرز کے ساتھ پیغام رسانی فعال کریں۔"
+
+#: .\templates\settings\settings.html:313
+msgid "Allow Discussions"
+msgstr "مباحثوں کی اجازت"
+
+#: .\templates\settings\settings.html:314
+msgid "Participate in community discussions."
+msgstr "کمیونٹی مباحثوں میں حصہ لیں۔"
+
+#: .\templates\settings\settings.html:324
+msgid "Save Settings"
+msgstr "ترتیبات محفوظ کریں"
+
+#: .\templates\settings\student_settings.html:152
+msgid "Student Profile Settings"
+msgstr "طالب علم پروفائل ترتیبات"
+
+#: .\templates\settings\student_settings.html:156
+msgid "Update your account information, preferences, and language settings."
+msgstr "اپنی اکاؤنٹ معلومات، ترجیحات اور زبان کی ترتیبات کو اپ ڈیٹ کریں۔"
+
+#: .\templates\settings\student_settings.html:185
+msgid "Username"
+msgstr "صارف نام"
+
+#: .\templates\settings\student_settings.html:196
+msgid "Email Address"
+msgstr "ای میل ایڈریس"
+
+#: .\templates\settings\student_settings.html:207
+msgid "Phone Number"
+msgstr "فون نمبر"
+
+#: .\templates\settings\student_settings.html:218
+msgid "Date of Birth"
+msgstr "تاریخ پیدائش"
+
+#: .\templates\settings\student_settings.html:229
+msgid "Gender"
+msgstr "جنس"
+
+#: .\templates\settings\student_settings.html:234
+msgid "Select Gender"
+msgstr "جنس منتخب کریں"
+
+#: .\templates\settings\student_settings.html:239
+msgid "Male"
+msgstr "مرد"
+
+#: .\templates\settings\student_settings.html:244
+msgid "Female"
+msgstr "عورت"
+
+#: .\templates\settings\student_settings.html:249
+msgid "Other"
+msgstr "دیگر"
+
+#: .\templates\settings\student_settings.html:281
+msgid "Profile Photo"
+msgstr "پروفائل تصویر"
+
+#: .\templates\settings\student_settings.html:291
+msgid "Address"
+msgstr "پتہ"
+
+#: .\templates\settings\student_settings.html:304
+msgid "Save Changes"
+msgstr "تبدیلیاں محفوظ کریں"

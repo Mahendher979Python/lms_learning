@@ -1,0 +1,372 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'dashboard/css/trainer_dashboard.css' %}">
+<h2>👨‍🏫 Trainer Dashboard</h2>
+<p>Welcome {{ request.user.username }}</p>
+
+<!-- <style>
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+    margin-top:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    margin:0;
+    font-size:18px;
+}
+
+.card p{
+    font-size:28px;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.section{
+    margin-top:35px;
+}
+
+.course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.course-card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.progress{
+    width:100%;
+    height:10px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress-fill{
+    height:100%;
+    background:#16a34a;
+    width:0%;
+    transition:0.5s;
+}
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.chart-box{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+.btn{
+    display:inline-block;
+    padding:10px 14px;
+    background:#2563eb;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    margin-top:10px;
+    margin-right:10px;
+}
+
+.table-box{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+table th,
+table td{
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:left;
+}
+
+.badge{
+    padding:5px 10px;
+    border-radius:20px;
+    font-size:12px;
+    color:white;
+}
+
+.approved{
+    background:green;
+}
+
+.pending{
+    background:orange;
+}
+
+</style> -->
+
+<!-- TOP CARDS -->
+<div class="dashboard-grid">
+
+    <div class="card">
+        <h3>📚 Courses</h3>
+        <p>{{ courses|length }}</p>
+    </div>
+
+    <div class="card">
+        <h3>📘 Topics</h3>
+        <p>{{ topics|length }}</p>
+    </div>
+
+    <div class="card">
+        <h3>📝 Assignments</h3>
+        <p>{{ assignments|length }}</p>
+    </div>
+
+    <div class="card">
+        <h3>👨‍🎓 Students</h3>
+        <p>{{ students_count|default:0 }}</p>
+    </div>
+
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="section">
+
+    <h3>⚡ Quick Actions</h3>
+
+    <a href="{% url 'trainer_create_topic' %}" class="btn">
+        ➕ Create Topic
+    </a>
+
+    <a href="{% url 'assignments:trainer_assignments' %}" class="btn">
+        📝 Assignments
+    </a>
+
+    <a href="{% url 'trainer_attendance' %}" class="btn">
+        📅 Attendance
+    </a>
+
+    <a href="{% url 'trainer_progress' %}" class="btn">
+        📊 Student Progress
+    </a>
+
+</div>
+
+<!-- COURSES -->
+<div class="section">
+
+    <h3>📚 Your Courses</h3>
+
+    <div class="course-grid">
+
+        {% for c in courses %}
+
+        <div class="course-card">
+
+            <h3>{{ c.title }}</h3>
+
+            <p>
+                {{ c.description|truncatechars:80 }}
+            </p>
+
+            <p>
+                📘 Topics:
+                <b>{{ c.topic_set.count }}</b>
+            </p>
+
+            <div class="progress">
+
+                <div class="progress-fill"
+                     data-width="{{ c.progress|default:0 }}">
+                </div>
+
+            </div>
+
+            <small>
+                Progress {{ c.progress|default:0 }}%
+            </small>
+
+        </div>
+
+        {% empty %}
+
+        <p>No Courses Found</p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<!-- RECENT ASSIGNMENTS -->
+<div class="section">
+
+    <h3>📝 Recent Assignments</h3>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Total Marks</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for a in assignments|slice:":5" %}
+
+                <tr>
+                    <td>{{ a.title }}</td>
+                    <td>{{ a.course }}</td>
+
+                    <td>
+                        <span class="badge approved">
+                            {{ a.status }}
+                        </span>
+                    </td>
+
+                    <td>{{ a.total_marks }}</td>
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="4">
+                        No Assignments
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- CHARTS -->
+<div class="chart-grid">
+
+    <div class="chart-box">
+        <h3>📊 Trainer Analytics</h3>
+        <canvas id="trainerChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>📈 Student Progress</h3>
+        <canvas id="studentChart"></canvas>
+    </div>
+
+</div>
+
+<!-- SAFE JSON -->
+{{ courses|length|json_script:"courses-data" }}
+{{ topics|length|json_script:"topics-data" }}
+{{ assignments|length|json_script:"assignments-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'dashboard/js/trainer_dashboard.js' %}"></script>
+ <script>
+
+// PROGRESS BAR
+document.querySelectorAll(".progress-fill").forEach(el => {
+
+    let width = el.getAttribute("data-width") || 0;
+
+    el.style.width = width + "%";
+
+});
+
+// SAFE DATA
+const courses =
+JSON.parse(document.getElementById('courses-data').textContent);
+
+const topics =
+JSON.parse(document.getElementById('topics-data').textContent);
+
+const assignments =
+JSON.parse(document.getElementById('assignments-data').textContent);
+
+// BAR CHART
+new Chart(document.getElementById('trainerChart'), {
+
+    type:'bar',
+
+    data:{
+        labels:['Courses','Topics','Assignments'],
+
+        datasets:[{
+            label:'Trainer Stats',
+            data:[courses, topics, assignments],
+            backgroundColor:[
+                '#2563eb',
+                '#16a34a',
+                '#f59e0b'
+            ]
+        }]
+    }
+
+});
+
+// DOUGHNUT CHART
+new Chart(document.getElementById('studentChart'), {
+
+    type:'doughnut',
+
+    data:{
+        labels:[
+            'Completed',
+            'Pending',
+            'Not Started'
+        ],
+
+        datasets:[{
+            data:[65,25,10],
+
+            backgroundColor:[
+                '#16a34a',
+                '#f59e0b',
+                '#ef4444'
+            ]
+        }]
+    }
+
+});
+
+</script>
+
+{% endblock %}

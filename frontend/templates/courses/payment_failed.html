@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Failed</title>
+    {% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/payment_failed.css' %}">
+</head>
+<body>
+
+<div class="box">
+    <h1>❌ Payment Failed</h1>
+    <p>{{ error }}</p>
+
+    <a href="/courses/student-courses/">Try Again</a>
+</div>
+<script src="{% static 'courses/js/payment_failed.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'attendance/css/assigned_students.css' %}">
+<h2>Assigned Students</h2>
+
+<table class="table">
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Action</th>
+</tr>
+
+{% for s in students %}
+<tr>
+<td>{{ s.username }}</td>
+<td>{{ s.email }}</td>
+<td>
+    <a href="{% url 'student_attendance_view' s.id %}">
+        <button class="btn btn-blue">View Attendance</button>
+    </a>
+</td>
+</tr>
+{% empty %}
+<tr>
+<td colspan="3">No students assigned</td>
+</tr>
+<script src="{% static 'attendance/js/assigned_students.js' %}"></script>
+{% endfor %}
+</table>

@@ -1,0 +1,113 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="{% static 'accounts/css/manage_user.css' %}">
+<h2 class="page-title">
+    <span>👨‍💻 User Management</span>
+</h2>
+
+
+
+<div class="users-container">
+
+    <!-- TRAINER CARD -->
+
+    <div class="user-card">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+
+        <div class="user-icon">
+            👨‍🏫
+        </div>
+
+        <h3>Trainer</h3>
+
+        <p>
+            Manage trainers, create courses,
+            monitor student progress and conduct live classes.
+        </p>
+
+    
+        <div class="user-actions">
+
+            <a href="{% url 'add_trainer' %}">
+                <button class="action-btn primary-btn">
+                    ➕ Add Trainer
+                </button>
+            </a>
+
+            <a href="{% url 'trainer_view' %}">
+                <button class="action-btn secondary-btn">
+                    👀 View Trainers
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- STUDENT CARD -->
+
+    <div class="user-card">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+
+        <div class="user-icon">
+            🎓
+        </div>
+
+        <h3>Student</h3>
+
+        <p>
+            Add students, assign courses,
+            track attendance and monitor learning activity.
+        </p>
+
+      
+
+        <div class="user-actions">
+
+            <a href="{% url 'add_student' %}">
+                <button class="action-btn primary-btn">
+                    ➕ Add Student
+                </button>
+            </a>
+
+            <a href="{% url 'student_view' %}">
+                <button class="action-btn secondary-btn">
+                    👀 View Students
+                </button>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- GLOBAL ACTIONS -->
+
+<div class="global-actions">
+
+    <a href="{% url 'add_user' %}">
+        <button class="global-btn">
+            ➕ Add User
+        </button>
+    </a>
+
+    <a href="{% url 'view_users' %}">
+        <button class="global-btn">
+            📋 View All Users
+        </button>
+    </a>
+
+</div>
+
+<script src="{% static 'accounts/js/manage_users.js' %}"></script>
+
+{% endblock %}

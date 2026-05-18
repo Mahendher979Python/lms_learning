@@ -1,0 +1,140 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}Exam - {{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1>📝 {{ assignment.title }}</h1>
+
+    {% if type == "mcq" %}
+    <div class="timer">
+        ⏳ Time Left: <span id="time">10:00</span>
+    </div>
+    {% endif %}
+
+    <div class="card">
+
+        {% if type == "mcq" %}
+        <form method="POST" action="{% url 'assignments:submit_exam' submission.id %}" id="examForm">
+            {% csrf_token %}
+
+            {% for q in questions %}
+            <div class="question">
+                <p><b>{{ forloop.counter }}. {{ q.text }}</b></p>
+
+                <label>
+                    <input type="radio" name="q_{{ q.id }}" value="A" required>
+                    {{ q.option_a }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q_{{ q.id }}" value="B">
+                    {{ q.option_b }}
+                </label><br>
+
+                {% if q.option_c %}
+                <label>
+                    <input type="radio" name="q_{{ q.id }}" value="C">
+                    {{ q.option_c }}
+                </label><br>
+                {% endif %}
+
+                {% if q.option_d %}
+                <label>
+                    <input type="radio" name="q_{{ q.id }}" value="D">
+                    {{ q.option_d }}
+                </label>
+                {% endif %}
+            </div>
+            <hr>
+            {% endfor %}
+
+            <button type="submit" class="btn">Submit Exam</button>
+        </form>
+
+        {% elif type == "pdf" %}
+            <h3>📄 Assignment PDF</h3>
+
+            {% if assignment.pdf_file %}
+                <a href="{{ assignment.pdf_file.url }}" target="_blank" class="btn">
+                    Open PDF
+                </a>
+                <a href="{{ assignment.pdf_file.url }}" download class="btn btn-secondary">
+                    Download PDF
+                </a>
+            {% else %}
+                <p>No PDF uploaded</p>
+            {% endif %}
+
+        {% elif type == "gform" %}
+            <div class="alert-info">
+                <p>⚠ If form doesn't load, open in new tab</p>
+                <a href="{{ assignment.google_form_link }}" target="_blank" class="btn btn-secondary">
+                    Open Google Form
+                </a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<style>
+.container { max-width: 1000px; margin: 20px auto; }
+.timer {
+    background: #111827;
+    color: #10b981;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: fit-content;
+    font-family: monospace;
+    margin-bottom: 15px;
+}
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+.question { margin-bottom: 20px; }
+.btn {
+    padding: 10px 20px;
+    background: #0056D2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.btn-secondary {
+    background: #6b7280;
+    margin-left: 10px;
+}
+.alert-info {
+    background: #eef2ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+}
+</style>
+
+{% if type == "mcq" %}
+<script>
+let timeLeft = 600;
+let timer = setInterval(() => {
+    let m = Math.floor(timeLeft / 60);
+    let s = timeLeft % 60;
+    document.getElementById("time").innerText =
+        m + ":" + (s < 10 ? "0" : "") + s;
+
+    timeLeft--;
+
+    if (timeLeft < 0) {
+        clearInterval(timer);
+        alert("Time is up!");
+        document.getElementById("examForm").submit();
+    }
+}, 1000);
+</script>
+{% endif %}
+
+{% endblock %}

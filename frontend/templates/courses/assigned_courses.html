@@ -1,0 +1,57 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+{% block title %}
+Assigned Courses
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'courses/css/assigned_courses.css' %}">
+<h2>📚 Assigned Courses</h2>
+
+{% if courses %}
+
+<div class="course-grid">
+
+    {% for course in courses %}
+
+    <div class="course-card">
+
+        {% if course.thumbnail %}
+            <img src="{{ course.thumbnail.url }}"
+                 class="course-image">
+        {% endif %}
+
+        <div class="course-content">
+
+            <h3>{{ course.title }}</h3>
+
+            <p>
+                {{ course.description|truncatechars:100 }}
+            </p>
+
+            <p>
+                👨‍🏫 {{ course.trainer.username }}
+            </p>
+
+            <a href="{% url 'assigned_course_detail' course.id %}"class="view-btn">📖 View Course</a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty-box">
+
+    <h3>No Assigned Courses</h3>
+
+</div>
+<script src="{% static 'courses/js/assigned_courses.js' %}"></script>
+{% endif %}
+
+{% endblock %}

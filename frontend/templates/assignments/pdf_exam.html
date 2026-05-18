@@ -1,0 +1,543 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}PDF Exam | {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="pdf-wrapper">
+
+    <!-- Ambient blobs -->
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+
+    <div class="pdf-container">
+
+        <!-- ── HEADER ── -->
+        <div class="pdf-header">
+            <div class="pdf-header-icon">📄</div>
+            <div class="pdf-header-text">
+                <h1 class="pdf-title">{{ assignment.title }}</h1>
+                <span class="pdf-chip">PDF Assignment</span>
+            </div>
+        </div>
+
+        {% if submission and submission.status == "submitted" %}
+
+        <!-- ── ALREADY SUBMITTED STATE ── -->
+        <div class="submitted-card">
+            <div class="submitted-icon">✅</div>
+            <div class="submitted-body">
+                <h2 class="submitted-title">Assignment Submitted!</h2>
+                <p class="submitted-sub">Your answer sheet has been received. Your trainer will review and grade it shortly.</p>
+                {% if submission.submitted_at %}
+                <div class="submitted-meta">
+                    <span class="meta-icon">🕐</span>
+                    Submitted on {{ submission.submitted_at|date:"d M Y" }} at {{ submission.submitted_at|date:"H:i" }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if submission.pdf_answer %}
+        <div class="file-card">
+            <div class="file-card-left">
+                <span class="file-type-icon">📎</span>
+                <div>
+                    <div class="file-card-title">Your Submitted File</div>
+                    <div class="file-card-sub">Click to view your uploaded answer sheet</div>
+                </div>
+            </div>
+            <a href="{{ submission.pdf_answer.url }}" target="_blank" class="btn-view">View File →</a>
+        </div>
+        {% endif %}
+
+        <div class="footer-nav">
+            <a href="{% url 'assignments:student_assignments' %}" class="btn-back">← Back to Dashboard</a>
+        </div>
+
+        {% else %}
+
+        <!-- ── ACTIVE SUBMISSION STATE ── -->
+
+        <!-- Instructions -->
+        <div class="steps-card">
+            <h2 class="steps-heading">How to Submit</h2>
+
+            <div class="step-row">
+                <div class="step-bubble">1</div>
+                <div class="step-content">
+                    <div class="step-title">Download the Question Paper</div>
+                    <div class="step-desc">Read all questions carefully before starting your work.</div>
+                    <div class="download-zone">
+                        {% if assignment.pdf_file %}
+                            <a href="{{ assignment.pdf_file.url }}" class="btn-download" download>
+                                ⬇ Download Question Paper
+                            </a>
+                        {% else %}
+                            <div class="no-file-box">⚠️ No question paper uploaded. Contact your trainer.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-sep"></div>
+
+            <div class="step-row">
+                <div class="step-bubble">2</div>
+                <div class="step-content">
+                    <div class="step-title">Solve & Save as PDF</div>
+                    <div class="step-desc">Complete all questions in a single PDF file. Handwritten or typed both accepted.</div>
+                    <div class="tip-row">
+                        💡 <strong>Tip:</strong> Name your file clearly, e.g. <code>YourName_Answers.pdf</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-sep"></div>
+
+            <div class="step-row">
+                <div class="step-bubble">3</div>
+                <div class="step-content">
+                    <div class="step-title">Upload Your Answer Sheet</div>
+                    <div class="step-desc">Only PDF files are accepted. Max size: 10MB.</div>
+
+                    <form method="POST" enctype="multipart/form-data"
+                          action="{% url 'assignments:submit_pdf_exam' assignment.id %}"
+                          id="pdfForm">
+                        {% csrf_token %}
+
+                        <label class="upload-area" id="uploadArea">
+                            <input type="file" name="file_submission" id="pdfInput"
+                                   accept="application/pdf" required class="hidden-input">
+                            <div id="uploadDefault">
+                                <div class="upload-icon">📁</div>
+                                <div class="upload-label">Click to upload or drag & drop</div>
+                                <div class="upload-hint">PDF only · Max 10MB</div>
+                            </div>
+                            <div id="uploadPreview" style="display:none;" class="upload-preview-row">
+                                <span class="preview-check">✅</span>
+                                <span class="preview-fname" id="previewFname"></span>
+                                <span class="preview-change">Click to change</span>
+                            </div>
+                        </label>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit" id="submitBtn" disabled
+                                    onclick="return confirmSubmit()">
+                                🚀 Submit Assignment
+                            </button>
+                            <a href="{% url 'assignments:student_assignments' %}" class="btn-cancel">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --accent: #0ea5e9;
+    --accent-dark: #0284c7;
+    --accent-glow: rgba(14,165,233,0.2);
+    --green: #10b981;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --surface: #ffffff;
+    --bg: #f0f7ff;
+    --border: #e2e8f0;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.pdf-wrapper {
+    min-height: 100vh;
+    background: var(--bg);
+    padding: 40px 20px 60px;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+}
+.b1 { width: 420px; height: 420px; background: #0ea5e9; top: -100px; right: -100px; }
+.b2 { width: 300px; height: 300px; background: #6366f1; bottom: 60px; left: -60px; }
+
+.pdf-container {
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Header */
+.pdf-header {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: white;
+    box-shadow: 0 8px 28px var(--accent-glow);
+    animation: slideDown 0.45s ease;
+}
+
+.pdf-header-icon { font-size: 2.6rem; flex-shrink: 0; }
+
+.pdf-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.pdf-chip {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 50px;
+}
+
+/* Submitted card */
+.submitted-card {
+    background: var(--green-bg);
+    border: 1.5px solid var(--green-border);
+    border-radius: var(--radius);
+    padding: 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    animation: fadeUp 0.4s ease;
+}
+
+.submitted-icon { font-size: 2.2rem; flex-shrink: 0; }
+.submitted-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #065f46;
+    margin-bottom: 6px;
+}
+.submitted-sub { color: #047857; font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; }
+.submitted-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: #059669;
+    font-weight: 500;
+}
+
+/* File card */
+.file-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.file-card-left { display: flex; align-items: center; gap: 14px; }
+.file-type-icon { font-size: 2rem; }
+.file-card-title { font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.file-card-sub { font-size: 0.82rem; color: var(--text-muted); }
+
+.btn-view {
+    background: var(--accent);
+    color: white;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    transition: all 0.18s;
+    white-space: nowrap;
+}
+.btn-view:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+/* Steps card */
+.steps-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.45s ease 0.1s both;
+}
+
+.steps-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1.5px solid var(--border);
+}
+
+.step-row {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+}
+
+.step-bubble {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-content { flex: 1; }
+
+.step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.98rem;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+.step-desc { color: var(--text-muted); font-size: 0.88rem; line-height: 1.55; margin-bottom: 14px; }
+
+.step-sep {
+    height: 1px;
+    background: var(--border);
+    margin: 22px 0;
+}
+
+.download-zone { margin-top: 0; }
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    padding: 11px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.18s;
+    box-shadow: 0 4px 12px var(--accent-glow);
+}
+.btn-download:hover { background: var(--accent-dark); transform: translateY(-2px); }
+
+.no-file-box {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.875rem;
+    color: #dc2626;
+    font-weight: 500;
+}
+
+.tip-row {
+    background: #fefce8;
+    border: 1px solid #fef08a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    color: #854d0e;
+    line-height: 1.5;
+}
+.tip-row code {
+    background: rgba(0,0,0,0.07);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+}
+
+/* Upload area */
+.hidden-input { display: none; }
+
+.upload-area {
+    display: block;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 36px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #f8fafc;
+    margin-bottom: 16px;
+}
+.upload-area:hover { border-color: var(--accent); background: #f0f9ff; }
+.upload-area.ready { border-color: var(--green); background: var(--green-bg); }
+
+.upload-icon { font-size: 2.4rem; margin-bottom: 10px; }
+.upload-label { font-weight: 600; color: var(--text); font-size: 0.95rem; margin-bottom: 5px; }
+.upload-hint { color: var(--text-muted); font-size: 0.82rem; }
+
+.upload-preview-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.preview-check { font-size: 1.5rem; }
+.preview-fname { font-weight: 600; color: var(--green); font-size: 0.92rem; word-break: break-all; }
+.preview-change { font-size: 0.78rem; color: var(--text-muted); }
+
+/* Form actions */
+.form-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+
+.btn-submit {
+    flex: 1;
+    padding: 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px var(--accent-glow);
+}
+.btn-submit:hover:not(:disabled) { background: var(--accent-dark); transform: translateY(-2px); }
+.btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-cancel {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.18s;
+    white-space: nowrap;
+}
+.btn-cancel:hover { color: var(--text); }
+
+/* Footer nav */
+.footer-nav { display: flex; justify-content: center; }
+
+.btn-back {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--border);
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+.btn-back:hover { background: var(--text); color: white; border-color: var(--text); transform: translateY(-2px); }
+
+/* Animations */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+    .pdf-header { flex-direction: column; text-align: center; }
+    .submitted-card { flex-direction: column; align-items: center; text-align: center; }
+    .step-row { flex-direction: column; }
+    .step-bubble { margin: 0 auto; }
+    .step-content { text-align: center; }
+    .form-actions { flex-direction: column; }
+    .btn-submit { width: 100%; }
+}
+</style>
+
+<script>
+const pdfInput = document.getElementById('pdfInput');
+const uploadArea = document.getElementById('uploadArea');
+const uploadDefault = document.getElementById('uploadDefault');
+const uploadPreview = document.getElementById('uploadPreview');
+const previewFname = document.getElementById('previewFname');
+const submitBtn = document.getElementById('submitBtn');
+
+if (pdfInput) {
+    pdfInput.addEventListener('change', function () {
+        if (this.files && this.files[0]) {
+            previewFname.textContent = this.files[0].name;
+            uploadDefault.style.display = 'none';
+            uploadPreview.style.display = 'flex';
+            uploadArea.classList.add('ready');
+            submitBtn.disabled = false;
+        }
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.style.borderColor = '#0ea5e9';
+    });
+    uploadArea.addEventListener('dragleave', () => {
+        if (!uploadArea.classList.contains('ready')) {
+            uploadArea.style.borderColor = '#cbd5e1';
+        }
+    });
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.type === 'application/pdf') {
+            const dt = new DataTransfer();
+            dt.items.add(file);
+            pdfInput.files = dt.files;
+            pdfInput.dispatchEvent(new Event('change'));
+        } else {
+            alert('Please drop a PDF file only.');
+        }
+    });
+}
+
+function confirmSubmit() {
+    return confirm("Submit your assignment? This cannot be undone.");
+}
+</script>
+
+{% endblock %}

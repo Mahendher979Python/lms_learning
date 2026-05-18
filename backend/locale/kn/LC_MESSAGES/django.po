@@ -1,0 +1,175 @@
+#: .\templates\settings\settings.html:133
+msgid "Account Settings"
+msgstr "ಖಾತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+
+#: .\templates\settings\settings.html:137
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr "ನಿಮ್ಮ ಭಾಷೆ, ಭದ್ರತೆ, ಸೂಚನೆಗಳು ಮತ್ತು ಕಲಿಕೆ ಆದ್ಯತೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ."
+
+#: .\templates\settings\settings.html:147
+msgid "Language & Appearance"
+msgstr "ಭಾಷೆ ಮತ್ತು ರೂಪ"
+
+#: .\templates\settings\settings.html:153
+msgid "Language"
+msgstr "ಭಾಷೆ"
+
+#: .\templates\settings\settings.html:154
+msgid "Select your preferred application language."
+msgstr "ನಿಮ್ಮ ಇಷ್ಟದ ಅಪ್ಲಿಕೇಶನ್ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ."
+
+#: .\templates\settings\settings.html:178
+msgid "Dark Mode"
+msgstr "ಡಾರ್ಕ್ ಮೋಡ್"
+
+#: .\templates\settings\settings.html:179
+msgid "Enable dark theme for better night viewing."
+msgstr "ಉತ್ತಮ ರಾತ್ರಿ ವೀಕ್ಷಣೆಗೆ ಡಾರ್ಕ್ ಥೀಮ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ."
+
+#: .\templates\settings\settings.html:192
+msgid "Notifications"
+msgstr "ಅಧಿಸೂಚನೆಗಳು"
+
+#: .\templates\settings\settings.html:198
+msgid "Email Notifications"
+msgstr "ಇಮೇಲ್ ಅಧಿಸೂಚನೆಗಳು"
+
+#: .\templates\settings\settings.html:199
+msgid "Receive updates through email."
+msgstr "ಇಮೇಲ್ ಮೂಲಕ ನವೀಕರಣಗಳನ್ನು ಸ್ವೀಕರಿಸಿ."
+
+#: .\templates\settings\settings.html:209
+msgid "Push Notifications"
+msgstr "ಪುಷ್ ಅಧಿಸೂಚನೆಗಳು"
+
+#: .\templates\settings\settings.html:210
+msgid "Get instant browser/app alerts."
+msgstr "ತಕ್ಷಣದ ಬ್ರೌಸರ್/ಆಪ್ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪಡೆಯಿರಿ."
+
+#: .\templates\settings\settings.html:220
+msgid "Live Class Reminders"
+msgstr "ಲೈವ್ ಕ್ಲಾಸ್ ನೆನಪಿನ ಸೂಚನೆಗಳು"
+
+#: .\templates\settings\settings.html:221
+msgid "Receive reminders before live classes."
+msgstr "ಲೈವ್ ಕ್ಲಾಸ್ ಮೊದಲು ನೆನಪಿನ ಸೂಚನೆಗಳನ್ನು ಪಡೆಯಿರಿ."
+
+#: .\templates\settings\settings.html:234
+msgid "Security"
+msgstr "ಭದ್ರತೆ"
+
+#: .\templates\settings\settings.html:240
+msgid "Fingerprint Login"
+msgstr "ಬೆರಳಚ್ಚು ಲಾಗಿನ್"
+
+#: .\templates\settings\settings.html:241
+msgid "Use biometric authentication to login."
+msgstr "ಲಾಗಿನ್ ಮಾಡಲು ಬಯೋಮೆಟ್ರಿಕ್ ದೃಢೀಕರಣವನ್ನು ಬಳಸಿ."
+
+#: .\templates\settings\settings.html:251
+msgid "Two Factor Authentication"
+msgstr "ಎರಡು ಹಂತದ ದೃಢೀಕರಣ"
+
+#: .\templates\settings\settings.html:252
+msgid "Add extra security to your account."
+msgstr "ನಿಮ್ಮ ಖಾತೆಗೆ ಹೆಚ್ಚುವರಿ ಭದ್ರತೆ ಸೇರಿಸಿ."
+
+#: .\templates\settings\settings.html:265
+msgid "Learning Preferences"
+msgstr "ಕಲಿಕೆ ಆದ್ಯತೆಗಳು"
+
+#: .\templates\settings\settings.html:271
+msgid "Autoplay Videos"
+msgstr "ಸ್ವಯಂ ಪ್ಲೇ ವೀಡಿಯೊಗಳು"
+
+#: .\templates\settings\settings.html:272
+msgid "Automatically play next lesson videos."
+msgstr "ಮುಂದಿನ ಪಾಠದ ವೀಡಿಯೊಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪ್ಲೇ ಮಾಡಿ."
+
+#: .\templates\settings\settings.html:282
+msgid "Offline Downloads"
+msgstr "ಆಫ್‌ಲೈನ್ ಡೌನ್‌ಲೋಡ್‌ಗಳು"
+
+#: .\templates\settings\settings.html:283
+msgid "Allow downloading lessons for offline use."
+msgstr "ಆಫ್‌ಲೈನ್ ಬಳಕೆಗೆ ಪಾಠಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು ಅನುಮತಿಸಿ."
+
+#: .\templates\settings\settings.html:296
+msgid "Community"
+msgstr "ಸಮುದಾಯ"
+
+#: .\templates\settings\settings.html:302
+msgid "Allow Chat"
+msgstr "ಚಾಟ್‌ಗೆ ಅನುಮತಿ"
+
+#: .\templates\settings\settings.html:303
+msgid "Enable messaging with students and trainers."
+msgstr "ವಿದ್ಯಾರ್ಥಿಗಳು ಮತ್ತು ತರಬೇತುದಾರರೊಂದಿಗೆ ಸಂದೇಶ ಕಳುಹಿಸಲು ಅನುಮತಿಸಿ."
+
+#: .\templates\settings\settings.html:313
+msgid "Allow Discussions"
+msgstr "ಚರ್ಚೆಗಳಿಗೆ ಅನುಮತಿ"
+
+#: .\templates\settings\settings.html:314
+msgid "Participate in community discussions."
+msgstr "ಸಮುದಾಯ ಚರ್ಚೆಗಳಲ್ಲಿ ಭಾಗವಹಿಸಿ."
+
+#: .\templates\settings\settings.html:324
+msgid "Save Settings"
+msgstr "ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಉಳಿಸಿ"
+
+#: .\templates\settings\student_settings.html:152
+msgid "Student Profile Settings"
+msgstr "ವಿದ್ಯಾರ್ಥಿ ಪ್ರೊಫೈಲ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳು"
+
+#: .\templates\settings\student_settings.html:156
+msgid "Update your account information, preferences, and language settings."
+msgstr "ನಿಮ್ಮ ಖಾತೆ ಮಾಹಿತಿ, ಆದ್ಯತೆಗಳು ಮತ್ತು ಭಾಷಾ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನವೀಕರಿಸಿ."
+
+#: .\templates\settings\student_settings.html:185
+msgid "Username"
+msgstr "ಬಳಕೆದಾರ ಹೆಸರು"
+
+#: .\templates\settings\student_settings.html:196
+msgid "Email Address"
+msgstr "ಇಮೇಲ್ ವಿಳಾಸ"
+
+#: .\templates\settings\student_settings.html:207
+msgid "Phone Number"
+msgstr "ಫೋನ್ ಸಂಖ್ಯೆ"
+
+#: .\templates\settings\student_settings.html:218
+msgid "Date of Birth"
+msgstr "ಹುಟ್ಟಿದ ದಿನಾಂಕ"
+
+#: .\templates\settings\student_settings.html:229
+msgid "Gender"
+msgstr "ಲಿಂಗ"
+
+#: .\templates\settings\student_settings.html:234
+msgid "Select Gender"
+msgstr "ಲಿಂಗ ಆಯ್ಕೆಮಾಡಿ"
+
+#: .\templates\settings\student_settings.html:239
+msgid "Male"
+msgstr "ಪುರುಷ"
+
+#: .\templates\settings\student_settings.html:244
+msgid "Female"
+msgstr "ಮಹಿಳೆ"
+
+#: .\templates\settings\student_settings.html:249
+msgid "Other"
+msgstr "ಇತರೆ"
+
+#: .\templates\settings\student_settings.html:281
+msgid "Profile Photo"
+msgstr "ಪ್ರೊಫೈಲ್ ಫೋಟೋ"
+
+#: .\templates\settings\student_settings.html:291
+msgid "Address"
+msgstr "ವಿಳಾಸ"
+
+#: .\templates\settings\student_settings.html:304
+msgid "Save Changes"
+msgstr "ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ"

@@ -1,0 +1,1077 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}Result | {{ assignment.title }}{% endblock %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<div class="result-wrapper">
+
+    <!-- Ambient background blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="result-container">
+
+        <!-- =============================== -->
+        <!-- MCQ RESULT -->
+        <!-- =============================== -->
+        {% if assignment.test_type == "mcq" %}
+
+            <!-- Status Banner -->
+            <div class="status-banner {% if passed %}banner-pass{% else %}banner-fail{% endif %}">
+                <div class="status-icon">{% if passed %}🏆{% else %}📘{% endif %}</div>
+                <div class="status-text">
+                    <span class="status-label">{% if passed %}Congratulations!{% else %}Keep Going!{% endif %}</span>
+                    <span class="status-sub">{% if passed %}You passed the assessment{% else %}You didn't meet the passing mark{% endif %}</span>
+                </div>
+                <div class="status-badge {% if passed %}badge-pass{% else %}badge-fail{% endif %}">
+                    {% if passed %}PASS{% else %}FAIL{% endif %}
+                </div>
+            </div>
+
+            <!-- Assignment Title -->
+            <div class="assignment-title-row">
+                <h2 class="assignment-name">{{ assignment.title }}</h2>
+                <span class="test-type-chip">MCQ Quiz</span>
+            </div>
+
+            <!-- Score Cards -->
+            <div class="stats-grid">
+                <div class="stat-card stat-score">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">{{ submission.score }}<span class="stat-denom">/{{ total }}</span></div>
+                    <div class="stat-label">Your Score</div>
+                </div>
+                <div class="stat-card stat-percent">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-value">{{ percentage|floatformat:1 }}<span class="stat-denom">%</span></div>
+                    <div class="stat-label">Percentage</div>
+                </div>
+                <div class="stat-card stat-pass">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value">{{ pass_marks }}<span class="stat-denom">/{{ total }}</span></div>
+                    <div class="stat-label">Pass Mark</div>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-labels">
+                    <span>Score Progress</span>
+                    <span>{{ percentage|floatformat:1 }}%</span>
+                </div>
+                <div class="progress-bar-track">
+                    <div class="progress-bar-fill {% if passed %}fill-pass{% else %}fill-fail{% endif %}"
+                         style="width: {{ percentage }}%"></div>
+                    <!-- Pass mark indicator -->
+                    <div class="pass-marker" style="left: {% widthratio pass_marks total 100 %}%">
+                        <div class="pass-marker-line"></div>
+                        <div class="pass-marker-label">Pass</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Answer Review -->
+            {% if submission.answers.all %}
+            <div class="review-section">
+                <h3 class="section-heading">🧠 Answer Review</h3>
+                <div class="qa-list">
+                    {% for a in submission.answers.all %}
+                    <div class="qa-card {% if a.is_correct %}qa-correct{% else %}qa-wrong{% endif %}">
+                        <div class="qa-header">
+                            <span class="qa-num">Q{{ forloop.counter }}</span>
+                            <span class="qa-verdict {% if a.is_correct %}verdict-correct{% else %}verdict-wrong{% endif %}">
+                                {% if a.is_correct %}✔ Correct{% else %}✘ Incorrect{% endif %}
+                            </span>
+                        </div>
+                        <p class="qa-question">{{ a.question.text }}</p>
+                        <div class="qa-answer-row">
+                            <span class="qa-answer-label">Your Answer:</span>
+                            <span class="qa-answer-text">{{ a.selected_option.text }}</span>
+                        </div>
+                        {% if not a.is_correct %}
+                            {% for opt in a.question.options.all %}
+                                {% if opt.is_correct %}
+                                <div class="qa-correct-row">
+                                    <span class="qa-answer-label">Correct Answer:</span>
+                                    <span class="qa-answer-text correct-answer">{{ opt.text }}</span>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Certificate Button -->
+            {% if passed %}
+            <div class="certificate-section">
+                <div class="certificate-card">
+                    <span class="cert-icon">🎓</span>
+                    <div class="cert-text">
+                        <strong>Certificate Available</strong>
+                        <p>You've earned a certificate for passing this assessment!</p>
+                    </div>
+                    <a href="{% url 'assignments:certificate' submission.id %}" class="btn-cert">
+                        Download Certificate
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+        <!-- =============================== -->
+        <!-- PDF RESULT -->
+        <!-- =============================== -->
+        {% if assignment.test_type == "pdf" %}
+
+            {% if submission.status == "graded" and submission.score is not None %}
+
+                <!-- Graded State -->
+                <div class="status-banner {% if passed %}banner-pass{% else %}banner-fail{% endif %}">
+                    <div class="status-icon">{% if passed %}🏆{% else %}📘{% endif %}</div>
+                    <div class="status-text">
+                        <span class="status-label">Evaluation Complete</span>
+                        <span class="status-sub">Your trainer has reviewed your submission</span>
+                    </div>
+                    <div class="status-badge {% if passed %}badge-pass{% else %}badge-fail{% endif %}">
+                        {% if passed %}PASS{% else %}FAIL{% endif %}
+                    </div>
+                </div>
+
+                <div class="assignment-title-row">
+                    <h2 class="assignment-name">{{ assignment.title }}</h2>
+                    <span class="test-type-chip">PDF Submission</span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-score">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value">{{ submission.score }}<span class="stat-denom">/{{ total }}</span></div>
+                        <div class="stat-label">Your Score</div>
+                    </div>
+                    <div class="stat-card stat-percent">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value">{{ percentage|floatformat:1 }}<span class="stat-denom">%</span></div>
+                        <div class="stat-label">Percentage</div>
+                    </div>
+                    <div class="stat-card stat-pass">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">{{ pass_marks }}<span class="stat-denom">/{{ total }}</span></div>
+                        <div class="stat-label">Pass Mark</div>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-labels">
+                        <span>Score Progress</span>
+                        <span>{{ percentage|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill {% if passed %}fill-pass{% else %}fill-fail{% endif %}"
+                             style="width: {{ percentage }}%"></div>
+                        <div class="pass-marker" style="left: {% widthratio pass_marks total 100 %}%">
+                            <div class="pass-marker-line"></div>
+                            <div class="pass-marker-label">Pass</div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- Pending State -->
+                <div class="pending-banner">
+                    <div class="pending-pulse">
+                        <div class="pulse-ring"></div>
+                        <span class="pending-icon">⏳</span>
+                    </div>
+                    <div class="pending-text">
+                        <h2>Submission Received!</h2>
+                        <p>Your trainer is reviewing your PDF. Results will appear here once graded.</p>
+                    </div>
+                </div>
+
+                <div class="assignment-title-row">
+                    <h2 class="assignment-name">{{ assignment.title }}</h2>
+                    <span class="test-type-chip">PDF Submission</span>
+                </div>
+            {% endif %}
+
+            <!-- Show uploaded file always -->
+            {% if submission.pdf_answer %}
+            <div class="file-preview-card">
+                <span class="file-icon">📄</span>
+                <div class="file-info">
+                    <strong>Submitted File</strong>
+                    <p>Your answer sheet has been uploaded successfully.</p>
+                </div>
+                <a href="{{ submission.pdf_answer.url }}" target="_blank" class="btn-view-file">
+                    View File
+                </a>
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+        <!-- =============================== -->
+        <!-- GOOGLE FORM RESULT -->
+        <!-- =============================== -->
+        {% if assignment.test_type == "gform" %}
+
+            {% if submission.status == "graded" and submission.score is not None %}
+
+                <!-- Graded State -->
+                <div class="status-banner {% if passed %}banner-pass{% else %}banner-fail{% endif %}">
+                    <div class="status-icon">{% if passed %}🏆{% else %}📘{% endif %}</div>
+                    <div class="status-text">
+                        <span class="status-label">Evaluation Complete</span>
+                        <span class="status-sub">Your trainer has reviewed your submission</span>
+                    </div>
+                    <div class="status-badge {% if passed %}badge-pass{% else %}badge-fail{% endif %}">
+                        {% if passed %}PASS{% else %}FAIL{% endif %}
+                    </div>
+                </div>
+
+                <div class="assignment-title-row">
+                    <h2 class="assignment-name">{{ assignment.title }}</h2>
+                    <span class="test-type-chip">Google Form</span>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card stat-score">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value">{{ submission.score }}<span class="stat-denom">/{{ total }}</span></div>
+                        <div class="stat-label">Your Score</div>
+                    </div>
+                    <div class="stat-card stat-percent">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value">{{ percentage|floatformat:1 }}<span class="stat-denom">%</span></div>
+                        <div class="stat-label">Percentage</div>
+                    </div>
+                    <div class="stat-card stat-pass">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-value">{{ pass_marks }}<span class="stat-denom">/{{ total }}</span></div>
+                        <div class="stat-label">Pass Mark</div>
+                    </div>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-labels">
+                        <span>Score Progress</span>
+                        <span>{{ percentage|floatformat:1 }}%</span>
+                    </div>
+                    <div class="progress-bar-track">
+                        <div class="progress-bar-fill {% if passed %}fill-pass{% else %}fill-fail{% endif %}"
+                             style="width: {{ percentage }}%"></div>
+                        <div class="pass-marker" style="left: {% widthratio pass_marks total 100 %}%">
+                            <div class="pass-marker-line"></div>
+                            <div class="pass-marker-label">Pass</div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- Pending State -->
+                <div class="pending-banner">
+                    <div class="pending-pulse">
+                        <div class="pulse-ring"></div>
+                        <span class="pending-icon">⏳</span>
+                    </div>
+                    <div class="pending-text">
+                        <h2>Response Recorded!</h2>
+                        <p>Your Google Form response has been noted. Results will appear here once your trainer reviews it.</p>
+                    </div>
+                </div>
+
+                <div class="assignment-title-row">
+                    <h2 class="assignment-name">{{ assignment.title }}</h2>
+                    <span class="test-type-chip">Google Form</span>
+                </div>
+            {% endif %}
+
+            <!-- Show screenshot always -->
+            {% if submission.pdf_answer %}
+            <div class="file-preview-card">
+                <span class="file-icon">🖼️</span>
+                <div class="file-info">
+                    <strong>Proof of Submission</strong>
+                    <p>Your screenshot has been uploaded successfully.</p>
+                </div>
+                <a href="{{ submission.pdf_answer.url }}" target="_blank" class="btn-view-file">
+                    View Screenshot
+                </a>
+            </div>
+            {% endif %}
+
+        {% endif %}
+
+        <!-- =============================== -->
+        <!-- FOOTER ACTIONS -->
+        <!-- =============================== -->
+        <div class="footer-actions">
+            <a href="{% url 'assignments:student_assignments' %}" class="btn-back">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<style>
+
+/* ===== FONTS & RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --pass-color: #059669;
+    --pass-light: #d1fae5;
+    --pass-bg: #ecfdf5;
+    --fail-color: #dc2626;
+    --fail-light: #fee2e2;
+    --fail-bg: #fff5f5;
+    --pending-color: #d97706;
+    --pending-light: #fef3c7;
+    --accent: #4f46e5;
+    --accent-light: #eef2ff;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --surface: #ffffff;
+    --surface-2: #f8fafc;
+    --border: #e2e8f0;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.07);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+}
+
+/* ===== WRAPPER & BLOBS ===== */
+{% comment %} .result-wrapper {
+    min-height: 100vh;
+    background: #f1f5f9;
+    padding: 40px 20px 60px;
+    font-family: 'DM Sans', sans-serif;
+    position: relative;
+    overflow: hidden;
+} {% endcomment %}
+.result-wrapper {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top left, rgba(99,102,241,0.12), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(16,185,129,0.10), transparent 25%),
+        linear-gradient(135deg,#eef2ff,#f8fafc,#f1f5f9);
+
+    padding: 40px 20px 60px;
+
+    font-family: 'DM Sans', sans-serif;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+{% comment %} .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+}
+.blob-1 { width: 400px; height: 400px; background: #818cf8; top: -100px; right: -100px; }
+.blob-2 { width: 300px; height: 300px; background: #34d399; bottom: 100px; left: -80px; }
+.blob-3 { width: 250px; height: 250px; background: #fb923c; top: 50%; right: 10%; } {% endcomment %}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.32;
+    pointer-events: none;
+    z-index: 0;
+
+    animation: floatingBlob 12s ease-in-out infinite;
+}
+
+.blob-1 {
+    width: 420px;
+    height: 420px;
+    background: #6366f1;
+    top: -120px;
+    right: -120px;
+}
+
+.blob-2 {
+    width: 340px;
+    height: 340px;
+    background: #10b981;
+    bottom: 60px;
+    left: -100px;
+
+    animation-delay: 2s;
+}
+
+.blob-3 {
+    width: 280px;
+    height: 280px;
+    background: #f59e0b;
+    top: 45%;
+    right: 8%;
+
+    animation-delay: 4s;
+}
+
+@keyframes floatingBlob{
+    0%{
+        transform:translateY(0px) scale(1);
+    }
+    50%{
+        transform:translateY(-30px) scale(1.08);
+    }
+    100%{
+        transform:translateY(0px) scale(1);
+    }
+}
+
+/* ===== CONTAINER ===== */
+.result-container {
+    max-width: 880px;
+
+    margin: 0 auto;
+
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 24px;
+}
+
+/* ===== STATUS BANNER ===== */
+.status-banner {
+
+    border-radius: 30px;
+
+    padding: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    animation: slideDown 0.6s ease;
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.12),
+        inset 0 1px 0 rgba(255,255,255,0.15);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+.status-banner::before{
+    content:'';
+
+    position:absolute;
+
+    top:0;
+    left:-150%;
+
+    width:60%;
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.16),
+            transparent
+        );
+
+    transform:skewX(-25deg);
+
+    animation:shineMove 7s infinite;
+}
+
+@keyframes shineMove{
+    100%{
+        left:180%;
+    }
+}
+
+.banner-pass { background: linear-gradient(135deg, #059669, #10b981); color: white; }
+.banner-fail { background: linear-gradient(135deg, #dc2626, #ef4444); color: white; }
+
+.status-icon { font-size: 2.5rem; flex-shrink: 0; }
+
+.status-text { flex: 1; }
+.status-label { display: block; font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; }
+.status-sub { display: block; opacity: 0.85; font-size: 0.9rem; margin-top: 3px; }
+
+.status-badge {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    padding: 8px 20px;
+    border-radius: 50px;
+    flex-shrink: 0;
+    letter-spacing: 1px;
+}
+.badge-pass { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.5); }
+.badge-fail { background: rgba(255,255,255,0.25); color: white; border: 2px solid rgba(255,255,255,0.5); }
+
+/* ===== PENDING BANNER ===== */
+.pending-banner {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+    border-radius: var(--radius);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    color: white;
+    box-shadow: var(--shadow);
+    animation: slideDown 0.5s ease;
+}
+
+.pending-pulse {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.pulse-ring {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    animation: pulse 2s infinite;
+}
+
+.pending-icon { font-size: 1.8rem; position: relative; z-index: 1; }
+
+.pending-text h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+.pending-text p { opacity: 0.9; font-size: 0.92rem; line-height: 1.5; }
+
+/* ===== ASSIGNMENT TITLE ROW ===== */
+.assignment-title-row {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    box-shadow: var(--shadow);
+    flex-wrap: wrap;
+}
+
+.assignment-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.test-type-chip {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+{% comment %} .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border-top: 4px solid transparent;
+    transition: transform 0.2s;
+    animation: fadeUp 0.5s ease both;
+} {% endcomment %}
+
+.stat-card {
+
+    background:
+        linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0.88),
+            rgba(255,255,255,0.72)
+        );
+
+    backdrop-filter: blur(20px);
+
+    border-radius: 28px;
+
+    padding: 28px 22px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 40px rgba(15,23,42,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.8);
+
+    border: 1px solid rgba(255,255,255,0.5);
+
+    transition: all 0.35s ease;
+
+    animation: fadeUp 0.5s ease both;
+
+    position: relative;
+
+    overflow: hidden;
+}
+.stat-card:nth-child(1) { animation-delay: 0.1s; }
+.stat-card:nth-child(2) { animation-delay: 0.2s; }
+.stat-card:nth-child(3) { animation-delay: 0.3s; }
+{% comment %} .stat-card:hover { transform: translateY(-4px); } {% endcomment %}
+.stat-card:hover {
+    transform:
+        translateY(-10px)
+        scale(1.02);
+
+    box-shadow:
+        0 30px 55px rgba(15,23,42,0.12);
+}
+
+.stat-score { border-top-color: var(--accent); }
+.stat-percent { border-top-color: #0891b2; }
+.stat-pass { border-top-color: var(--pass-color); }
+
+.stat-icon { font-size: 1.6rem; margin-bottom: 10px; }
+
+.stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+.stat-denom { font-size: 1rem; font-weight: 500; color: var(--text-secondary); }
+
+.stat-label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== PROGRESS BAR ===== */
+{% comment %} .progress-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+} {% endcomment %}
+.progress-section {
+
+    background:
+        linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0.88),
+            rgba(255,255,255,0.72)
+        );
+
+    backdrop-filter: blur(18px);
+
+    border-radius: 28px;
+
+    padding: 28px;
+
+    border: 1px solid rgba(255,255,255,0.45);
+
+    box-shadow:
+        0 15px 35px rgba(15,23,42,0.08);
+}
+
+.progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+.progress-bar-track {
+    height: 14px;
+    background: #e2e8f0;
+    border-radius: 50px;
+    position: relative;
+    overflow: visible;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    border-radius: 50px;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: growBar 1.2s ease both;
+}
+.fill-pass { background: linear-gradient(90deg, #34d399, #059669); }
+.fill-fail { background: linear-gradient(90deg, #f87171, #dc2626); }
+
+.pass-marker {
+    position: absolute;
+    top: -6px;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    z-index: 2;
+}
+.pass-marker-line {
+    width: 2px;
+    height: 26px;
+    background: #94a3b8;
+    border-radius: 2px;
+}
+.pass-marker-label {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ===== ANSWER REVIEW ===== */
+{% comment %} .review-section {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+} {% endcomment %}
+.review-section {
+
+    background:
+        linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0.9),
+            rgba(248,250,252,0.8)
+        );
+
+    border-radius: 30px;
+
+    padding: 32px;
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,0.4);
+
+    box-shadow:
+        0 18px 40px rgba(15,23,42,0.08);
+}
+
+.section-heading {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--border);
+}
+
+.qa-list { display: flex; flex-direction: column; gap: 12px; }
+
+{% comment %} .qa-card {
+    border-radius: 12px;
+    padding: 18px 20px;
+    border-left: 4px solid transparent;
+    transition: transform 0.2s;
+} {% endcomment %}
+.qa-card {
+
+    border-radius: 20px;
+
+    padding: 22px;
+
+    border-left: 5px solid transparent;
+
+    transition: all 0.3s ease;
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 10px 24px rgba(15,23,42,0.05);
+
+    position: relative;
+
+    overflow: hidden;
+}
+.qa-card:hover { transform: translateX(4px); }
+.qa-correct { background: #f0fdf4; border-left-color: var(--pass-color); }
+.qa-wrong { background: #fff5f5; border-left-color: var(--fail-color); }
+
+.qa-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.qa-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 3px 10px;
+    border-radius: 50px;
+}
+
+.qa-verdict {
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 50px;
+}
+.verdict-correct { background: var(--pass-light); color: var(--pass-color); }
+.verdict-wrong { background: var(--fail-light); color: var(--fail-color); }
+
+.qa-question {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.qa-answer-row, .qa-correct-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
+.qa-answer-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.qa-answer-text { color: var(--text-primary); font-weight: 500; }
+.correct-answer { color: var(--pass-color); font-weight: 600; }
+
+/* ===== CERTIFICATE SECTION ===== */
+.certificate-section { }
+{% comment %} .certificate-card {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    color: white;
+    box-shadow: var(--shadow-lg);
+    flex-wrap: wrap;
+} {% endcomment %}
+
+.certificate-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            #4338ca,
+            #6366f1,
+            #7c3aed
+        );
+
+    border-radius: 30px;
+
+    padding: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 24px;
+
+    color: white;
+
+    box-shadow:
+        0 25px 50px rgba(79,70,229,0.3);
+
+    flex-wrap: wrap;
+
+    position: relative;
+
+    overflow: hidden;
+}
+.cert-icon { font-size: 2.4rem; flex-shrink: 0; }
+
+.cert-text { flex: 1; }
+.cert-text strong { display: block; font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; }
+.cert-text p { opacity: 0.85; font-size: 0.88rem; margin-top: 4px; }
+
+.btn-cert {
+    background: white;
+    color: #4f46e5;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.btn-cert:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+
+/* ===== FILE PREVIEW CARD ===== */
+{% comment %} .file-preview-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    flex-wrap: wrap;
+} {% endcomment %}
+
+.file-preview-card {
+
+    background:
+        linear-gradient(
+            to bottom right,
+            rgba(255,255,255,0.92),
+            rgba(248,250,252,0.8)
+        );
+
+    border-radius: 26px;
+
+    padding: 24px 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    backdrop-filter: blur(16px);
+
+    box-shadow:
+        0 15px 35px rgba(15,23,42,0.07);
+
+    border: 1px solid rgba(255,255,255,0.4);
+
+    flex-wrap: wrap;
+}
+
+.file-icon { font-size: 2rem; flex-shrink: 0; }
+.file-info { flex: 1; }
+.file-info strong { display: block; color: var(--text-primary); font-weight: 600; margin-bottom: 3px; }
+.file-info p { color: var(--text-secondary); font-size: 0.85rem; }
+
+.btn-view-file {
+    background: var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+.btn-view-file:hover { background: #4338ca; }
+
+/* ===== FOOTER ACTIONS ===== */
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    padding-top: 8px;
+}
+
+.btn-back {
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 2px solid var(--border);
+    padding: 12px 28px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.2s;
+    box-shadow: var(--shadow);
+}
+.btn-back:hover {
+    background: var(--text-primary);
+    color: white;
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes growBar {
+    from { width: 0 !important; }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.4); opacity: 0.2; }
+    100% { transform: scale(1); opacity: 0.6; }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .status-banner, .pending-banner { flex-direction: column; text-align: center; }
+    .certificate-card { flex-direction: column; text-align: center; }
+    .assignment-title-row { flex-direction: column; align-items: flex-start; }
+    .status-badge { align-self: flex-start; }
+}
+
+</style>
+
+{% endblock %}

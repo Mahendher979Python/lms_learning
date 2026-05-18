@@ -1,0 +1,379 @@
+/* ===================================
+   GLOBAL
+=================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f1f5f9;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+/* ===================================
+   TOP BAR
+=================================== */
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.top-bar h2{
+    font-size:30px;
+    font-weight:800;
+    color:#0f172a;
+}
+
+/* ===================================
+   CREATE BUTTON
+=================================== */
+
+.create-btn{
+    text-decoration:none;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:14px 22px;
+    border-radius:14px;
+    font-weight:700;
+    transition:0.3s;
+    box-shadow:0 10px 25px rgba(37,99,235,0.25);
+}
+
+.create-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 30px rgba(37,99,235,0.35);
+}
+
+/* ===================================
+   SEARCH BOX
+=================================== */
+
+.search-box{
+    margin-bottom:25px;
+    display:flex;
+    justify-content:flex-start;
+}
+
+.search-box form{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+/* SMALL SEARCH INPUT */
+
+.search-box input{
+    width:260px;
+    max-width:100%;
+    padding:12px 15px;
+    border-radius:14px;
+    border:1px solid #dbeafe;
+    outline:none;
+    font-size:14px;
+    background:white;
+    transition:0.3s;
+}
+
+.search-box input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.1);
+    transform:scale(1.01);
+}
+
+.search-box button{
+    border:none;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:12px 18px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
+}
+
+.search-box button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(37,99,235,0.25);
+}
+
+/* ===================================
+   TABLE BOX
+=================================== */
+
+.table-box{
+    background:white;
+    border-radius:22px;
+    overflow-x:auto;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    border:1px solid #e2e8f0;
+}
+
+/* ===================================
+   TABLE
+=================================== */
+
+table{
+    width:100%;
+    min-width:950px;
+    border-collapse:collapse;
+}
+
+th{
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:18px 14px;
+    text-align:left;
+    font-size:14px;
+    white-space:nowrap;
+}
+
+td{
+    padding:18px 14px;
+    border-bottom:1px solid #eef2f7;
+    color:#334155;
+    font-size:14px;
+}
+
+tbody tr{
+    transition:0.3s;
+}
+
+tbody tr:hover{
+    background:#f8fbff;
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.btn{
+    display:inline-block;
+    padding:9px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:white;
+    font-size:13px;
+    font-weight:700;
+    margin:3px;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.view{
+    background:#2563eb;
+}
+
+.edit{
+    background:#f59e0b;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+/* ===================================
+   PAGINATION
+=================================== */
+
+.pagination{
+    margin-top:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+}
+
+.pagination a{
+    text-decoration:none;
+    padding:12px 18px;
+    border-radius:12px;
+    background:white;
+    color:#2563eb;
+    font-weight:700;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.pagination a:hover{
+    background:#2563eb;
+    color:white;
+}
+
+.pagination span{
+    font-weight:700;
+    color:#334155;
+}
+
+/* ===================================
+   SCROLLBAR
+=================================== */
+
+.table-box::-webkit-scrollbar{
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#2563eb;
+    border-radius:20px;
+}
+
+/* ===================================
+   MOBILE VIEW
+=================================== */
+
+@media(max-width:768px){
+
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .top-bar h2{
+        font-size:24px;
+    }
+
+    .create-btn{
+        width:100%;
+        text-align:center;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .search-box form{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .search-box input{
+        width:100%;
+    }
+
+    .search-box button{
+        width:100%;
+    }
+
+    .table-box{
+        overflow:visible;
+        background:transparent;
+        border:none;
+        box-shadow:none;
+    }
+
+    table,
+    thead,
+    tbody,
+    tr,
+    td{
+        display:block;
+        width:100%;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tr{
+        background:white;
+        margin-bottom:18px;
+        border-radius:20px;
+        padding:14px;
+        box-shadow:0 8px 22px rgba(0,0,0,0.08);
+        border:1px solid #e2e8f0;
+    }
+
+    td{
+        border:none;
+        padding:12px 10px;
+        padding-left:48%;
+        position:relative;
+        min-height:48px;
+        word-break:break-word;
+    }
+
+    td::before{
+        position:absolute;
+        left:12px;
+        top:12px;
+        font-weight:700;
+        color:#0f172a;
+    }
+
+    td:nth-child(1)::before{
+        content:"ID";
+    }
+
+    td:nth-child(2)::before{
+        content:"Title";
+    }
+
+    td:nth-child(3)::before{
+        content:"Trainer";
+    }
+
+    td:nth-child(4)::before{
+        content:"Price";
+    }
+
+    td:nth-child(5)::before{
+        content:"Students";
+    }
+
+    td:nth-child(6)::before{
+        content:"Updated";
+    }
+
+    td:nth-child(7)::before{
+        content:"Actions";
+    }
+
+    .btn{
+        display:block;
+        width:100%;
+        text-align:center;
+        margin-top:8px;
+    }
+
+}
+
+/* ===================================
+   TABLET VIEW
+=================================== */
+
+@media(min-width:769px) and (max-width:1024px){
+
+    .top-bar h2{
+        font-size:26px;
+    }
+
+    th,
+    td{
+        padding:14px 10px;
+        font-size:13px;
+    }
+
+    .btn{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .search-box input{
+        width:220px;
+    }
+
+}

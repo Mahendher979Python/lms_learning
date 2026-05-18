@@ -1,0 +1,176 @@
+#: .\templates\settings\settings.html:133
+msgid "Account Settings"
+msgstr "ఖాతా సెట్టింగ్స్"
+
+#: .\templates\settings\settings.html:137
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr "మీ భాష, భద్రత, నోటిఫికేషన్లు మరియు అభ్యాస అభిరుచులను నిర్వహించండి."
+
+#: .\templates\settings\settings.html:147
+msgid "Language & Appearance"
+msgstr "భాష & రూపం"
+
+#: .\templates\settings\settings.html:153
+#: .\templates\settings\student_settings.html:259
+msgid "Language"
+msgstr "భాష"
+
+#: .\templates\settings\settings.html:154
+msgid "Select your preferred application language."
+msgstr "మీకు ఇష్టమైన భాషను ఎంచుకోండి."
+
+#: .\templates\settings\settings.html:178
+msgid "Dark Mode"
+msgstr "డార్క్ మోడ్"
+
+#: .\templates\settings\settings.html:179
+msgid "Enable dark theme for better night viewing."
+msgstr "రాత్రి సమయంలో మంచి వీక్షణ కోసం డార్క్ థీమ్‌ను ప్రారంభించండి."
+
+#: .\templates\settings\settings.html:192
+msgid "Notifications"
+msgstr "నోటిఫికేషన్లు"
+
+#: .\templates\settings\settings.html:198
+msgid "Email Notifications"
+msgstr "ఇమెయిల్ నోటిఫికేషన్లు"
+
+#: .\templates\settings\settings.html:199
+msgid "Receive updates through email."
+msgstr "ఇమెయిల్ ద్వారా అప్‌డేట్స్ పొందండి."
+
+#: .\templates\settings\settings.html:209
+msgid "Push Notifications"
+msgstr "పుష్ నోటిఫికేషన్లు"
+
+#: .\templates\settings\settings.html:210
+msgid "Get instant browser/app alerts."
+msgstr "తక్షణ బ్రౌజర్/యాప్ అలర్ట్స్ పొందండి."
+
+#: .\templates\settings\settings.html:220
+msgid "Live Class Reminders"
+msgstr "లైవ్ క్లాస్ రిమైండర్లు"
+
+#: .\templates\settings\settings.html:221
+msgid "Receive reminders before live classes."
+msgstr "లైవ్ క్లాస్ ముందు రిమైండర్లు పొందండి."
+
+#: .\templates\settings\settings.html:234
+msgid "Security"
+msgstr "భద్రత"
+
+#: .\templates\settings\settings.html:240
+msgid "Fingerprint Login"
+msgstr "వేలిముద్ర లాగిన్"
+
+#: .\templates\settings\settings.html:241
+msgid "Use biometric authentication to login."
+msgstr "లాగిన్ కోసం బయోమెట్రిక్ ధృవీకరణ ఉపయోగించండి."
+
+#: .\templates\settings\settings.html:251
+msgid "Two Factor Authentication"
+msgstr "టూ ఫ్యాక్టర్ ఆథెంటికేషన్"
+
+#: .\templates\settings\settings.html:252
+msgid "Add extra security to your account."
+msgstr "మీ ఖాతాకు అదనపు భద్రత జోడించండి."
+
+#: .\templates\settings\settings.html:265
+msgid "Learning Preferences"
+msgstr "అభ్యాస అభిరుచులు"
+
+#: .\templates\settings\settings.html:271
+msgid "Autoplay Videos"
+msgstr "ఆటోప్లే వీడియోలు"
+
+#: .\templates\settings\settings.html:272
+msgid "Automatically play next lesson videos."
+msgstr "తదుపరి పాఠ వీడియోలను ఆటోమేటిక్‌గా ప్లే చేయండి."
+
+#: .\templates\settings\settings.html:282
+msgid "Offline Downloads"
+msgstr "ఆఫ్‌లైన్ డౌన్‌లోడ్లు"
+
+#: .\templates\settings\settings.html:283
+msgid "Allow downloading lessons for offline use."
+msgstr "ఆఫ్‌లైన్ ఉపయోగం కోసం పాఠాలను డౌన్‌లోడ్ చేసుకోవడానికి అనుమతించండి."
+
+#: .\templates\settings\settings.html:296
+msgid "Community"
+msgstr "సమాజం"
+
+#: .\templates\settings\settings.html:302
+msgid "Allow Chat"
+msgstr "చాట్ అనుమతించు"
+
+#: .\templates\settings\settings.html:303
+msgid "Enable messaging with students and trainers."
+msgstr "విద్యార్థులు మరియు ట్రైనర్లతో సందేశాలను అనుమతించండి."
+
+#: .\templates\settings\settings.html:313
+msgid "Allow Discussions"
+msgstr "చర్చలను అనుమతించు"
+
+#: .\templates\settings\settings.html:314
+msgid "Participate in community discussions."
+msgstr "సమాజ చర్చల్లో పాల్గొనండి."
+
+#: .\templates\settings\settings.html:324
+msgid "Save Settings"
+msgstr "సెట్టింగ్స్ సేవ్ చేయండి"
+
+#: .\templates\settings\student_settings.html:152
+msgid "Student Profile Settings"
+msgstr "విద్యార్థి ప్రొఫైల్ సెట్టింగ్స్"
+
+#: .\templates\settings\student_settings.html:156
+msgid "Update your account information, preferences, and language settings."
+msgstr "మీ ఖాతా సమాచారం, అభిరుచులు మరియు భాషా సెట్టింగ్స్‌ను అప్‌డేట్ చేయండి."
+
+#: .\templates\settings\student_settings.html:185
+msgid "Username"
+msgstr "యూజర్ పేరు"
+
+#: .\templates\settings\student_settings.html:196
+msgid "Email Address"
+msgstr "ఇమెయిల్ అడ్రస్"
+
+#: .\templates\settings\student_settings.html:207
+msgid "Phone Number"
+msgstr "ఫోన్ నంబర్"
+
+#: .\templates\settings\student_settings.html:218
+msgid "Date of Birth"
+msgstr "పుట్టిన తేది"
+
+#: .\templates\settings\student_settings.html:229
+msgid "Gender"
+msgstr "లింగం"
+
+#: .\templates\settings\student_settings.html:234
+msgid "Select Gender"
+msgstr "లింగాన్ని ఎంచుకోండి"
+
+#: .\templates\settings\student_settings.html:239
+msgid "Male"
+msgstr "పురుషుడు"
+
+#: .\templates\settings\student_settings.html:244
+msgid "Female"
+msgstr "స్త్రీ"
+
+#: .\templates\settings\student_settings.html:249
+msgid "Other"
+msgstr "ఇతర"
+
+#: .\templates\settings\student_settings.html:281
+msgid "Profile Photo"
+msgstr "ప్రొఫైల్ ఫోటో"
+
+#: .\templates\settings\student_settings.html:291
+msgid "Address"
+msgstr "చిరునామా"
+
+#: .\templates\settings\student_settings.html:304
+msgid "Save Changes"
+msgstr "మార్పులను సేవ్ చేయండి"

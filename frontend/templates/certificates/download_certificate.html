@@ -1,0 +1,225 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Download Certificate</title>
+
+  <!-- Keep styles self-contained so the downloaded PDF/PNG matches the view -->
+  <style>
+    :root{
+      --bg: #ffffff;
+      --card: #1a1a2e;
+      --gold: #ffd700;
+      --teal: #7efff5;
+      --muted: #aaaaaa;
+    }
+    body{
+      margin:0;
+      padding:24px;
+      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      color:#111;
+    }
+    .actions{
+      display:flex;
+      gap:10px;
+      margin:0 auto 16px;
+      max-width: 950px;
+    }
+    .btn{
+      border:0;
+      cursor:pointer;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      font-size:14px;
+    }
+    .btn-primary{ background:#22c55e; color:#fff; }
+    .btn-secondary{ background:#111827; color:#fff; }
+    .hint{
+      max-width: 950px;
+      margin: 0 auto 16px;
+      color:#6b7280;
+      font-size:13px;
+    }
+
+    /* Certificate */
+    #certificate{
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 40px 40px 36px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      position: relative;
+      border: 3px solid var(--gold);
+    }
+    .star{
+      position:absolute;
+      font-size:1.4rem;
+      color: var(--gold);
+      opacity:0.7;
+    }
+    .star.tl{ top:14px; left:14px; }
+    .star.tr{ top:14px; right:14px; }
+    .star.bl{ bottom:14px; left:14px; }
+    .star.br{ bottom:14px; right:14px; }
+
+    .row{
+      display:flex;
+      align-items:center;
+      gap:36px;
+      margin-bottom:24px;
+    }
+    .left{ flex:1; text-align:center; }
+    .right{ flex-shrink:0; text-align:center; }
+    .hr{
+      border:none;
+      border-top:1px solid rgba(255,215,0,0.35);
+      width:80%;
+      margin:0 auto;
+    }
+    .photoFrame{
+      width: 160px;
+      height: 160px;
+      border: 3px solid var(--gold);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255,215,0,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(255,215,0,0.2);
+    }
+    .photoFrame img{ width:100%; height:100%; object-fit:cover; }
+    .muted{ color: var(--muted); }
+    .gold{ color: var(--gold); }
+    .teal{ color: var(--teal); }
+
+    .signatureRow{
+      display:flex;
+      justify-content:flex-end;
+      padding: 0 12px;
+      margin-top: 4px;
+    }
+    .sigBox{ text-align:center; width:180px; }
+    .sigLine{ border-top:1px solid rgba(255,215,0,0.55); margin-bottom:6px; }
+
+    /* Better capture for PDF/PNG */
+    #certificate{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  </style>
+</head>
+<body>
+  <div class="actions">
+    <button class="btn btn-primary" type="button" onclick="downloadPDF()">Download PDF</button>
+    <button class="btn btn-secondary" type="button" onclick="downloadPNG()">Download PNG</button>
+  </div>
+  <div class="hint">
+    Tip: If the download doesn’t start, click the buttons above.
+  </div>
+
+  <!-- Only this element is exported to PDF/PNG -->
+  <div id="certificate">
+    <div class="star tl">✦</div>
+    <div class="star tr">✦</div>
+    <div class="star bl">✦</div>
+    <div class="star br">✦</div>
+
+    <div class="row">
+      <div class="left">
+        <div style="font-size:2.2rem;margin-bottom:4px;">🏆</div>
+        <h1 style="font-size:2rem;letter-spacing:6px;margin:0 0 4px;" class="gold">CERTIFICATE</h1>
+        <p style="font-size:0.8rem;letter-spacing:2px;margin-bottom:20px;" class="muted">OF COMPLETION</p>
+
+        <hr class="hr" style="margin-bottom:18px;">
+
+        <p style="font-size:0.95rem;margin-bottom:6px;" class="muted">This certifies that</p>
+        <h2 style="font-size:1.8rem;margin:0 0 10px;" class="gold">
+          {{ cert.student.get_full_name|default:cert.student.username }}
+        </h2>
+
+        <p style="font-size:0.95rem;margin-bottom:6px;" class="muted">has successfully completed</p>
+        <h3 style="font-size:1.4rem;margin:0 0 20px;" class="teal">{{ cert.course.title }}</h3>
+
+        <hr class="hr" style="margin-bottom:16px;">
+
+        <p style="font-size:0.85rem;margin-bottom:3px;" class="muted">
+          📅 Date: {{ cert.completed_at.date|default:cert.created_at.date }}
+        </p>
+        <p style="font-size:0.7rem;" class="gold">
+          Certificate ID: {{ cert.certificate_id }}
+        </p>
+      </div>
+
+      <div class="right">
+        <div class="photoFrame">
+          {% if cert.student_photo %}
+            <img src="{{ cert.student_photo.url }}" alt="student" />
+          {% else %}
+            <div style="color:rgba(255,215,0,0.3);font-size:0.75rem;padding:10px;">
+              No Photo
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="signatureRow">
+      <div class="sigBox">
+        <div style="font-size:0.88rem;font-weight:700;margin-bottom:6px;" class="gold">
+          {{ cert.director_name|default:"Director" }}
+        </div>
+        <div class="sigLine"></div>
+        <div style="font-size:0.75rem;letter-spacing:0.5px;" class="muted">
+          Director's Signature
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF + PNG exporters -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+
+  <script>
+    async function downloadPDF() {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+      const el = document.getElementById("certificate");
+      const filename = "certificate_{{ cert.id }}.pdf";
+
+      const opt = {
+        margin: 0,
+        filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#1a1a2e" },
+        jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
+      };
+
+      return html2pdf().set(opt).from(el).save();
+    }
+
+    async function downloadPNG() {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+      const node = document.getElementById("certificate");
+      const filename = "certificate_{{ cert.id }}.png";
+      const dataUrl = await htmlToImage.toPng(node, { cacheBust: true, pixelRatio: 2, backgroundColor: "#1a1a2e" });
+
+      const a = document.createElement("a");
+      a.download = filename;
+      a.href = dataUrl;
+      a.click();
+    }
+
+    // Auto-download PDF when the page opens (keeps UX similar to direct download)
+    window.addEventListener("load", () => {
+      setTimeout(() => { downloadPDF(); }, 300);
+    });
+  </script>
+</body>
+</html>

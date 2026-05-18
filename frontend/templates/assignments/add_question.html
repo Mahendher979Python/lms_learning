@@ -1,0 +1,125 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% load static %}
+
+{% block title %}Add Question | Assignment Management{% endblock %}
+
+{% block content %}
+<style>
+    .aq-container {
+        max-width: 600px;
+        margin: 40px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .aq-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.05);
+        border: 1px solid #e2e8f0;
+    }
+
+    .aq-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .f-label {
+        display: block;
+        margin-top: 15px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #64748b;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        box-sizing: border-box;
+        font-size: 0.95rem;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .btn-submit {
+        margin-top: 25px;
+        padding: 14px;
+        width: 100%;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+        background: #1d4ed8;
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #64748b;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .back-link:hover {
+        color: #2563eb;
+    }
+</style>
+
+<div class="aq-container">
+    <h1 class="aq-title">📝 Add New Question</h1>
+
+    <div class="aq-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            <label class="f-label">Question Text</label>
+            <textarea name="text" placeholder="Type your question here..." rows="3" required></textarea>
+
+            <label class="f-label">Options</label>
+            <input type="text" name="option_a" placeholder="Option A" required>
+            <input type="text" name="option_b" placeholder="Option B" required>
+            <input type="text" name="option_c" placeholder="Option C">
+            <input type="text" name="option_d" placeholder="Option D">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                    <label class="f-label">Correct Answer</label>
+                    <select name="correct_answer" required>
+                        <option value="">-- Select --</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="f-label">Marks</label>
+                    <input type="number" name="marks" value="1" min="1">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">➕ Save Question</button>
+        </form>
+    </div>
+
+    <a href="{% url 'assignments:trainer_assignments' %}" class="back-link">← Cancel and return to panel</a>
+</div>
+{% endblock %}

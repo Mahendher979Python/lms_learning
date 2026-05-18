@@ -1,0 +1,125 @@
+/* =========================
+   STUDENT ATTENDANCE CSS
+========================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f1f5f9;
+    color:#1e293b;
+}
+
+/* PAGE TITLE */
+.page-title,
+h2{
+    font-size:28px;
+    font-weight:700;
+    margin-bottom:20px;
+    color:#0f172a;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    border-radius:16px;
+}
+
+/* TABLE */
+.table{
+    width:100%;
+    min-width:650px;
+    border-collapse:collapse;
+    background:#ffffff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* HEADER */
+.table th{
+    background:#2563eb;
+    color:#ffffff;
+    padding:16px;
+    text-align:left;
+    font-size:15px;
+    white-space:nowrap;
+}
+
+/* BODY */
+.table td{
+    padding:15px;
+    border-bottom:1px solid #e2e8f0;
+    font-size:14px;
+    color:#334155;
+}
+
+/* ROW HOVER */
+.table tbody tr:hover{
+    background:#eff6ff;
+    transition:0.3s;
+}
+
+/* LAST ROW */
+.table tbody tr:last-child td{
+    border-bottom:none;
+}
+
+/* EMPTY MESSAGE */
+.no-data{
+    text-align:center;
+    padding:25px;
+    color:#64748b;
+    font-weight:600;
+}
+
+/* TABLE BADGES */
+.time-badge{
+    background:#dbeafe;
+    color:#1d4ed8;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    display:inline-block;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    h2{
+        font-size:22px;
+        margin-bottom:15px;
+    }
+
+    .table{
+        min-width:100%;
+    }
+
+    .table th,
+    .table td{
+        padding:12px;
+        font-size:13px;
+    }
+
+}
+
+/* SMALL MOBILE */
+@media(max-width:480px){
+
+    h2{
+        font-size:20px;
+    }
+
+    .table th,
+    .table td{
+        font-size:12px;
+        padding:10px;
+    }
+
+}

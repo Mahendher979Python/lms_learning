@@ -1,0 +1,148 @@
+{% extends 'dashboard/student_base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'courses/css/student_courses.css' %}">
+<div class="learning-container">
+
+   <h2 class="page-title">
+    📚 My Learning ({{ total_courses }})
+</h2>
+
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text"id="searchCourse" class="search-input" placeholder="🔍 Search courses...">
+    </div>
+
+    <!-- COURSES -->
+    <div class="cards" id="courseCards">
+
+        {% if courses %}
+
+            {% for course in courses %}
+            <div class="card course-card">
+
+                <!-- TITLE -->
+                <h3>
+                    <a href="{% url 'course_detail' course.id %}" class="course-link">
+                        {{ course.title }}
+                    </a>
+                </h3>
+
+                <!-- PRICE + BADGE -->
+                <div class="top-info">
+                    <span class="price">₹{{ course.price }}</span>
+
+                    {% if course in enrolled_courses %}
+                        <span class="badge">Enrolled ✓</span>
+                    {% else %}
+                        <span class="badge" style="background:#fee2e2;color:#991b1b;">
+                            Not Enrolled
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p class="course-desc">
+                    {{ course.description }}
+                </p>
+
+                <!-- PROGRESS (safe static for now) -->
+                <div class="progress-wrapper">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 40%;"></div>
+                    </div>
+                    <small>Course Progress</small>
+                </div>
+
+                <!-- OPEN BUTTON -->
+               
+
+                    {% if course in enrolled_courses %}
+
+                    <!-- ENROLLED -->
+                    <a href="{% url 'assigned_courses' %}"
+                    class="open-btn">
+
+                        📖 Open Course
+
+                    </a>
+
+                {% else %}
+
+                    <!-- NOT ENROLLED -->
+                    {% if course.course_type == 'paid' %}
+
+                        <a href="{% url 'create_payment' course.id %}"
+                        class="open-btn">
+
+                            💳 Buy Course
+
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'course_detail' course.id %}"
+                        class="open-btn">
+
+                            📖 View Free Course
+
+                        </a>
+
+                    {% endif %}
+{% endif %}      
+          <!-- COURSE VIDEO -->
+                {% if course.video %}
+                <video controls>
+                    <source src="{{ course.video.url }}">
+                </video>
+                {% endif %}
+
+                <!-- TOPICS -->
+                <h4 class="topic-title">
+                     Topics ({{ course.topics.count }})
+                </h4>
+
+                <ul class="topic-list">
+
+                    {% for topic in course.topics.all %}
+                        <li class="topic-item">
+
+                            <div class="topic-name">
+                                {{ topic.name }}
+                            </div>
+
+                            <div class="topic-status">
+                                <span class="pending">⏳ Not Completed</span>
+                            </div>
+
+                            {% if topic.video %}
+                                <video controls>
+                                    <source src="{{ topic.video.url }}">
+                                </video>
+                            {% endif %}
+
+                            {% if topic.pdf %}
+                                <a href="{{ topic.pdf.url }}" target="_blank" class="pdf-btn">
+                                    📄 View PDF
+                                </a>
+                            {% endif %}
+
+                        </li>
+                    {% empty %}
+                        <li class="no-data">No topics available</li>
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <p class="no-data">No courses available yet.</p>
+        {% endif %}
+
+    </div>
+</div>
+
+<script src="{% static 'courses/js/student_courses.js' %}"></script>
+
+{% endblock %}

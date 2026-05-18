@@ -1,0 +1,221 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-4">
+     <!-- TOP LEFT BUTTON -->
+    <div class="top-bar">
+
+        <a href="{% url 'coding_tasks:available_tasks' %}" class="available-btn">
+           ← Available Tasks
+        </a>
+
+    </div>
+
+    <h2 class="mb-4">My Coding Submissions</h2>
+
+    <table class="table table-bordered">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for submission in submissions %}
+
+            <tr>
+                <td>{{ submission.task.title }}</td>
+                <td>{{ submission.status }}</td>
+                <td>{{ submission.score }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<style>
+/* =========================
+   MODERN LMS TABLE UI
+   ========================= */
+
+body {
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    font-family: "Segoe UI", sans-serif;
+    color: #0f172a;
+}
+
+/* layout */
+.container {
+    max-width: 1000px;
+    padding-top: 30px;
+}
+
+/* =========================
+   TITLE
+   ========================= */
+h2 {
+    font-weight: 700;
+    font-size: 24px;
+    color: #0f172a;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   TABLE WRAPPER (CARD STYLE)
+   ========================= */
+.table {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+
+    /* soft 3D elevation */
+    box-shadow:
+        0 10px 25px rgba(15,23,42,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.6);
+
+    border: 1px solid rgba(148,163,184,0.2);
+
+    transition: all 0.25s ease;
+}
+
+/* hover lift (no rotation = professional) */
+.table:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(15,23,42,0.12);
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.table-dark th {
+    background: linear-gradient(90deg, #0ea5e9, #3b82f6) !important;
+    color: #ffffff;
+    border: none !important;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 14px;
+}
+
+/* =========================
+   ROWS
+   ========================= */
+.table td {
+    padding: 14px;
+    border-bottom: 1px solid #f1f5f9 !important;
+    font-size: 14px;
+    color: #334155;
+}
+
+/* hover row effect */
+.table tbody tr:hover {
+    background: #f8fafc;
+    transition: 0.2s ease;
+}
+
+/* =========================
+   STATUS COLUMN (BADGE STYLE)
+   ========================= */
+td:nth-child(2) {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* optional status pill look */
+td:nth-child(2)::before {
+    content: "●";
+    margin-right: 6px;
+    color: #38bdf8;
+}
+
+/* =========================
+   SCORE COLUMN (HIGHLIGHT)
+   ========================= */
+td:nth-child(3) {
+    font-weight: 700;
+    color: #16a34a;
+}
+
+/* =========================
+   TABLE LAYOUT POLISH
+   ========================= */
+.table th, .table td {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* rounded feel fix */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+/* =========================
+   TOP BAR
+   ========================= */
+
+.top-bar{
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:20px;
+}
+
+/* =========================
+   AVAILABLE TASK BUTTON
+   ========================= */
+
+.available-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    padding:12px 22px;
+    border-radius:14px;
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:#ffffff;
+    text-decoration:none;
+
+    font-weight:600;
+    font-size:14px;
+
+    box-shadow:
+        0 10px 20px rgba(37,99,235,0.20),
+        inset 0 1px 0 rgba(255,255,255,0.25);
+
+    transition:all 0.25s ease;
+}
+
+.available-btn:hover{
+    transform:translateY(-3px);
+    color:#ffffff;
+
+    box-shadow:
+        0 18px 35px rgba(37,99,235,0.28);
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 768px) {
+    .table td, .table th {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+}
+
+</style>
+{% endblock %}

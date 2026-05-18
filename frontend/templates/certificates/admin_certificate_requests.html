@@ -1,0 +1,100 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'certificate/css/admin_certificate_requests.css' %}">
+
+<div class="container">
+
+    <div class="title">
+        🏆 Certificate Approval Requests
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Student</th>
+
+                <th>Course</th>
+
+                <th>Trainer</th>
+
+                <th>Status</th>
+
+                <th>Actions</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for certificate in certificates %}
+
+            <tr>
+
+                <td>
+                    {{ certificate.student.username }}
+                </td>
+
+                <td>
+                    {{ certificate.course.title }}
+                </td>
+
+                <td>
+                    {{ certificate.trainer.username }}
+                </td>
+
+                <td>
+
+                    <span class="badge">
+                        {{ certificate.status }}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <a href="{% url 'approve_certificate' certificate.id %}"
+                       class="btn btn-success">
+
+                        Approve
+
+                    </a>
+
+                    <a href="{% url 'reject_certificate' certificate.id %}"
+                       class="btn btn-danger">
+
+                        Reject
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="5">
+                    No pending certificate requests.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+<script src="{% static 'certificate/js/admin_certificate_requests.js' %}"></script>
+{% endblock %}

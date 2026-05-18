@@ -1,0 +1,165 @@
+<!-- templates/settings/settings.html -->
+
+{% extends 'dashboard/base.html' %}
+{% load i18n %}
+
+{% block content %}
+
+<style>
+
+.settings-container{
+    max-width:700px;
+    margin:40px auto;
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.settings-title{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.switch-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px;
+    border:1px solid #e5e7eb;
+    border-radius:14px;
+    margin-bottom:18px;
+}
+
+.switch-row label{
+    font-weight:600;
+}
+
+.switch-row input{
+    width:22px;
+    height:22px;
+}
+
+.select-box{
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
+.save-btn{
+    width:100%;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+</style>
+
+<div class="settings-container">
+
+    <div class="settings-title">
+        ⚙ Application Settings
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>
+            🌐 Language
+        </label>
+
+        <select name="language"
+                class="select-box">
+
+            <option value="en"
+            {% if settings_obj.language == "en" %}
+            selected
+            {% endif %}
+            >
+                English
+            </option>
+
+            <option value="te"
+            {% if settings_obj.language == "te" %}
+            selected
+            {% endif %}
+            >
+                Telugu
+            </option>
+
+            <option value="hi"
+            {% if settings_obj.language == "hi" %}
+            selected
+            {% endif %}
+            >
+                Hindi
+            </option>
+
+        </select>
+
+        <div class="switch-row">
+            <label>🌙 Dark Mode</label>
+            <input type="checkbox"
+                   name="dark_mode"
+                   {% if settings_obj.dark_mode %}
+                   checked
+                   {% endif %}>
+        </div>
+
+        <div class="switch-row">
+            <label>📧 Email Notifications</label>
+            <input type="checkbox"
+                   name="email_notifications"
+                   {% if settings_obj.email_notifications %}
+                   checked
+                   {% endif %}>
+        </div>
+
+        <div class="switch-row">
+            <label>🔔 Push Notifications</label>
+            <input type="checkbox"
+                   name="push_notifications"
+                   {% if settings_obj.push_notifications %}
+                   checked
+                   {% endif %}>
+        </div>
+
+        <div class="switch-row">
+            <label>🔐 Two Factor Authentication</label>
+            <input type="checkbox"
+                   name="two_factor_auth"
+                   {% if settings_obj.two_factor_auth %}
+                   checked
+                   {% endif %}>
+        </div>
+
+        <div class="switch-row">
+            <label>💬 Allow Chat</label>
+            <input type="checkbox"
+                   name="allow_chat"
+                   {% if settings_obj.allow_chat %}
+                   checked
+                   {% endif %}>
+        </div>
+
+        <button type="submit"
+                class="save-btn">
+
+            💾 Save Settings
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

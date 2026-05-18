@@ -1,0 +1,519 @@
+{% extends 'dashboard/trainer_base.html' %}
+
+{% block title %}Student Progress{% endblock %}
+
+{% block content %}
+
+<style>
+
+body{
+    background:#f4f7fc;
+    font-family:'Segoe UI',sans-serif;
+}
+
+/* =========================
+PAGE HEADER
+========================= */
+
+.page-title{
+    margin-bottom:30px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    padding:30px;
+    border-radius:24px;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    animation:fadeIn 0.7s ease;
+}
+
+.page-title h1{
+    font-size:34px;
+    margin-bottom:10px;
+    font-weight:700;
+}
+
+.page-title p{
+    font-size:15px;
+    opacity:0.92;
+}
+
+/* =========================
+TABLE WRAPPER
+========================= */
+
+.table-wrapper{
+    overflow-x:auto;
+    border-radius:22px;
+}
+
+/* =========================
+TABLE
+========================= */
+
+.progress-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    animation:fadeUp 0.8s ease;
+}
+
+/* TABLE HEAD */
+
+.progress-table th{
+    background:#111827;
+    color:white;
+    padding:18px;
+    text-align:left;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:0.3px;
+    white-space:nowrap;
+}
+
+/* TABLE BODY */
+
+.progress-table td{
+    padding:18px;
+    border-bottom:1px solid #eef2f7;
+    font-size:14px;
+    color:#374151;
+    vertical-align:middle;
+}
+
+/* ROW HOVER */
+
+.progress-table tbody tr{
+    transition:0.3s ease;
+}
+
+.progress-table tbody tr:hover{
+    background:#f8fafc;
+    transform:scale(1.003);
+}
+
+/* =========================
+STUDENT BOX
+========================= */
+
+.student-box{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.student-avatar{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:16px;
+    box-shadow:0 4px 10px rgba(37,99,235,0.25);
+}
+
+/* =========================
+COURSE TAG
+========================= */
+
+.course-tag{
+    display:inline-block;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:8px 15px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* =========================
+BADGES
+========================= */
+
+.badge{
+    padding:8px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+    display:inline-block;
+}
+
+.good{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.avg{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+/* =========================
+PROGRESS BAR
+========================= */
+
+.progress-wrap{
+    width:100%;
+    height:12px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+    position:relative;
+}
+
+.progress-fill{
+    height:100%;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+    width:0%;
+    border-radius:999px;
+    transition:1.5s ease;
+    position:relative;
+}
+
+.progress-fill::after{
+    content:'';
+    position:absolute;
+    right:0;
+    top:0;
+    width:14px;
+    height:100%;
+    background:rgba(255,255,255,0.4);
+}
+
+/* PERCENT TEXT */
+
+.percent-text{
+    margin-top:8px;
+    font-size:13px;
+    font-weight:600;
+    color:#374151;
+}
+
+/* =========================
+SCORE
+========================= */
+
+.score-box{
+    font-size:17px;
+    font-weight:700;
+    color:#111827;
+}
+
+/* =========================
+CERTIFICATE BUTTON
+========================= */
+
+.certificate-btn{
+    display:inline-block;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    padding:10px 16px;
+    border-radius:10px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    transition:0.3s ease;
+    box-shadow:0 4px 12px rgba(37,99,235,0.2);
+    white-space:nowrap;
+}
+
+.certificate-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px rgba(37,99,235,0.3);
+}
+
+.not-eligible{
+    color:#9ca3af;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* =========================
+EMPTY ROW
+========================= */
+
+.empty-row{
+    text-align:center;
+    padding:40px !important;
+    color:#6b7280;
+    font-size:15px;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(-10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .page-title{
+        padding:22px;
+    }
+
+    .page-title h1{
+        font-size:28px;
+    }
+
+    .progress-table th,
+    .progress-table td{
+        padding:14px;
+        font-size:13px;
+    }
+
+    .student-avatar{
+        width:38px;
+        height:38px;
+        font-size:13px;
+    }
+
+    .certificate-btn{
+        padding:8px 12px;
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+<!-- PAGE HEADER -->
+
+<div class="page-title">
+
+    <h1>
+        👨‍🎓 Student Progress
+    </h1>
+
+    <p>
+        Monitor all student learning performance and course completion
+    </p>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="table-wrapper">
+
+<table class="progress-table">
+
+    <thead>
+
+        <tr>
+
+            <th>Student</th>
+
+            <th>Course</th>
+
+            <th>Attendance</th>
+
+            <th>Score</th>
+
+            <th>Status</th>
+
+            <th>Certificate</th>
+
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+    {% for p in progress %}
+
+    <tr>
+
+        <!-- STUDENT -->
+
+        <td>
+
+            <div class="student-box">
+
+                <div class="student-avatar">
+
+                    {{ p.student.username|slice:":1"|upper }}
+
+                </div>
+
+                <div>
+
+                    <b>{{ p.student.username }}</b>
+
+                </div>
+
+            </div>
+
+        </td>
+
+        <!-- COURSE -->
+
+        <td>
+
+            <span class="course-tag">
+
+                {{ p.course.title }}
+
+            </span>
+
+        </td>
+
+        <!-- ATTENDANCE -->
+
+        <td style="width:280px;">
+
+            <div class="progress-wrap">
+
+                <div class="progress-fill"
+                     data-progress="{{ p.attendance }}">
+
+                </div>
+
+            </div>
+
+            <div class="percent-text">
+
+                {{ p.attendance }}%
+
+            </div>
+
+        </td>
+
+        <!-- SCORE -->
+
+        <td>
+
+            <div class="score-box">
+
+                {{ p.score }}
+
+            </div>
+
+        </td>
+
+        <!-- STATUS -->
+
+        <td>
+
+            {% if p.completed %}
+
+                <span class="badge good">
+
+                    ✅ Completed
+
+                </span>
+
+            {% else %}
+
+                <span class="badge avg">
+
+                    ⏳ In Progress
+
+                </span>
+
+            {% endif %}
+
+        </td>
+
+        <!-- CERTIFICATE -->
+
+        <td>
+
+            {% if p.completed %}
+
+                <a href="{% url 'send_certificate_request' p.course.id p.student.id %}"
+                   class="certificate-btn">
+
+                    🎓 Send Certificate
+
+                </a>
+
+            {% else %}
+
+                <span class="not-eligible">
+
+                    Not Eligible
+
+                </span>
+
+            {% endif %}
+
+        </td>
+
+    </tr>
+
+    {% empty %}
+
+    <tr>
+
+        <td colspan="6"
+            class="empty-row">
+
+            No progress found
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+
+<!-- SCRIPT -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const progressBars =
+    document.querySelectorAll(".progress-fill");
+
+    progressBars.forEach((bar,index) => {
+
+        let value =
+        bar.getAttribute("data-progress") || 0;
+
+        setTimeout(() => {
+
+            bar.style.width = value + "%";
+
+        }, index * 150);
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'dashboard/base.html' %}
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/create_course.css' %}">
+
+<div class="form-container">
+
+```
+<h2>📚 Create Course</h2>
+
+<!-- GLOBAL ERRORS -->
+{% if form.errors %}
+    <div class="error">
+        {{ form.errors }}
+    </div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data" id="courseForm">
+    {% csrf_token %}
+
+    <!-- TITLE -->
+    <div class="form-group">
+        <label>Title</label>
+        {{ form.title }}
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+        <label>Description</label>
+        {{ form.description }}
+    </div>
+
+    <!-- THUMBNAIL -->
+    <div class="form-group">
+        <label>Thumbnail</label>
+        {{ form.thumbnail }}
+    </div>
+
+    <!-- DEMO VIDEO -->
+    <div class="form-group">
+        <label>Demo Video (Free Preview)</label>
+        {{ form.demo_video }}
+        <div class="help-text">This will be shown before payment</div>
+    </div>
+
+    <!-- FULL VIDEO -->
+    <div class="form-group">
+        <label>Course Video (Premium)</label>
+        {{ form.video }}
+        <div class="help-text">Visible only after payment</div>
+    </div>
+
+    <!-- MATERIAL -->
+    <div class="form-group">
+        <label>PDF Material</label>
+        {{ form.material }}
+    </div>
+
+    <!-- ✅ FIXED PRICE FIELD -->
+    <div class="form-group">
+        <label>Course Price</label>
+
+        <div class="price-wrapper">
+            <span>₹</span>
+            <input 
+                type="number"
+                name="price"
+                id="priceInput"
+                value="{{ form.price.value|default:'' }}"
+                step="0.01"
+                min="0"
+                required
+            >
+        </div>
+
+        {% if form.price.errors %}
+            <div class="error">
+                {{ form.price.errors }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- ADMIN -->
+    {% if request.user.role == 'admin' %}
+    <div class="form-group">
+        <label>Assign Trainer</label>
+        {{ form.trainer }}
+    </div>
+
+    <div class="form-group">
+        <label>Assign Students</label>
+        {{ form.students }}
+        <div class="help-text">Select multiple students if needed</div>
+    </div>
+    {% endif %}
+
+    <!-- SUBMIT -->
+    <button type="submit" class="btn">
+        💾 Create Course
+    </button>
+
+</form>
+
+
+</div>
+<script src="{% static 'courses/js/create_course.js' %}"></script>
+
+{% endblock %}

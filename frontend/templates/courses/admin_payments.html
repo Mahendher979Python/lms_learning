@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Payments</title>
+
+{% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/admin_payments.css' %}"></head>
+
+<body>
+
+<h2 class="page-title">
+     Payment Requests
+</h2>
+
+<table class="payment-table">
+<tr class="payment-row">
+    <th>Student</th>
+    <th>Course</th>
+    <th>Amount</th>
+    <th>UTR</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
+
+{% for p in payments %}
+<tr>
+    <td>{{ p.student.username }}</td>
+    <td>{{ p.course.title }}</td>
+    <td>₹{{ p.amount }}</td>
+    <td>{{ p.transaction_id }}</td>
+
+    <td>
+        <span class="status {{ p.payment_status }}">
+            {{ p.payment_status }}
+        </span>
+    </td>
+
+    <td>
+        {% if p.payment_status == "pending" %}
+        <a href="{% url 'mark_payment_success' p.id %}">
+           <button class="approve-btn">Approve</button>
+        </a>
+        {% else %}
+        ✔
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+
+</table>
+<script src="{% static 'courses/js/admin_payments.js' %}"></script>
+</body>
+</html>

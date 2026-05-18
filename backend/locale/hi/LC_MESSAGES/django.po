@@ -1,0 +1,195 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-11 11:30+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: .\templates\settings\settings.html:133
+msgid "Account Settings"
+msgstr ""
+
+#: .\templates\settings\settings.html:137
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr ""
+
+#: .\templates\settings\settings.html:147
+msgid "Language & Appearance"
+msgstr ""
+
+#: .\templates\settings\settings.html:153
+#: .\templates\settings\student_settings.html:259
+msgid "Language"
+msgstr ""
+
+#: .\templates\settings\settings.html:154
+msgid "Select your preferred application language."
+msgstr ""
+
+#: .\templates\settings\settings.html:178
+msgid "Dark Mode"
+msgstr ""
+
+#: .\templates\settings\settings.html:179
+msgid "Enable dark theme for better night viewing."
+msgstr ""
+
+#: .\templates\settings\settings.html:192
+msgid "Notifications"
+msgstr ""
+
+#: .\templates\settings\settings.html:198
+msgid "Email Notifications"
+msgstr ""
+
+#: .\templates\settings\settings.html:199
+msgid "Receive updates through email."
+msgstr ""
+
+#: .\templates\settings\settings.html:209
+msgid "Push Notifications"
+msgstr ""
+
+#: .\templates\settings\settings.html:210
+msgid "Get instant browser/app alerts."
+msgstr ""
+
+#: .\templates\settings\settings.html:220
+msgid "Live Class Reminders"
+msgstr ""
+
+#: .\templates\settings\settings.html:221
+msgid "Receive reminders before live classes."
+msgstr ""
+
+#: .\templates\settings\settings.html:234
+msgid "Security"
+msgstr ""
+
+#: .\templates\settings\settings.html:240
+msgid "Fingerprint Login"
+msgstr ""
+
+#: .\templates\settings\settings.html:241
+msgid "Use biometric authentication to login."
+msgstr ""
+
+#: .\templates\settings\settings.html:251
+msgid "Two Factor Authentication"
+msgstr ""
+
+#: .\templates\settings\settings.html:252
+msgid "Add extra security to your account."
+msgstr ""
+
+#: .\templates\settings\settings.html:265
+msgid "Learning Preferences"
+msgstr ""
+
+#: .\templates\settings\settings.html:271
+msgid "Autoplay Videos"
+msgstr ""
+
+#: .\templates\settings\settings.html:272
+msgid "Automatically play next lesson videos."
+msgstr ""
+
+#: .\templates\settings\settings.html:282
+msgid "Offline Downloads"
+msgstr ""
+
+#: .\templates\settings\settings.html:283
+msgid "Allow downloading lessons for offline use."
+msgstr ""
+
+#: .\templates\settings\settings.html:296
+msgid "Community"
+msgstr ""
+
+#: .\templates\settings\settings.html:302
+msgid "Allow Chat"
+msgstr ""
+
+#: .\templates\settings\settings.html:303
+msgid "Enable messaging with students and trainers."
+msgstr ""
+
+#: .\templates\settings\settings.html:313
+msgid "Allow Discussions"
+msgstr ""
+
+#: .\templates\settings\settings.html:314
+msgid "Participate in community discussions."
+msgstr ""
+
+#: .\templates\settings\settings.html:324
+msgid "Save Settings"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:152
+msgid "Student Profile Settings"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:156
+msgid "Update your account information, preferences, and language settings."
+msgstr ""
+
+#: .\templates\settings\student_settings.html:185
+msgid "Username"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:196
+msgid "Email Address"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:207
+msgid "Phone Number"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:218
+msgid "Date of Birth"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:229
+msgid "Gender"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:234
+msgid "Select Gender"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:239
+msgid "Male"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:244
+msgid "Female"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:249
+msgid "Other"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:281
+msgid "Profile Photo"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:291
+msgid "Address"
+msgstr ""
+
+#: .\templates\settings\student_settings.html:304
+msgid "Save Changes"
+msgstr ""

@@ -1,0 +1,812 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}Exam Portal | {{ assignment.title }}{% endblock %}
+
+{% block content %}
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="exam-shell">
+
+    <!-- ═══════════════════════════════ -->
+    <!-- LEFT: QUESTION PANEL           -->
+    <!-- ═══════════════════════════════ -->
+    <div class="q-panel">
+
+        <!-- Top bar -->
+        <div class="q-topbar">
+            <div class="topbar-left">
+                <div class="exam-badge">LIVE EXAM</div>
+                <h1 class="exam-name">{{ assignment.title }}</h1>
+            </div>
+            <div class="timers-row">
+                <div class="timer-pill total-timer" id="timerBox">
+                    <span class="timer-ico">⏱</span>
+                    <div>
+                        <div class="timer-lbl">Total Time</div>
+                        <div class="timer-val" id="totalCountdown">--:--</div>
+                    </div>
+                </div>
+                <div class="timer-pill q-timer" id="qTimerBox">
+                    <span class="timer-ico">⚡</span>
+                    <div>
+                        <div class="timer-lbl">This Question</div>
+                        <div class="timer-val" id="questionCountdown">--s</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question body -->
+        <form id="mcqForm" method="POST" action="{% url 'assignments:submit_exam' submission.id %}">
+            {% csrf_token %}
+            {% for q in questions %}
+                <input type="hidden" name="status_{{ q.id }}" id="status_input_{{ forloop.counter }}" value="not_visited">
+            {% endfor %}
+
+            <div class="q-scroll-area">
+                {% for q in questions %}
+                <div class="q-card" id="q_wrapper_{{ forloop.counter }}" {% if not forloop.first %}style="display:none;"{% endif %}>
+
+                    <div class="q-meta-bar">
+                        <div class="q-num-badge">Q {{ forloop.counter }} <span class="q-total">/ {{ questions.count }}</span></div>
+                        <div class="marks-chips">
+                            <span class="chip chip-pos">+{{ q.marks|default:"1" }} correct</span>
+                            <span class="chip chip-neg">−0.25 wrong</span>
+                        </div>
+                    </div>
+
+                    <p class="q-text">{{ q.text }}</p>
+
+                    <div class="options-grid">
+                        {% for opt in q.options.all %}
+                        <label class="opt-row" id="opt_row_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
+                            <input type="radio" name="q_{{ q.id }}" value="{{ opt.id }}"
+                                   onclick="updatePaletteStatus({{ forloop.parentloop.counter }}, 'answered')">
+                            <span class="opt-letter">{{ forloop.counter|add:64|chr }}</span>
+                            <span class="opt-text">{{ opt.text }}</span>
+                            <span class="opt-check">✓</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Footer controls -->
+            <div class="q-footer">
+                <div class="footer-group">
+                    <button type="button" class="fc-btn fc-prev" id="prevBtn" onclick="navigate(-1)" disabled>
+                        ← Prev
+                    </button>
+                    <button type="button" class="fc-btn fc-clear" onclick="clearResponse()">
+                        Clear
+                    </button>
+                    <button type="button" class="fc-btn fc-review" onclick="markForReview()">
+                        Mark & Next
+                    </button>
+                </div>
+                <div class="footer-group">
+                    <button type="button" class="fc-btn fc-next" id="nextBtn" onclick="navigate(1)">
+                        Save & Next →
+                    </button>
+                    <button type="button" class="fc-btn fc-submit" onclick="triggerFinalSubmit()">
+                        Submit Exam
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ═══════════════════════════════ -->
+    <!-- RIGHT: PALETTE PANEL           -->
+    <!-- ═══════════════════════════════ -->
+    <aside class="palette-panel">
+
+        <!-- User card -->
+        <div class="user-card">
+            <div class="avatar">{{ request.user.username|slice:":1"|upper }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ request.user.username }}</div>
+                <div class="user-roll">ID: #{{ request.user.id }}</div>
+            </div>
+        </div>
+
+        <!-- Progress ring -->
+        <div class="progress-block">
+            <div class="progress-ring-wrap">
+                <svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="#1e293b" stroke-width="7"/>
+                    <circle cx="40" cy="40" r="34" fill="none" stroke="#22c55e" stroke-width="7"
+                            stroke-dasharray="213.6" stroke-dashoffset="213.6"
+                            id="progressCircle" stroke-linecap="round"
+                            transform="rotate(-90 40 40)"/>
+                </svg>
+                <div class="ring-label" id="ringLabel">0%</div>
+            </div>
+            <div class="progress-stats">
+                <div class="pstat"><span class="pstat-val" id="answeredCount">0</span><span class="pstat-lbl">Answered</span></div>
+                <div class="pstat"><span class="pstat-val" id="remainingCount">{{ questions.count }}</span><span class="pstat-lbl">Remaining</span></div>
+            </div>
+        </div>
+
+        <!-- Question palette -->
+        <div class="palette-section">
+            <div class="palette-heading">Question Palette</div>
+            <div class="node-grid">
+                {% for q in questions %}
+                <button type="button" class="q-node node-grey" id="node_{{ forloop.counter }}" onclick="jumpTo({{ forloop.counter }})">
+                    {{ forloop.counter }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="leg-item"><span class="leg-dot dot-green"></span>Answered</div>
+            <div class="leg-item"><span class="leg-dot dot-red"></span>Not Answered</div>
+            <div class="leg-item"><span class="leg-dot dot-grey"></span>Not Visited</div>
+            <div class="leg-item"><span class="leg-dot dot-purple"></span>Marked Review</div>
+        </div>
+
+    </aside>
+</div>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #0a0f1e;
+    --surface: #0f1729;
+    --surface2: #141d35;
+    --border: #1e2d4a;
+    --blue: #3b82f6;
+    --blue-glow: rgba(59,130,246,0.25);
+    --green: #22c55e;
+    --red: #ef4444;
+    --purple: #a855f7;
+    --amber: #f59e0b;
+    --grey: #475569;
+    --text: #f1f5f9;
+    --text-muted: #64748b;
+    --radius: 12px;
+}
+
+body { overflow: hidden; }
+
+.exam-shell {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow: hidden;
+}
+
+/* ── TOP BAR ── */
+.q-topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+
+.exam-badge {
+    background: var(--red);
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.exam-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 380px;
+}
+
+.timers-row { display: flex; gap: 10px; }
+
+.timer-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    min-width: 130px;
+}
+
+.total-timer { background: var(--surface2); border-color: var(--border); }
+.q-timer { background: rgba(59,130,246,0.15); border-color: var(--blue); }
+
+.timer-ico { font-size: 1.2rem; }
+.timer-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+.timer-val { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+/* ── QUESTION PANEL ── */
+.q-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+}
+
+.q-scroll-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px 36px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.q-card {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.q-meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.q-num-badge {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--blue);
+}
+.q-total { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
+
+.marks-chips { display: flex; gap: 8px; }
+.chip {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+}
+.chip-pos { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+.chip-neg { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+
+.q-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text);
+    margin-bottom: 28px;
+    font-weight: 400;
+}
+
+.options-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.opt-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.18s;
+    position: relative;
+}
+.opt-row:hover { border-color: var(--blue); background: rgba(59,130,246,0.08); }
+.opt-row:has(input:checked) {
+    border-color: var(--blue);
+    background: rgba(59,130,246,0.15);
+    box-shadow: 0 0 0 1px var(--blue);
+}
+
+.opt-row input { display: none; }
+
+.opt-letter {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    transition: all 0.18s;
+}
+.opt-row:has(input:checked) .opt-letter {
+    background: var(--blue);
+    color: white;
+}
+
+.opt-text { flex: 1; font-size: 0.95rem; color: var(--text); }
+
+.opt-check {
+    color: var(--blue);
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.18s;
+}
+.opt-row:has(input:checked) .opt-check { opacity: 1; }
+
+/* ── FOOTER ── */
+.q-footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.footer-group { display: flex; gap: 8px; }
+
+.fc-btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    white-space: nowrap;
+}
+
+.fc-prev { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.fc-prev:hover:not(:disabled) { border-color: var(--text-muted); }
+.fc-prev:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.fc-clear { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+.fc-clear:hover { color: var(--text); border-color: var(--text-muted); }
+
+.fc-review { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.35); }
+.fc-review:hover { background: rgba(168,85,247,0.25); }
+
+.fc-next { background: var(--blue); color: white; }
+.fc-next:hover { background: #2563eb; box-shadow: 0 0 14px var(--blue-glow); }
+
+.fc-submit { background: var(--green); color: white; }
+.fc-submit:hover { background: #16a34a; box-shadow: 0 0 14px rgba(34,197,94,0.3); }
+
+/* ── PALETTE PANEL ── */
+.palette-panel {
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.user-card {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #7c3aed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.user-name { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+.user-roll { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+
+/* Progress block */
+.progress-block {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.progress-ring-wrap {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.progress-ring { display: block; }
+
+.ring-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--text);
+}
+
+.progress-stats { display: flex; flex-direction: column; gap: 10px; }
+.pstat { display: flex; flex-direction: column; }
+.pstat-val { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; color: var(--text); }
+.pstat-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Palette */
+.palette-section { padding: 16px; flex: 1; }
+.palette-heading {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.node-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.q-node {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.node-grey { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); }
+.node-green { background: rgba(34,197,94,0.2); color: var(--green); border: 1px solid rgba(34,197,94,0.4); }
+.node-red { background: rgba(239,68,68,0.2); color: var(--red); border: 1px solid rgba(239,68,68,0.35); }
+.node-purple { background: rgba(168,85,247,0.2); color: var(--purple); border: 1px solid rgba(168,85,247,0.4); border-radius: 50%; }
+.node-active { box-shadow: 0 0 0 2px white; transform: scale(1.1); }
+
+/* Legend */
+.legend {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.leg-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.leg-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+.dot-green { background: var(--green); }
+.dot-red { background: var(--red); }
+.dot-grey { background: var(--grey); }
+.dot-purple { background: var(--purple); border-radius: 50%; }
+</style>
+
+/* ===== ENHANCED 3D GLASSMORPHIC UI ===== */
+
+.exam-shell{
+    background:
+        radial-gradient(circle at top left, rgba(59,130,246,0.15), transparent 25%),
+        radial-gradient(circle at bottom right, rgba(168,85,247,0.15), transparent 25%),
+        #060b16;
+}
+
+/* PANELS */
+.q-panel,
+.palette-panel{
+    background: rgba(15,23,41,0.82);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.04),
+        0 10px 40px rgba(0,0,0,0.35);
+}
+
+/* TOPBAR */
+.q-topbar{
+    background: rgba(20,29,53,0.75);
+    backdrop-filter: blur(16px);
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* QUESTION CARD */
+.q-card{
+    background: rgba(20,29,53,0.72);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 20px;
+    padding: 28px;
+    backdrop-filter: blur(18px);
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.35),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+    transform-style: preserve-3d;
+}
+
+/* OPTION ROWS */
+.opt-row{
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(10px);
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+}
+
+.opt-row:hover{
+    transform: translateY(-3px) scale(1.01);
+    box-shadow:
+        0 14px 28px rgba(59,130,246,0.18),
+        0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ACTIVE OPTION */
+.opt-row:has(input:checked){
+    transform: translateY(-2px);
+    box-shadow:
+        0 0 0 1px rgba(59,130,246,0.6),
+        0 10px 30px rgba(59,130,246,0.25);
+}
+
+/* TIMER PILLS */
+.timer-pill{
+    backdrop-filter: blur(14px);
+    background: rgba(255,255,255,0.04);
+    box-shadow:
+        0 8px 20px rgba(0,0,0,0.25),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* FOOTER */
+.q-footer{
+    background: rgba(15,23,41,0.85);
+    backdrop-filter: blur(16px);
+    box-shadow:
+        0 -8px 25px rgba(0,0,0,0.3);
+}
+
+/* BUTTONS */
+.fc-btn{
+    transform-style: preserve-3d;
+    box-shadow:
+        0 6px 14px rgba(0,0,0,0.22);
+}
+
+.fc-btn:hover{
+    transform: translateY(-2px);
+}
+
+/* QUESTION PALETTE BUTTONS */
+.q-node{
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.04),
+        0 5px 12px rgba(0,0,0,0.25);
+}
+
+.q-node:hover{
+    transform: translateY(-2px) scale(1.06);
+}
+
+.node-active{
+    box-shadow:
+        0 0 0 2px white,
+        0 0 18px rgba(59,130,246,0.55);
+}
+
+/* USER CARD */
+.user-card,
+.progress-block,
+.palette-section,
+.legend{
+    backdrop-filter: blur(12px);
+}
+
+/* SCROLLBAR */
+.q-scroll-area::-webkit-scrollbar,
+.palette-panel::-webkit-scrollbar{
+    width: 8px;
+}
+
+.q-scroll-area::-webkit-scrollbar-thumb,
+.palette-panel::-webkit-scrollbar-thumb{
+    background: rgba(255,255,255,0.12);
+    border-radius: 20px;
+}
+
+<!-- ✅ ADD HERE -->
+<script>
+let questionTimes = [
+    {% for q in questions %}
+        {{ q.time_limit }},
+    {% endfor %}
+];
+</script>
+
+<script>
+let currentQIdx = 1;
+const totalQuestions = parseInt("{{ questions.count }}");
+let totalExamSeconds = parseInt("{{ assignment.duration }}") * 60;
+let currentQuestionSeconds = questionTimes[0];  // times in seconds
+let globalInterval, questionInterval;
+let answeredCount = 0;
+
+function initTimers() {
+    globalInterval = setInterval(() => {
+        if (totalExamSeconds <= 0) {
+            clearInterval(globalInterval);
+            document.getElementById('mcqForm').submit();
+            return;
+        }
+        let m = Math.floor(totalExamSeconds / 60);
+        let s = totalExamSeconds % 60;
+        document.getElementById("totalCountdown").innerText =
+            `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+
+        // Warning color when < 5 min
+        if (totalExamSeconds < 300) {
+            document.getElementById('timerBox').style.borderColor = '#ef4444';
+            document.getElementById('totalCountdown').style.color = '#ef4444';
+        }
+        totalExamSeconds--;
+    }, 1000);
+    startQuestionTimer();
+}
+
+function startQuestionTimer() {
+    clearInterval(questionInterval);
+    currentQuestionSeconds = questionTimes[currentQIdx - 1]; //times in seconds
+    const qDisplay = document.getElementById("questionCountdown");
+    questionInterval = setInterval(() => {
+        qDisplay.innerText = `${currentQuestionSeconds}s`;
+        if (currentQuestionSeconds <= 5) qDisplay.style.color = '#ef4444';
+        else qDisplay.style.color = '';
+        if (currentQuestionSeconds <= 0) {
+            if (currentQIdx < totalQuestions) navigate(1);
+            else triggerFinalSubmit();
+        }
+        currentQuestionSeconds--;
+    }, 1000);
+}
+
+function navigate(step) {
+    saveCurrentStatus();
+    jumpTo(currentQIdx + step);
+}
+
+function jumpTo(n) {
+    if (n < 1 || n > totalQuestions) return;
+    document.getElementById(`q_wrapper_${currentQIdx}`).style.display = 'none';
+    document.getElementById(`node_${currentQIdx}`).classList.remove('node-active');
+
+    currentQIdx = n;
+    document.getElementById(`q_wrapper_${currentQIdx}`).style.display = 'block';
+
+    const node = document.getElementById(`node_${currentQIdx}`);
+    node.classList.add('node-active');
+    if (node.classList.contains('node-grey')) {
+        node.classList.replace('node-grey', 'node-red');
+        document.getElementById(`status_input_${currentQIdx}`).value = "not_answered";
+    }
+
+    document.getElementById('prevBtn').disabled = (currentQIdx === 1);
+    document.getElementById('nextBtn').disabled = (currentQIdx === totalQuestions);
+    startQuestionTimer();
+}
+
+function saveCurrentStatus() {
+    const node = document.getElementById(`node_${currentQIdx}`);
+    const hasSelection = document.querySelector(`#q_wrapper_${currentQIdx} input[type="radio"]:checked`);
+    if (!node.classList.contains('node-purple')) {
+        if (hasSelection) {
+            node.className = 'q-node node-green';
+        } else {
+            node.className = 'q-node node-red';
+        }
+    }
+    updateProgress();
+}
+
+function markForReview() {
+    const node = document.getElementById(`node_${currentQIdx}`);
+    const hasSelection = document.querySelector(`#q_wrapper_${currentQIdx} input[type="radio"]:checked`);
+    node.className = 'q-node node-purple';
+    document.getElementById(`status_input_${currentQIdx}`).value = hasSelection ? "answered_review" : "marked_review";
+    if (currentQIdx < totalQuestions) navigate(1);
+}
+
+function clearResponse() {
+    const selected = document.querySelector(`#q_wrapper_${currentQIdx} input[type="radio"]:checked`);
+    if (selected) selected.checked = false;
+    const node = document.getElementById(`node_${currentQIdx}`);
+    node.className = 'q-node node-red';
+    document.getElementById(`status_input_${currentQIdx}`).value = "not_answered";
+    updateProgress();
+}
+
+function updatePaletteStatus(idx, status) {
+    document.getElementById(`node_${idx}`).className = 'q-node node-green node-active';
+    updateProgress();
+}
+
+function updateProgress() {
+    const greens = document.querySelectorAll('.node-green').length;
+    const total = totalQuestions;
+    const pct = Math.round((greens / total) * 100);
+    const circumference = 213.6;
+    const offset = circumference - (pct / 100) * circumference;
+    document.getElementById('progressCircle').style.strokeDashoffset = offset;
+    document.getElementById('ringLabel').innerText = pct + '%';
+    document.getElementById('answeredCount').innerText = greens;
+    document.getElementById('remainingCount').innerText = total - greens;
+}
+
+function triggerFinalSubmit() {
+    if (confirm("Are you sure you want to submit the exam? All responses will be saved.")) {
+        document.getElementById('mcqForm').submit();
+    }
+}
+
+window.onload = () => { initTimers(); jumpTo(1); };
+</script>
+
+{% endblock %}

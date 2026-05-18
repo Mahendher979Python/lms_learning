@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+
+<link rel="stylesheet"
+href="{% static 'courses/css/payment_pending.css' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Pending</title>
+
+
+
+</head>
+<body>
+
+<div class="card">
+
+    <div class="icon">⏳</div>
+
+    <h2>Payment Submitted</h2>
+
+    <div class="status">Verification Pending</div>
+
+    <p>Your payment is being reviewed by admin.</p>
+    <p>Course will be unlocked once verified.</p>
+
+    <form action="{% url 'student_courses' %}">
+        <button>Go to My Courses</button>
+    </form>
+
+    <div class="note">
+        Usually takes 1–5 minutes ⏱
+    </div>
+
+</div>
+<script src="{% static 'courses/js/payment_pending.js' %}"></script>
+</body>
+</html>

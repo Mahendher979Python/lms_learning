@@ -1,0 +1,546 @@
+{% extends 'dashboard/student_base.html' %}
+{% block content %}
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+    background: #f4f6f9;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+/* ── Timer Circle ── */
+.circle-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 10px solid #28a745;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #28a745;
+    background: #f0fff4;
+}
+
+/* ── Status dot ── */
+.status {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.dot-green  { background: #28a745; }
+.dot-red    { background: #dc3545; }
+.dot-orange { background: #fd7e14; }
+
+/* ── Buttons ── */
+.btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity .2s;
+}
+.btn:hover { opacity: .85; }
+
+.btn-green  { background: #28a745; }
+.btn-red    { background: #dc3545; }
+.btn-blue   { background: #007bff; }
+.btn-yellow { background: #ffc107; color: #333; }
+.btn-dark   { background: #343a40; }
+
+/* ── Break row ── */
+.break-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.break-box {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 100px;
+    text-align: center;
+    background: #f8f9fa;
+}
+
+/* ── Table ── */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 14px;
+}
+
+.table th {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+.table tr[data-date]:hover { background: #f0f8ff; cursor: pointer; }
+
+.status-present { color: #28a745; font-weight: 700; }
+.status-absent  { color: #dc3545; font-weight: 700; }
+
+/* ── Map ── */
+#map {
+    height: 250px;
+    border-radius: 10px;
+    margin-top: 12px;
+    z-index: 0;
+}
+
+/* ── Location address box ── */
+.location-address {
+    border-left: 4px solid #28a745;
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+/* ── Filter buttons row ── */
+.filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+</style>
+
+<h2>📊 Student Attendance Dashboard</h2>
+
+<div class="dashboard">
+
+<!-- ═══════════ LEFT ═══════════ -->
+<div>
+
+    <!-- Working Time Card -->
+    <div class="card">
+        <h4>Working Time</h4>
+
+        <div class="circle-wrap">
+            <div class="circle" id="workTimer">00:00:00</div>
+        </div>
+
+        <div class="status">
+            {% if attendance and attendance.login_time and not attendance.logout_time %}
+                <span class="dot dot-green"></span>
+                <span style="color:green;">Present</span>
+            {% else %}
+                <span class="dot dot-red"></span>
+                <span style="color:red;">Absent</span>
+            {% endif %}
+        </div>
+
+        <br>
+
+        {% if attendance and attendance.login_time and not attendance.logout_time %}
+            <a href="{% url 'logout_time' %}">
+                <button class="btn btn-red">🔴 Logout Attendance</button>
+            </a>
+        {% else %}
+            <button class="btn btn-green" id="loginBtn" onclick="loginWithLocation()">
+                ✅ Login Attendance
+            </button>
+        {% endif %}
+
+        <!-- Status message shown during GPS fetch -->
+        <div id="loginStatus" style="margin-top:10px; font-size:14px; color:#555; display:none;">
+            <span id="loginStatusText">📡 Getting location…</span>
+        </div>
+
+        <hr style="margin: 14px 0;">
+
+        <div class="break-row">
+            <span style="font-weight:600;">Break:</span>
+            <div class="break-box" id="breakTimer">00:00:00</div>
+            <button class="btn btn-yellow" onclick="startBreak()">▶ Start</button>
+            <button class="btn btn-dark"   onclick="endBreak()">⏹ End</button>
+        </div>
+    </div>
+
+    <!-- Attendance Records Card -->
+    <div class="card">
+        <h4>📋 My Attendance Report</h4>
+
+        <div class="filter-row">
+            <button class="btn btn-blue"   onclick="filterData('day')">Daily</button>
+            <button class="btn btn-green"  onclick="filterData('week')">Weekly</button>
+            <button class="btn btn-yellow" onclick="filterData('month')">Monthly</button>
+            <button class="btn btn-red"    onclick="filterData('year')">Yearly</button>
+            <button class="btn btn-dark"   onclick="filterData('all')">All</button>
+        </div>
+
+        <table class="table" id="attendanceTable">
+            <tr>
+                <th>Date</th>
+                <th>Login</th>
+                <th>Logout</th>
+                <th>Total Hours</th>
+                <th>Break</th>
+                <th>Status</th>
+            </tr>
+
+            {% for r in records %}
+            <tr
+                data-date="{{ r.date }}"
+                data-lat="{{ r.latitude|default:'0' }}"
+                data-lng="{{ r.longitude|default:'0' }}"
+                data-hours="{{ r.total_hours|default:'0' }}"
+                onclick="showRowMap(this)"
+            >
+                <td>{{ r.date }}</td>
+                <td>{% if r.login_time %}{{ r.login_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
+                <td>{% if r.logout_time %}{{ r.logout_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
+                <td>{{ r.total_hours }}</td>
+                <td>{{ r.break_hours }}</td>
+                <td>
+                    {% if r.logout_time and r.total_hours >= 4 %}
+                        <span class="status-present">✔ Present</span>
+                    {% else %}
+                        <span class="status-absent">✘ Absent</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <!-- Chart Card -->
+    <div class="card">
+        <h4>📊 Attendance Chart</h4>
+        <canvas id="chart"></canvas>
+    </div>
+
+</div>
+
+<!-- ═══════════ RIGHT ═══════════ -->
+<div>
+
+    <!-- Attendance Status -->
+    <div class="card">
+        <h4>✅ Attendance Status</h4>
+        {% if attendance and attendance.login_time and not attendance.logout_time %}
+            <p style="color:green; font-size:17px;">
+                <span class="dot dot-green"></span> You are currently logged in.
+            </p>
+        {% elif attendance and attendance.logout_time %}
+            <p style="color:red; font-size:17px;">
+                <span class="dot dot-red"></span> You already logged out today.
+            </p>
+        {% else %}
+            <p style="color:orange; font-size:17px;">
+                <span class="dot dot-orange"></span> You have not logged in today.
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Location Card -->
+    <div class="card">
+        <h4>📍 Latest Location</h4>
+        <div class="location-address">
+            📍 <span id="addressText">Fetching location…</span>
+        </div>
+        <div id="map"></div>
+    </div>
+
+</div>
+
+</div>
+
+<!-- ════════════════ JS ════════════════ -->
+<script>
+
+let leafletMap, leafletMarker, chart;
+let breakInterval, breakStart;
+
+/*
+ * FIX: today_logout_time is now passed from Django (was missing before).
+ * If logoutTime is set  → timer shows frozen elapsed time, NO interval.
+ * If only workStart set → timer ticks live every second.
+ */
+let workStart  = "{{ today_login_time|default:'' }}";
+let logoutTime = "{{ today_logout_time|default:'' }}";
+
+/* ── Init ── */
+document.addEventListener("DOMContentLoaded", function(){
+    startWorkTimer();
+    initLeafletMap();
+    autoGPS();
+    loadChart();
+});
+
+/* ── Work Timer ── */
+function startWorkTimer(){
+    if(!workStart) return;
+
+    let start = new Date(workStart);
+
+    // Already logged out → compute frozen time once, do NOT start interval
+    if(logoutTime){
+        let end  = new Date(logoutTime);
+        let diff = Math.max(0, Math.floor((end - start) / 1000));
+        document.getElementById("workTimer").innerHTML = formatTime(diff);
+        return;
+    }
+
+    // Still logged in → tick every second
+    setInterval(function(){
+        let diff = Math.max(0, Math.floor((new Date() - start) / 1000));
+        document.getElementById("workTimer").innerHTML = formatTime(diff);
+    }, 1000);
+}
+
+/* ── Break ── */
+function startBreak(){
+    fetch("{% url 'start_break' %}");
+    breakStart = new Date();
+    breakInterval = setInterval(function(){
+        let diff = Math.floor((new Date() - breakStart) / 1000);
+        document.getElementById("breakTimer").innerHTML = formatTime(diff);
+    }, 1000);
+}
+
+function endBreak(){
+    fetch("{% url 'end_break' %}");
+    clearInterval(breakInterval);
+    document.getElementById("breakTimer").innerHTML = "00:00:00";
+}
+
+/* ── Leaflet Map ── */
+function initLeafletMap(){
+    leafletMap = L.map('map').setView([20.5937, 78.9629], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(leafletMap);
+}
+
+function showRowMap(row){
+    let lat = parseFloat(row.dataset.lat);
+    let lng = parseFloat(row.dataset.lng);
+    if(!lat || !lng){ alert("No location data for this record."); return; }
+    leafletMap.setView([lat, lng], 15);
+    if(leafletMarker) leafletMarker.remove();
+    leafletMarker = L.marker([lat, lng])
+        .addTo(leafletMap)
+        .bindPopup("📍 Location on " + row.dataset.date)
+        .openPopup();
+}
+
+/* ── Auto GPS ── */
+function autoGPS(){
+    if(!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(pos => {
+        let lat = pos.coords.latitude;
+        let lng = pos.coords.longitude;
+
+        leafletMap.setView([lat, lng], 15);
+        if(leafletMarker) leafletMarker.remove();
+        leafletMarker = L.marker([lat, lng])
+            .addTo(leafletMap)
+            .bindPopup("📍 Your location")
+            .openPopup();
+
+        // Free reverse geocode via Nominatim
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById("addressText").innerText =
+                    data.display_name || "Location found";
+            })
+            .catch(() => {
+                document.getElementById("addressText").innerText =
+                    `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+            });
+
+        // Save location to Django
+        fetch("{% url 'auto_location' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify({ lat, lng })
+        });
+    });
+}
+
+/* ── Chart ── */
+function loadChart(){
+    let labels = JSON.parse('{{ dates|escapejs }}');
+    let values = JSON.parse('{{ hours|escapejs }}');
+    let ctx = document.getElementById('chart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Working Hours',
+                data: values,
+                borderColor: '#28a745',
+                backgroundColor: 'rgba(40,167,69,0.1)',
+                borderWidth: 3,
+                tension: 0.3,
+                fill: true,
+                pointBackgroundColor: '#28a745'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+}
+
+/* ── Filter ── */
+function filterData(type){
+    let rows = document.querySelectorAll("#attendanceTable tr[data-date]");
+    let now  = new Date();
+    rows.forEach(row => {
+        let diff = (now - new Date(row.dataset.date)) / (1000 * 60 * 60 * 24);
+        row.style.display =
+            type === 'all'                  ? '' :
+            type === 'day'   && diff <= 1   ? '' :
+            type === 'week'  && diff <= 7   ? '' :
+            type === 'month' && diff <= 30  ? '' :
+            type === 'year'  && diff <= 365 ? '' :
+            'none';
+    });
+}
+
+/* ── Login with Location ── */
+function loginWithLocation(){
+    let btn    = document.getElementById("loginBtn");
+    let status = document.getElementById("loginStatus");
+    let text   = document.getElementById("loginStatusText");
+
+    btn.disabled = true;
+    btn.innerHTML = "⏳ Logging in…";
+    status.style.display = "block";
+    text.innerHTML = "📡 Getting location…";
+
+    if(!navigator.geolocation){
+        // No GPS support — just redirect
+        text.innerHTML = "⚠️ GPS not supported. Marking attendance…";
+        setTimeout(() => { window.location.href = "{% url 'login_time' %}"; }, 1000);
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        // ── Success: got coordinates ──
+        function(pos){
+            let lat = pos.coords.latitude;
+            let lng = pos.coords.longitude;
+
+            text.innerHTML = "📍 Location found! Marking attendance…";
+
+            // POST location then redirect
+            fetch("{% url 'login_time' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({ lat, lng })
+            })
+            .then(r => r.json())
+            .then(data => {
+                text.innerHTML = "✅ Attendance marked! Redirecting…";
+                setTimeout(() => { window.location.href = "{% url 'student_attendance' %}"; }, 800);
+            })
+            .catch(() => {
+                // POST failed — still redirect via GET
+                text.innerHTML = "✅ Marked! Redirecting…";
+                setTimeout(() => { window.location.href = "{% url 'login_time' %}"; }, 800);
+            });
+        },
+        // ── Error: GPS denied/failed ──
+        function(err){
+            text.innerHTML = "⚠️ Location unavailable. Marking attendance anyway…";
+            setTimeout(() => { window.location.href = "{% url 'login_time' %}"; }, 1200);
+        },
+        { timeout: 10000, maximumAge: 0 }
+    );
+}
+
+/* ── Helpers ── */
+function formatTime(diff){
+    let h = Math.floor(diff / 3600);
+    let m = Math.floor((diff % 3600) / 60);
+    let s = diff % 60;
+    return String(h).padStart(2,'0') + ':' +
+           String(m).padStart(2,'0') + ':' +
+           String(s).padStart(2,'0');
+}
+
+function getCookie(name){
+    let val = null;
+    document.cookie.split(";").forEach(c => {
+        c = c.trim();
+        if(c.startsWith(name + "="))
+            val = decodeURIComponent(c.substring(name.length + 1));
+    });
+    return val;
+}
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams Pro LMS</title>
+    <style>
+        /* --- GLOBAL THEME --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; background-color: #f0f0f0; }
+        .app-container { display: flex; height: 100vh; width: 100vw; }
+
+        /* 1. ICON RAIL */
+        .icon-rail {
+            width: 68px; background-color: #f3f2f1; border-right: 1px solid #e1dfdd;
+            display: flex; flex-direction: column; align-items: center; padding-top: 15px; gap: 25px;
+        }
+        .rail-item { font-size: 22px; cursor: pointer; color: #616161; padding: 8px; border-radius: 4px; transition: 0.2s; }
+        .rail-item:hover { background: #e1dfdd; }
+        .rail-item.active { color: #5b5fc7; background: white; border-left: 3px solid #5b5fc7; border-radius: 0; }
+
+        /* 2. SIDEBAR */
+        .sidebar-container { width: 300px; background-color: #ffffff; border-right: 1px solid #e1dfdd; display: flex; flex-direction: column; }
+        .sidebar-view { display: none; flex-direction: column; height: 100%; }
+        .sidebar-view.active { display: flex; }
+        .sidebar-header { padding: 15px; border-bottom: 1px solid #f3f2f1; }
+        .sidebar-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .create-btn { 
+            background: #5b5fc7; color: white; border: none; padding: 6px 12px; 
+            border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;
+        }
+
+        /* LIST STYLE */
+        .list-scroll { flex: 1; overflow-y: auto; }
+        .chat-item { display: flex; align-items: center; padding: 12px 15px; gap: 12px; cursor: pointer; border-bottom: 1px solid #f9f9f9; text-decoration: none; color: inherit; }
+        .chat-item:hover { background-color: #f5f5f5; }
+        .chat-item.active { background-color: #edebe9; border-left: 4px solid #5b5fc7; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: #5b5fc7; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+
+        /* 3. MAIN CONTENT */
+        .main-content { flex: 1; display: flex; flex-direction: column; background-color: #f0f0f0; padding: 8px; }
+        .surface { flex: 1; background: white; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; position: relative; }
+        
+        .header-tools { display: flex; gap: 15px; align-items: center; font-size: 18px; color: #616161; }
+        .header-tools span { cursor: pointer; }
+
+        /* MESSAGE VIEWPORT */
+        .viewport { flex: 1; padding: 20px; overflow-y: auto; background-color: #fafafa; display: flex; flex-direction: column; gap: 15px; }
+        .msg-row { display: flex; gap: 12px; margin-bottom: 5px; }
+        .msg-reverse { flex-direction: row-reverse; }
+        .msg-bubble { background: white; padding: 10px 14px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); max-width: 70%; border: 1px solid #edebe9; position: relative; }
+        .msg-reverse .msg-bubble { background: #e7e9ff; border-color: #d1d4f7; }
+
+        /* REPLY INDICATOR */
+        .reply-indicator { background: rgba(0,0,0,0.05); border-left: 3px solid #5b5fc7; padding: 5px 8px; margin-bottom: 8px; border-radius: 4px; font-size: 12px; color: #444; }
+
+        /* INPUT AREA */
+        .input-footer { padding: 15px 20px; background: white; border-top: 1px solid #edebe9; }
+        .input-box-wrapper { border: 1px solid #e1dfdd; border-radius: 8px; background: white; }
+        .input-box-wrapper input[type="text"] { width: 100%; border: none; outline: none; padding: 12px; font-size: 14px; }
+        .input-toolbar { display: flex; align-items: center; gap: 15px; padding: 8px 12px; border-top: 1px solid #f3f2f1; background: #fafafa; border-radius: 0 0 8px 8px; }
+
+        .reply-preview-bar { display: none; background: #f3f2f1; padding: 8px 15px; border-top: 1px solid #ddd; justify-content: space-between; align-items: center; font-size: 12px; border-radius: 8px 8px 0 0; }
+
+        /* ACTIONS */
+        .msg-actions { margin-top: 8px; font-size: 11px; display: flex; gap: 10px; visibility: hidden; }
+        .msg-bubble:hover .msg-actions { visibility: visible; }
+        .action-link { cursor: pointer; color: #5b5fc7; font-weight: 600; text-decoration: none; }
+        .action-link.delete { color: #d13438; }
+
+        /* MEMBERS LIST */
+        .members-dropdown {
+            display: none; position: absolute; right: 20px; top: 60px; width: 220px;
+            background: white; border: 1px solid #e1dfdd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 100; padding: 10px; max-height: 300px; overflow-y: auto;
+        }
+
+        /* POPUP & OVERLAY */
+        .popup {
+            display:none; position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); background:white;
+            padding:25px; width:380px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border-radius: 12px; z-index: 1001;
+        }
+        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:1000; }
+        .file-preview-name { font-size: 11px; color: #5b5fc7; margin-left: 10px; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+<div class="app-container">
+    <aside class="icon-rail">
+        <div class="rail-item" onclick="switchView('activity')" id="rail-activity">🔔</div>
+        <div class="rail-item active" onclick="switchView('chat')" id="rail-chat">💬</div>
+        <div class="rail-item" onclick="alert('Contacts coming soon!')">👥</div>
+    </aside>
+
+    <div class="sidebar-container">
+        <!-- Activity View -->
+        <div id="view-activity" class="sidebar-view">
+            <div class="sidebar-header"><h3>Activity</h3></div>
+            <div class="list-scroll">
+                {% if notifications %}
+                    {% for n in notifications %}
+                    <div class="chat-item">
+                        <div class="avatar" style="background:#d13438;">🔔</div>
+                        <div>
+                            <div style="font-size:13px;">{{ n.message }}</div>
+                            <div style="font-size:11px; color:gray;">{{ n.created_at|timesince }} ago</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="padding:20px; text-align:center; color:gray; font-size:13px;">No new notifications</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Chat View -->
+        <div id="view-chat" class="sidebar-view active">
+            <div class="sidebar-header">
+                <div class="sidebar-actions">
+                    <h3 style="font-size: 18px;">Chat</h3>
+                    {% if user.role == 'admin' or user.is_staff %}
+                    <button class="create-btn" onclick="openPopup()">+ Create Batch</button>
+                    {% endif %}
+                </div>
+                <input type="text" id="chatSearchInput" onkeyup="searchChats()" placeholder="Search" style="width: 100%; padding: 8px; border: 1px solid #edebe9; background: #f3f2f1; border-radius: 4px;">
+            </div>
+            
+            <div class="list-scroll" id="chatList">
+                <div style="font-size: 12px; color: #616161; font-weight: 700; padding: 15px 15px 5px 15px;">Recent</div>
+                
+                {% for t in teams %}
+                <a href="?team_id={{ t.id }}" class="chat-item {% if team.id == t.id %}active{% endif %}">
+                    <div class="avatar">{{ t.name|slice:":2"|upper }}</div>
+                    <div class="info">
+                        <div style="font-weight:600; font-size:14px;" class="chat-name">{{ t.name }}</div>
+                        <div style="font-size:12px; color:#616161;">Group Batch</div>
+                    </div>
+                </a>
+                {% endfor %}
+
+                {% for u in recent_users %}
+                <a href="?user_id={{ u.id }}" class="chat-item {% if selected_user.id == u.id %}active{% endif %}">
+                    <div class="avatar" style="background:#0078d4;">{{ u.username|slice:":2"|upper }}</div>
+                    <div class="info">
+                        <div style="font-weight:600; font-size:14px;" class="chat-name">{{ u.username }}</div>
+                        <div style="font-size:12px; color:#616161;">Direct Message</div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <div class="surface">
+            <header style="padding: 12px 20px; border-bottom: 1px solid #edebe9; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-size:16px;">
+                        {% if selected_user %}{{ selected_user.username }}{% elif team %}{{ team.name }}{% else %}Select a conversation{% endif %}
+                    </h3>
+                </div>
+                <div class="header-tools">
+                    {% if team or selected_user %}
+                    <span onclick="meet()" title="Start Video Call">📹</span>
+                    <span onclick="toggleMembers()" title="View Members">👥</span>
+                    {% endif %}
+                </div>
+            </header>
+
+            <div class="members-dropdown" id="membersDropdown">
+                <h4 style="font-size:12px; color:#616161; margin-bottom:8px; border-bottom:1px solid #eee; padding-bottom:5px;">Members</h4>
+                {% if team %}
+                    {% for s in team.students.all %}
+                    <div class="chat-item" style="padding:8px 5px; border:none;" onclick="window.location='?user_id={{ s.id }}'">
+                        <div class="avatar" style="width:24px; height:24px; font-size:10px;">{{ s.username|slice:":1"|upper }}</div>
+                        <span style="font-size:13px;">{{ s.username }}</span>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="viewport" id="chatViewport">
+                {% with msgs=private_messages|default:messages %}
+                {% if selected_user or team %}
+                    {% for msg in msgs %}
+                    <div class="msg-row {% if msg.sender == request.user %}msg-reverse{% endif %}">
+                        <div class="avatar" style="width:32px; height:32px; font-size:11px;">{{ msg.sender.username|slice:":2"|upper }}</div>
+                        <div class="msg-bubble">
+                            
+                            {% if msg.reply_to %}
+                            <div class="reply-indicator">
+                                <strong>{{ msg.reply_to.sender.username }}</strong><br>
+                                {% firstof msg.reply_to.content msg.reply_to.message|truncatechars:40 %}
+                            </div>
+                            {% endif %}
+
+                            <b style="font-size:11px; color:#5b5fc7; display:block; margin-bottom:2px;">{{ msg.sender.username }}</b>
+                            
+                            {% if msg.content %}
+                                <p style="font-size:14px; color:#242424;">{{ msg.content }}</p>
+                            {% elif msg.message %}
+                                <p style="font-size:14px; color:#242424;">{{ msg.message }}</p>
+                            {% endif %}
+                            
+                            {% if msg.file %}
+                                <div style="margin-top: 5px;">
+                                    {% if ".jpg" in msg.file.url or ".png" in msg.file.url or ".jpeg" in msg.file.url %}
+                                        <img src="{{ msg.file.url }}" style="max-width: 100%; border-radius: 4px; margin-top: 5px;">
+                                    {% else %}
+                                        <a href="{{ msg.file.url }}" target="_blank" style="font-size: 12px; color: #5b5fc7; text-decoration: none;">📄 Download File</a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <div class="msg-actions">
+                                <span class="action-link" 
+                                      data-id="{{ msg.id }}" 
+                                      data-user="{{ msg.sender.username }}" 
+                                      data-text="{% firstof msg.content msg.message %}"
+                                      onclick="initiateReply(this)">↩ Reply</span>
+
+                                {% if msg.sender == request.user %}
+                                <span class="action-link delete" onclick="deleteMsg('{{ msg.id }}')">🗑 Delete</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div style="margin:auto; text-align:center; color:gray;">
+                        <div style="font-size:50px;">💬</div>
+                        <p>Select a chat to start messaging</p>
+                    </div>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+            <footer class="input-footer">
+                {% if selected_user or team %}
+                <form method="POST" enctype="multipart/form-data" id="messageForm">
+                    {% csrf_token %}
+                    <!-- Updated to reply_id to match your view -->
+                    <input type="hidden" name="reply_id" id="reply_to_id">
+                    
+                    <div class="reply-preview-bar" id="replyPreview">
+                        <span>Replying to <b id="replyUser"></b>: <i id="replyText"></i></span>
+                        <span style="cursor:pointer; font-weight:bold;" onclick="cancelReply()">✕</span>
+                    </div>
+
+                    <div class="input-box-wrapper">
+                        <!-- 'message' matches your Python view request.POST.get('message') -->
+                        <input type="text" autocomplete="off" id="msgInput"
+                               name="message" 
+                               placeholder="Type a message..." required>
+                        
+                        <div class="input-toolbar">
+                            <label for="file-upload" style="cursor:pointer; font-size: 18px;">📎</label>
+                            <input id="file-upload" type="file" name="file" style="display:none;" onchange="showFileName(this)">
+                            <span id="fileNameDisplay" class="file-preview-name"></span>
+
+                            <button type="submit" style="margin-left:auto; background:#5b5fc7; color:white; border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Send</button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!-- Create Batch Popup -->
+<div class="popup" id="popup">
+    <h3 style="margin-bottom:15px; font-size:18px;">Create New Batch</h3>
+    <form method="POST" action="{% if course %}{% url 'teams:create_team' course.id %}{% else %}/teams/create-batch/{% endif %}">
+        {% csrf_token %}
+        <input name="name" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ddd; border-radius:4px;" placeholder="Batch Name" required>
+        <label style="font-size:12px; font-weight:bold; color:#616161;">Assign Trainer</label>
+        <select name="trainer" id="trainerSelect" onchange="loadStudents()" style="width:100%; padding:10px; margin-bottom:12px; border:1px solid #ddd; border-radius:4px;" required>
+            <option value="">-- Select Trainer --</option>
+            {% for t in trainers %}
+                <option value="{{ t.id }}">{{ t.username }}</option>
+            {% endfor %}
+        </select>
+        <div id="studentsBox" style="max-height:150px; overflow-y:auto; border:1px solid #eee; padding:10px; margin-bottom:15px; border-radius:4px; background:#fafafa;">
+            <p style="font-size:11px; color:gray;">Select a trainer first...</p>
+        </div>
+        <button type="submit" class="create-btn" style="width:100%; padding:12px; font-size:14px;">Create Batch</button>
+        <button type="button" onclick="closePopup()" style="margin-top:8px; width:100%; border:none; background:none; cursor:pointer; color:#616161; font-size:12px;">Cancel</button>
+    </form>
+</div>
+
+<script>
+    function initiateReply(element) {
+        const id = element.getAttribute('data-id');
+        const user = element.getAttribute('data-user');
+        const text = element.getAttribute('data-text');
+
+        document.getElementById("reply_to_id").value = id;
+        document.getElementById("replyUser").innerText = user;
+        document.getElementById("replyText").innerText = text;
+        document.getElementById("replyPreview").style.display = "flex";
+        document.getElementById("msgInput").focus();
+    }
+
+    function cancelReply() {
+        document.getElementById("reply_to_id").value = "";
+        document.getElementById("replyPreview").style.display = "none";
+    }
+
+    function deleteMsg(id) {
+        if (confirm("Delete this message?")) {
+            // Standard delete logic
+            fetch(`/teams/delete-message/${id}/`)
+                .then(res => {
+                    if(res.ok) location.reload();
+                    else alert("Failed to delete.");
+                });
+        }
+    }
+
+    function searchChats() {
+        let input = document.getElementById('chatSearchInput').value.toLowerCase();
+        document.querySelectorAll('#chatList .chat-item').forEach(item => {
+            let name = item.querySelector('.chat-name').textContent.toLowerCase();
+            item.style.display = name.includes(input) ? "flex" : "none";
+        });
+    }
+
+    function showFileName(input) {
+        const display = document.getElementById('fileNameDisplay');
+        if (input.files && input.files[0]) {
+            display.innerText = "📎 " + input.files[0].name;
+            display.style.display = "inline";
+        }
+    }
+
+    function switchView(view) {
+        document.querySelectorAll('.sidebar-view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.rail-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('view-' + view).classList.add('active');
+        document.getElementById('rail-' + view).classList.add('active');
+    }
+
+    function openPopup() { 
+        document.getElementById("popup").style.display="block"; 
+        document.getElementById("overlay").style.display="block"; 
+    }
+    function closePopup() { 
+        document.getElementById("popup").style.display="none"; 
+        document.getElementById("overlay").style.display="none"; 
+    }
+
+    function toggleMembers() {
+        let d = document.getElementById("membersDropdown");
+        d.style.display = d.style.display === "block" ? "none" : "block";
+    }
+
+    function meet() { 
+        const roomId = "{% if team %}{{ team.id }}{% else %}{{ course.id }}{% endif %}";
+        window.open(`https://meet.jit.si/TeamsProLMS_Room_${roomId}`, '_blank'); 
+    }
+
+    function loadStudents() {
+        let id = document.getElementById("trainerSelect").value;
+        let box = document.getElementById("studentsBox");
+        if (!id) return;
+        fetch("/teams/get-students/?trainer_id=" + id)
+        .then(r => r.json())
+        .then(data => {
+            box.innerHTML = "";
+            data.forEach(s => {
+                box.innerHTML += `<label style="display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:5px; cursor:pointer;">
+                    <input type="checkbox" name="students" value="${s.id}"> ${s.username}</label>`;
+            });
+        });
+    }
+
+    const vp = document.getElementById("chatViewport");
+    if (vp) vp.scrollTop = vp.scrollHeight;
+</script>
+</body>
+</html>

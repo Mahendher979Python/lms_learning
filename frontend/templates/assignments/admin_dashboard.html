@@ -1,0 +1,184 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <h1 class="title">📊 Admin Dashboard</h1>
+
+    <!-- ========================= -->
+    <!-- 📊 STATS -->
+    <!-- ========================= -->
+    <div class="stats">
+        <div class="stat-card"><h2>{{ assignments|length }}</h2><p>Total Assignments</p></div>
+        <div class="stat-card green"><h2>{{ subjects|length }}</h2><p>Total Subjects</p></div>
+        <div class="stat-card blue"><h2>{{ trainers|length }}</h2><p>Total Trainers</p></div>
+        <div class="stat-card orange"><h2>{{ students|length }}</h2><p>Total Students</p></div>
+    </div>
+
+    <!-- ========================= -->
+    <!-- ➕ CREATE ASSIGNMENT FORM -->
+    <!-- ========================= -->
+    <div class="card shadow-primary">
+        <h2>➕ Create New Assignment</h2>
+        <!-- Ensure action points to your view and method is POST -->
+        <form method="POST" action="{% url 'assignments:admin_create_assignment' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Assignment Title</label>
+                    <input type="text" name="title" placeholder="Enter title" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Course / Subject</label>
+                    <select name="course" required>
+                        <option value="">-- Select --</option>
+                        {% for s in subjects %}
+                            <option value="{{ s.id }}">{{ s.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Assign Trainer</label>
+                    <select name="trainer" required>
+                        <option value="">-- Select --</option>
+                        {% for t in trainers %}
+                            <option value="{{ t.id }}">{{ t.user.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Exam Type</label>
+                    <select name="test_type" id="testType" onchange="toggleSections()" required>
+                        <option value="mcq">MCQ (Quiz)</option>
+                        <option value="pdf">PDF Upload</option>
+                        <option value="gform">Google Form</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Passing Marks</label>
+                    <input type="number" name="pass_marks" placeholder="e.g. 50">
+                </div>
+            </div>
+
+            <!-- MCQ SECTION -->
+            <div id="mcqSection" class="section-box">
+                <div class="flex-between">
+                    <h3>📝 MCQ Questions</h3>
+                    <button type="button" class="btn-outline" onclick="addQuestion()">+ Add Question</button>
+                </div>
+                <div id="questionsContainer"></div>
+            </div>
+
+            <!-- PDF SECTION -->
+            <div id="pdfSection" class="section-box" style="display:none;">
+                <label>Upload Task PDF</label>
+                <input type="file" name="pdf_file" accept=".pdf">
+            </div>
+
+            <!-- GFORM SECTION -->
+            <div id="gformSection" class="section-box" style="display:none;">
+                <label>Google Form Link</label>
+                <input type="url" name="google_form_link" placeholder="https://forms.gle/...">
+            </div>
+
+            <button type="submit" class="btn-primary full-width" style="margin-top: 20px;">🚀 Publish Assignment</button>
+        </form>
+    </div>
+
+    <!-- ========================= -->
+    <!-- 📋 ASSIGNMENTS TABLE -->
+    <!-- ========================= -->
+    <div class="card">
+        <h2>📚 Existing Assignments</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Trainer</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in assignments %}
+                <tr>
+                    <td><strong>{{ a.title }}</strong></td>
+                    <td>{{ a.trainer.user.username }}</td>
+                    <td>{{ a.get_test_type_display }}</td>
+                    <td>
+                        <span class="pill {{ a.status }}">{{ a.status|title }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ========================= -->
+<!-- ⚙️ JAVASCRIPT LOGIC -->
+<!-- ========================= -->
+<script>
+let qCount = 0;
+
+function addQuestion() {
+    qCount++;
+    const container = document.getElementById("questionsContainer");
+    const div = document.createElement("div");
+    div.className = "question-row";
+    div.id = `q_row_${qCount}`;
+    
+    div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-top:15px;">
+            <label>Question #${qCount}</label>
+            <button type="button" onclick="document.getElementById('q_row_${qCount}').remove()" style="color:red; background:none; border:none; cursor:pointer;">Remove</button>
+        </div>
+        <input type="text" name="q_${qCount}_text" placeholder="Type question here" required style="width:100%; padding:8px; margin:5px 0;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <div style="display:flex; align-items:center; gap:5px;">
+                <input type="radio" name="q_${qCount}_correct" value="1" checked>
+                <input type="text" name="q_${qCount}_opt1" placeholder="Correct Option" required style="width:100%;">
+            </div>
+            <div style="display:flex; align-items:center; gap:5px;">
+                <input type="radio" name="q_${qCount}_correct" value="2">
+                <input type="text" name="q_${qCount}_opt2" placeholder="Wrong Option" required style="width:100%;">
+            </div>
+        </div>
+    `;
+    container.appendChild(div);
+}
+
+function toggleSections() {
+    const type = document.getElementById("testType").value;
+    document.getElementById("mcqSection").style.display = (type === "mcq") ? "block" : "none";
+    document.getElementById("pdfSection").style.display = (type === "pdf") ? "block" : "none";
+    document.getElementById("gformSection").style.display = (type === "gform") ? "block" : "none";
+}
+
+// Initialize with one question
+window.onload = () => { addQuestion(); };
+</script>
+
+<style>
+/* Add to your existing styles */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.full-width { grid-column: span 2; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 5px; }
+.form-group input, .form-group select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
+.section-box { background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px dashed #cbd5e1; margin-top: 20px; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.btn-primary { background: #2563eb; color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.btn-outline { background: transparent; border: 1px solid #2563eb; color: #2563eb; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+.question-row { background: white; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; margin-bottom: 10px; }
+.shadow-primary { border-top: 4px solid #2563eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+</style>
+
+{% endblock %}

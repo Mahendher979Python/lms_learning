@@ -1,0 +1,205 @@
+{% extends 'dashboard/student_base.html' %}
+{% load static %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+
+
+
+<link rel="stylesheet" href="{% static 'dashboard/css/student_dashboard.css' %}">
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="header">
+
+        <h2>
+            👋 Welcome, {{ request.user.username }}
+        </h2>
+
+        <p>
+            Keep learning and improving your skills 🚀
+        </p>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+        <div class="stat-card">
+            <h2>{{ request.user.courses.count }}</h2>
+            <p>📚 Assigned Courses</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ total_assignments }}</h2>
+            <p>📝 Assignments</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ certificates }}</h2>
+            <p>🏆 Certificates</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ progress_percent }}%</h2>
+            <p>📈 Progress</p>
+        </div>
+
+    </div>
+
+    <!-- MAIN -->
+    <div class="grid">
+
+        <!-- LEFT -->
+        <div class="section">
+
+            <h3>📚 My Assigned Courses</h3>
+
+            {% for course in request.user.courses.all %}
+
+            <div class="course">
+
+                <h4>{{ course.title }}</h4>
+
+                <span class="badge">
+                    Active
+                </span>
+
+                <p style="color:gray;font-size:13px;">
+                    Trainer:
+                    {{ course.trainer.username }}
+                </p>
+
+                {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail.url }}">
+                {% endif %}
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        data-progress="{{ course.progress|default:40 }}">
+                    </div>
+
+                </div>
+
+                <p style="font-size:12px;">
+                    Progress:
+                    {{ course.progress|default:40 }}%
+                </p>
+
+                <a href="{% url 'course_detail' course.id %}"
+                   class="open-btn">
+
+                    Open Course
+
+                </a>
+
+            </div>
+
+            {% empty %}
+
+            <p>
+                No assigned courses yet.
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+
+            <div class="section">
+
+                <h3>📊 Progress Overview</h3>
+
+                <div class="mini-box">
+                    Completed Assignments:
+                    <b>{{ completed_assignments }}</b>
+                </div>
+
+                <div class="mini-box">
+                    Total Certificates:
+                    <b>{{ certificates }}</b>
+                </div>
+
+                <div class="mini-box">
+                    Total Courses:
+                    <b>{{ request.user.courses.count }}</b>
+                </div>
+
+            </div>
+
+            <!-- ASSIGNMENTS -->
+            <div class="section" style="margin-top:20px;">
+
+                <h3>📝 Recent Assignments</h3>
+
+                <table>
+
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for assignment in assignments %}
+
+                    <tr>
+
+                        <td>{{ assignment.title }}</td>
+
+                        <td>{{ assignment.status }}</td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="2">
+                            No assignments
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOTTOM -->
+    <div class="bottom-cards">
+
+        <div class="card">
+            <h4>Today Hours</h4>
+            <h2>{{ records.last.total_hours }}</h2>
+        </div>
+
+        <div class="card">
+            <h4>Weekly OT</h4>
+            <h2>{{ weekly_ot }}</h2>
+        </div>
+
+        <div class="card">
+            <h4>Monthly OT</h4>
+            <h2>{{ monthly_ot }}</h2>
+        </div>
+
+        <div class="card">
+            <h4>Attendance</h4>
+            <h2>{{ present_month }}/{{ absent_month }}</h2>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{% static 'dashboard/js/student_dashboard.js' %}"></script>
+
+
+{% endblock %}

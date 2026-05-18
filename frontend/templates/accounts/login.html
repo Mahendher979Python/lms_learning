@@ -1,0 +1,239 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet"
+          href="{% static 'accounts/css/auth.css' %}">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        .field-container{
+            position: relative;
+        }
+
+        /* Password Eye Icon */
+        .toggle-password{
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            z-index: 10;
+        }
+
+        /* Password input spacing */
+        input[type="password"],
+        input[type="text"]{
+            width: 100%;
+            padding-right: 45px;
+            box-sizing: border-box;
+        }
+
+        /* =========================
+           CAPTCHA FIX
+        ========================= */
+
+        .captcha-row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .captcha-box img{
+            border-radius: 10px;
+            transform: scale(0.85);
+            transform-origin: left center;
+        }
+
+        .captcha-refresh-btn{
+            border: none;
+            background: #007bff;
+            color: white;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .captcha-refresh-btn:hover{
+            background: #0056b3;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+
+    <div class="card">
+
+        <h2>Login</h2>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+                <div class="form-group">
+
+                    <label>
+                        {{ field.label }}
+                    </label>
+
+                    <!-- PASSWORD FIELD -->
+                    {% if "password" in field.id_for_label %}
+
+                        <div class="field-container">
+
+                            {{ field }}
+
+                            <i class="fas fa-eye toggle-password"></i>
+
+                        </div>
+
+                    <!-- CAPTCHA FIELD -->
+                    {% elif "captcha" in field.id_for_label %}
+
+                        <div class="field-container">
+
+                            <!-- CAPTCHA IMAGE + BUTTON ROW -->
+                            <div class="captcha-row">
+
+                                <div class="captcha-box">
+                                    {{ field }}
+                                </div>
+
+                                <button type="button"
+                                        class="captcha-refresh-btn"
+                                        title="Refresh Captcha">
+
+                                    <i class="fas fa-rotate-right"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    <!-- NORMAL FIELD -->
+                    {% else %}
+
+                        <div class="field-container">
+
+                            {{ field }}
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+            <button type="submit"
+                    class="login-btn">
+
+                Login
+
+            </button>
+
+        </form>
+
+        <a href="{% url 'register' %}"
+           class="footer-link">
+
+            Don't have account? Register
+
+        </a>
+
+        <a href="{% url 'terms' %}"
+           class="footer-link">
+
+            Terms &amp; Conditions
+
+        </a>
+
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // PASSWORD TOGGLE
+            const passwordField =
+                document.querySelector('input[type="password"]');
+
+            const toggleBtn =
+                document.querySelector('.toggle-password');
+
+            if(passwordField && toggleBtn){
+                toggleBtn.addEventListener('click', function(){
+
+                    const type =
+                        passwordField.type === 'password'
+                        ? 'text'
+                        : 'password';
+
+                    passwordField.type = type;
+
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+
+                });
+            }
+
+            // CAPTCHA REFRESH
+            const refreshBtn =
+                document.querySelector('.captcha-refresh-btn');
+
+            if(refreshBtn){
+
+                refreshBtn.addEventListener('click', function(){
+
+                    fetch('/captcha/refresh/', {
+                        method: 'GET',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+
+                        const captchaImg =
+                            document.querySelector('img.captcha');
+
+                        if(captchaImg){
+                            captchaImg.src = data.image_url;
+                        }
+
+                        document.getElementById('id_captcha_0').value = data.key;
+                        document.getElementById('id_captcha_1').value = '';
+
+                    })
+                    .catch(err => console.log(err));
+
+                });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

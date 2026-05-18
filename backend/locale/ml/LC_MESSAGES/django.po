@@ -1,0 +1,135 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+
+msgid "Account Settings"
+msgstr "അക്കൗണ്ട് ക്രമീകരണങ്ങൾ"
+
+msgid "Manage your language, security, notifications and learning preferences."
+msgstr "നിങ്ങളുടെ ഭാഷ, സുരക്ഷ, അറിയിപ്പുകൾ, പഠന മുൻഗണനകൾ എന്നിവ നിയന്ത്രിക്കുക."
+
+msgid "Language & Appearance"
+msgstr "ഭാഷയും രൂപവും"
+
+msgid "Language"
+msgstr "ഭാഷ"
+
+msgid "Select your preferred application language."
+msgstr "നിങ്ങൾക്ക് ഇഷ്ടമുള്ള ആപ്ലിക്കേഷൻ ഭാഷ തിരഞ്ഞെടുക്കുക."
+
+msgid "Dark Mode"
+msgstr "ഡാർക്ക് മോഡ്"
+
+msgid "Enable dark theme for better night viewing."
+msgstr "രാത്രിയിൽ മികച്ച കാഴ്ചയ്ക്കായി ഡാർക്ക് തീം സജ്ജമാക്കുക."
+
+msgid "Notifications"
+msgstr "അറിയിപ്പുകൾ"
+
+msgid "Email Notifications"
+msgstr "ഇമെയിൽ അറിയിപ്പുകൾ"
+
+msgid "Receive updates through email."
+msgstr "ഇമെയിൽ വഴി അപ്ഡേറ്റുകൾ സ്വീകരിക്കുക."
+
+msgid "Push Notifications"
+msgstr "പുഷ് അറിയിപ്പുകൾ"
+
+msgid "Get instant browser/app alerts."
+msgstr "ഉടൻ ബ്രൗസർ/ആപ്പ് അലർട്ടുകൾ നേടുക."
+
+msgid "Live Class Reminders"
+msgstr "ലൈവ് ക്ലാസ് ഓർമ്മപ്പെടുത്തലുകൾ"
+
+msgid "Receive reminders before live classes."
+msgstr "ലൈവ് ക്ലാസിന് മുമ്പ് ഓർമ്മപ്പെടുത്തലുകൾ ലഭിക്കും."
+
+msgid "Security"
+msgstr "സുരക്ഷ"
+
+msgid "Fingerprint Login"
+msgstr "വിരലടയാള ലോഗിൻ"
+
+msgid "Use biometric authentication to login."
+msgstr "ലോഗിൻ ചെയ്യാൻ ബയോമെട്രിക് പരിശോധന ഉപയോഗിക്കുക."
+
+msgid "Two Factor Authentication"
+msgstr "ടു-ഫാക്ടർ ഓതന്റിക്കേഷൻ"
+
+msgid "Add extra security to your account."
+msgstr "നിങ്ങളുടെ അക്കൗണ്ടിൽ അധിക സുരക്ഷ ചേർക്കുക."
+
+msgid "Learning Preferences"
+msgstr "പഠന മുൻഗണനകൾ"
+
+msgid "Autoplay Videos"
+msgstr "വീഡിയോകൾ സ്വയം പ്ലേ ചെയ്യുക"
+
+msgid "Automatically play next lesson videos."
+msgstr "അടുത്ത പാഠ വീഡിയോ സ്വയം പ്ലേ ചെയ്യും."
+
+msgid "Offline Downloads"
+msgstr "ഓഫ്‌ലൈൻ ഡൗൺലോഡുകൾ"
+
+msgid "Allow downloading lessons for offline use."
+msgstr "ഓഫ്‌ലൈൻ ഉപയോഗത്തിനായി പാഠങ്ങൾ ഡൗൺലോഡ് ചെയ്യാൻ അനുവദിക്കുക."
+
+msgid "Community"
+msgstr "സമൂഹം"
+
+msgid "Allow Chat"
+msgstr "ചാറ്റ് അനുവദിക്കുക"
+
+msgid "Enable messaging with students and trainers."
+msgstr "വിദ്യാർത്ഥികളുമായും പരിശീലകരുമായും സന്ദേശമയയ്ക്കൽ സജ്ജമാക്കുക."
+
+msgid "Allow Discussions"
+msgstr "ചർച്ചകൾ അനുവദിക്കുക"
+
+msgid "Participate in community discussions."
+msgstr "സമൂഹ ചർച്ചകളിൽ പങ്കെടുക്കുക."
+
+msgid "Save Settings"
+msgstr "ക്രമീകരണങ്ങൾ സംരക്ഷിക്കുക"
+
+msgid "Student Profile Settings"
+msgstr "വിദ്യാർത്ഥി പ്രൊഫൈൽ ക്രമീകരണങ്ങൾ"
+
+msgid "Update your account information, preferences, and language settings."
+msgstr "നിങ്ങളുടെ അക്കൗണ്ട് വിവരങ്ങൾ, മുൻഗണനകൾ, ഭാഷ ക്രമീകരണങ്ങൾ എന്നിവ അപ്ഡേറ്റ് ചെയ്യുക."
+
+msgid "Username"
+msgstr "ഉപയോക്തൃനാമം"
+
+msgid "Email Address"
+msgstr "ഇമെയിൽ വിലാസം"
+
+msgid "Phone Number"
+msgstr "ഫോൺ നമ്പർ"
+
+msgid "Date of Birth"
+msgstr "ജനന തീയതി"
+
+msgid "Gender"
+msgstr "ലിംഗം"
+
+msgid "Select Gender"
+msgstr "ലിംഗം തിരഞ്ഞെടുക്കുക"
+
+msgid "Male"
+msgstr "പുരുഷൻ"
+
+msgid "Female"
+msgstr "സ്ത്രീ"
+
+msgid "Other"
+msgstr "മറ്റ്"
+
+msgid "Profile Photo"
+msgstr "പ്രൊഫൈൽ ചിത്രം"
+
+msgid "Address"
+msgstr "വിലാസം"
+
+msgid "Save Changes"
+msgstr "മാറ്റങ്ങൾ സംരക്ഷിക്കുക"

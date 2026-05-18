@@ -1,0 +1,131 @@
+{% extends 'dashboard/student_base.html' %}
+{% block title %}My Certificates{% endblock %}
+
+{% block content %}
+<style>
+    .cert-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        margin-bottom: 14px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .cert-card.completed {
+        border-left: 5px solid #28a745;
+    }
+    .cert-card.in-progress {
+        border-left: 5px solid #cccccc;
+    }
+    .btn-download {
+        display: inline-block;
+        padding: 10px 22px;
+        background: #28a745;
+        color: #ffffff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    .btn-download:hover {
+        background: #218838;
+        color: #ffffff;
+    }
+    .btn-view {
+        display: inline-block;
+        padding: 10px 18px;
+        background: #2563eb;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 14px;
+    }
+    .btn-view:hover {
+        background: #1e40af;
+    }
+    .btn-locked {
+        display: inline-block;
+        padding: 10px 22px;
+        background: #eeeeee;
+        color: #aaaaaa;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: not-allowed;
+    }
+    .cert-empty {
+        text-align: center;
+        padding: 80px 20px;
+        color: #aaaaaa;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+</style>
+
+<div style="padding: 30px; max-width: 900px; margin: 0 auto;">
+
+    <h2 style="margin-bottom: 24px; color: #1a1a2e;">🏆 My Certificates</h2>
+
+    {% if course_data %}
+        {% for item in course_data %}
+            <div class="cert-card {% if item.completed %}completed{% else %}in-progress{% endif %}">
+
+                <!-- Course info -->
+                <div>
+                    <h3 style="margin: 0 0 6px; font-size: 17px; color: #1a1a2e;">
+                        {{ item.course.title }}
+                    </h3>
+
+                    {% if item.completed %}
+                        <span style="color: #28a745; font-weight: 600; font-size: 14px;">
+                            ✅ Completed
+                        </span>
+                    {% else %}
+                        <span style="color: #999999; font-size: 14px;">
+                            ⏳ In Progress
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Action buttons -->
+                <div>
+                    {% if item.completed and item.certificate %}
+                        
+                        <!-- DOWNLOAD -->
+                        <a href="{% url 'download_certificate' item.certificate.id %}"
+                           class="btn-download"
+                           target="_blank"
+                           rel="noopener">
+                            ⬇️ Download
+                        </a>
+
+                        <!-- VIEW -->
+                        <a href="{% url 'view_certificate' item.certificate.id %}"
+                           class="btn-view">
+                            👁 View
+                        </a>
+
+                    {% else %}
+                        <span class="btn-locked">
+                            🔒 Complete Course First
+                        </span>
+                    {% endif %}
+                </div>
+
+            </div>
+        {% endfor %}
+
+    {% else %}
+        <div class="cert-empty">
+            <div style="font-size: 52px; margin-bottom: 16px;">📚</div>
+            <p style="font-size: 16px; margin: 0;">
+                You are not enrolled in any courses yet.
+            </p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

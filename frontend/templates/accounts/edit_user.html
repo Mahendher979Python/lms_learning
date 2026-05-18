@@ -1,0 +1,93 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Edit Student{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'accounts/css/edit_user.css' %}">
+<div class="form-container">
+
+    <h2 class="form-title">✏ Edit Student</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text"
+                   name="username"
+                   value="{{ user_obj.username }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email"
+                   name="email"
+                   value="{{ user_obj.email }}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text"
+                   name="phone"
+                   value="{{ user_obj.phone }}">
+        </div>
+
+        <div class="form-group">
+            <label>Select Trainer</label>
+            <select name="trainer" required>
+                <option value="">Select Trainer</option>
+                {% for trainer in trainers %}
+                    <option value="{{ trainer.id }}"
+                        {% if user_obj.trainer == trainer %}selected{% endif %}>
+                        {{ trainer.username }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Select Courses</label>
+
+            <div class="course-box">
+                {% for course in courses %}
+                <div class="course-item">
+                    <input type="checkbox"
+                           class="course-checkbox"
+                           name="courses"
+                           value="{{ course.id }}"
+                           {% if course in user_obj.courses.all %}checked{% endif %}>
+                    <span>{{ course.title }}</span>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="counter">
+                Selected Courses: <span id="courseCount">0</span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">
+            Update Student
+        </button>
+    </form>
+
+</div>
+
+<script>
+function updateCourseCount() {
+    let checked = document.querySelectorAll(".course-checkbox:checked").length;
+    document.getElementById("courseCount").innerText = checked;
+}
+
+document.querySelectorAll(".course-checkbox").forEach(box => {
+    box.addEventListener("change", updateCourseCount);
+});
+
+window.onload = updateCourseCount;
+</script>
+
+{% endblock %}

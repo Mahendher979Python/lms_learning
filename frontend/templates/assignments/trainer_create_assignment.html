@@ -1,0 +1,726 @@
+{% extends 'dashboard/trainer_base.html' %}
+{% load static %}
+
+{% block title %}Create Assignment | Trainer Panel{% endblock %}
+
+{% block content %}
+
+<!-- FLASH MESSAGES -->
+{% if messages %}
+<div class="msg-wrap">
+    {% for msg in messages %}
+    <div class="msg {% if 'error' in msg.tags %}msg-err{% else %}msg-ok{% endif %}">
+        <span>{% if 'error' in msg.tags %}⚠️{% else %}✅{% endif %} {{ msg }}</span>
+        <button onclick="this.parentElement.remove()">×</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="tp-wrap">
+    <div class="tp-header">
+        <div>
+            <h1 class="tp-title">📘 Create New Assignment</h1>
+            <p class="tp-sub">Configure your test settings and build your question bank</p>
+        </div>
+    </div>
+
+    <div class="tp-card create-card">
+        <!-- CRITICAL: enctype must be multipart/form-data for PDF uploads -->
+        <form method="POST" enctype="multipart/form-data" action="{% url 'assignments:trainer_create_assignment' %}">
+            {% csrf_token %}
+
+            <!-- Basic Info Section -->
+            <div class="form-section">
+                <h3 class="section-hd">General Information</h3>
+                <div class="f-group">
+                    <label class="f-label">Assignment Title <span class="req">*</span></label>
+                    <input type="text" name="title" class="f-input" placeholder="e.g., Mid-Term Python Quiz" required>
+                </div>
+
+                <div class="f-group">
+                    <label class="f-label">Description</label>
+                    <textarea name="description" class="f-input" rows="3" placeholder="Provide instructions..."></textarea>
+                </div>
+
+                <div class="f-row">
+                    <div class="f-group">
+                        <label class="f-label">Course <span class="req">*</span></label>
+                        <select name="course" class="f-input" required>
+                            <option value="">— Select Course —</option>
+                            {% for c in courses %}
+                                <option value="{{ c.id }}">{{ c.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="f-group">
+                        <label class="f-label">Topic <span class="req">*</span></label>
+                        <select name="topic" class="f-input" required>
+                            <option value="">— Select Topic —</option>
+                            {% for t in topics %}
+                                <option value="{{ t.id }}">{{ t.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Test Configuration Section -->
+            <div class="form-section">
+                <h3 class="section-hd">Test Settings</h3>
+                <div class="f-row">
+                    <div class="f-group">
+                        <label class="f-label">Test Type <span class="req">*</span></label>
+                        <select name="test_type" id="testType" class="f-input" onchange="toggleType()" required>
+                            <option value="mcq">MCQ (Auto-Graded)</option>
+                            <option value="pdf">PDF Upload (Manual Grade)</option>
+                            <option value="gform">Google Form (Manual Grade)</option>
+                        </select>
+                    </div>
+                    <div class="f-group">
+                        <label class="f-label">Duration (Minutes)</label>
+                        <input type="number" name="duration" class="f-input" value="30" min="1">
+                    </div>
+                </div>
+
+                <!-- MCQ Builder -->
+                <div id="mcqBox" class="dyn-container">
+                    <div class="dyn-hd">
+                        <h4 class="dyn-title">MCQ Builder</h4>
+                        <button type="button" class="btn-add-q" onclick="addQ()">+ Add Question</button>
+                    </div>
+                    <div id="questionBox"></div>
+                </div>
+
+                <!-- PDF Section: Name matches request.FILES.get("pdf_file") -->
+                <div id="pdfBox" class="dyn-container" style="display:none;">
+                    <label class="f-label">Upload Question Paper (PDF) <span class="req">*</span></label>
+                    <input type="file" name="pdf_file" class="f-input" accept=".pdf">
+                </div>
+
+                <!-- GForm Section: Name matches request.POST.get("google_form_link") -->
+                <div id="gformBox" class="dyn-container" style="display:none;">
+                    <label class="f-label">Google Form URL <span class="req">*</span></label>
+                    <input type="url" name="google_form_link" class="f-input" placeholder="https://forms.gle/...">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-publish">🚀 Publish Assignment</button>
+        </form>
+    </div>
+</div>
+
+<script>
+function toggleType() {
+    let type = document.getElementById("testType").value;
+    document.getElementById("mcqBox").style.display = (type === "mcq") ? "block" : "none";
+    document.getElementById("pdfBox").style.display = (type === "pdf") ? "block" : "none";
+    document.getElementById("gformBox").style.display = (type === "gform") ? "block" : "none";
+}
+
+let qIdx = 0;
+function addQ() {
+    qIdx++;
+    const qHTML = `
+        <div class="q-card animated-entry">
+            <div class="q-card-hd">
+                <span class="q-num">Question ${qIdx}</span>
+                <button type="button" class="btn-remove" onclick="this.closest('.q-card').remove()">Remove</button>
+            </div>
+            <!-- Name 'q_N_text' matches trainer/admin logic -->
+            <input type="text" name="q_${qIdx}_text" class="f-input mb-10" placeholder="Type the question..." required>
+            
+            <div class="opt-grid">
+                <div class="opt-item"><span class="opt-lbl">A</span><input type="text" name="q_${qIdx}_opt_1" class="f-input" placeholder="Option 1" required></div>
+                <div class="opt-item"><span class="opt-lbl">B</span><input type="text" name="q_${qIdx}_opt_2" class="f-input" placeholder="Option 2" required></div>
+                <div class="opt-item"><span class="opt-lbl">C</span><input type="text" name="q_${qIdx}_opt_3" class="f-input" placeholder="Option 3"></div>
+                <div class="opt-item"><span class="opt-lbl">D</span><input type="text" name="q_${qIdx}_opt_4" class="f-input" placeholder="Option 4"></div>
+            </div>
+
+            <div class="f-row mt-10">
+                <div class="f-group">
+                    <label class="f-label">Correct Option (1-4) <span class="req">*</span></label>
+                    <input type="number" name="q_${qIdx}_correct" class="f-input" min="1" max="4" value="1" required>
+                </div>
+                <div class="f-group">
+                    <label class="f-label">Marks</label>
+                    <input type="number" name="marks_${qIdx}" class="f-input" value="1" min="1">
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById("questionBox").insertAdjacentHTML("beforeend", qHTML);
+}
+
+window.onload = () => { toggleType(); };
+</script>
+
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root{
+    --primary:#2563eb;
+    --primary2:#7c3aed;
+    --dark:#0f172a;
+    --text:#1e293b;
+    --muted:#64748b;
+    --border:rgba(255,255,255,0.15);
+    --surface:rgba(255,255,255,0.72);
+    --glass:rgba(255,255,255,0.55);
+    --success:#10b981;
+    --danger:#ef4444;
+    --shadow:
+        0 10px 30px rgba(15,23,42,0.10),
+        0 1px 2px rgba(0,0,0,0.06);
+
+    --shadow-lg:
+        0 20px 50px rgba(37,99,235,0.20),
+        0 8px 20px rgba(124,58,237,0.16);
+
+    --radius:24px;
+}
+
+/* ===== PAGE ===== */
+
+body{
+    background:
+        radial-gradient(circle at top left,#dbeafe 0%,transparent 30%),
+        radial-gradient(circle at bottom right,#ede9fe 0%,transparent 30%),
+        linear-gradient(135deg,#f8fafc,#eef2ff);
+}
+
+.tp-wrap{
+    max-width:1050px;
+    margin:40px auto;
+    padding:20px;
+    font-family:'Outfit',sans-serif;
+    position:relative;
+}
+
+/* Floating background effects */
+
+.tp-wrap::before,
+.tp-wrap::after{
+    content:"";
+    position:fixed;
+    border-radius:50%;
+    filter:blur(90px);
+    z-index:0;
+    opacity:.28;
+    pointer-events:none;
+}
+
+.tp-wrap::before{
+    width:320px;
+    height:320px;
+    background:#60a5fa;
+    top:-100px;
+    right:-80px;
+}
+
+.tp-wrap::after{
+    width:260px;
+    height:260px;
+    background:#8b5cf6;
+    bottom:0;
+    left:-100px;
+}
+
+/* ===== HEADER ===== */
+
+.tp-header{
+    position:relative;
+    z-index:1;
+    margin-bottom:30px;
+}
+
+.tp-title{
+    font-size:3rem;
+    font-weight:800;
+    letter-spacing:-1px;
+    color:#fff;
+    margin-bottom:10px;
+    line-height:1;
+}
+
+.tp-sub{
+    color:rgba(255,255,255,0.88);
+    font-size:1rem;
+    font-weight:400;
+}
+
+/* Premium Hero */
+
+.tp-header > div{
+    position:relative;
+    overflow:hidden;
+    padding:42px;
+    border-radius:32px;
+    background:
+        linear-gradient(135deg,#2563eb,#4f46e5,#7c3aed);
+    box-shadow:var(--shadow-lg);
+}
+
+.tp-header > div::before{
+    content:"";
+    position:absolute;
+    width:260px;
+    height:260px;
+    background:rgba(255,255,255,0.08);
+    border-radius:50%;
+    right:-80px;
+    top:-60px;
+}
+
+.tp-header > div::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(to bottom right,
+        rgba(255,255,255,0.18),
+        transparent 40%);
+    pointer-events:none;
+}
+
+/* ===== MAIN CARD ===== */
+
+.tp-card{
+    position:relative;
+    z-index:1;
+    background:var(--surface);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.4);
+    border-radius:32px;
+    padding:40px;
+    box-shadow:
+        0 25px 60px rgba(15,23,42,0.12),
+        inset 0 1px 1px rgba(255,255,255,0.6);
+    overflow:hidden;
+}
+
+.tp-card::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius:32px;
+    padding:1px;
+    background:linear-gradient(
+        135deg,
+        rgba(255,255,255,0.7),
+        rgba(255,255,255,0.08)
+    );
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+            mask-composite:exclude;
+    pointer-events:none;
+}
+
+/* ===== SECTION TITLES ===== */
+
+.section-hd{
+    font-size:1.3rem;
+    font-weight:700;
+    color:var(--dark);
+    margin-bottom:24px;
+    position:relative;
+    padding-left:18px;
+}
+
+.section-hd::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:6px;
+    height:28px;
+    border-radius:20px;
+    background:linear-gradient(to bottom,#2563eb,#7c3aed);
+    box-shadow:0 0 18px rgba(99,102,241,.5);
+}
+
+/* ===== FORM ===== */
+
+.f-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.f-group{
+    margin-bottom:24px;
+}
+
+.f-label{
+    display:block;
+    margin-bottom:10px;
+    font-size:.95rem;
+    font-weight:600;
+    color:var(--text);
+}
+
+.req{
+    color:#ef4444;
+}
+
+.f-input{
+    width:100%;
+    padding:16px 18px;
+    border-radius:18px;
+    border:1px solid rgba(148,163,184,0.25);
+    background:rgba(255,255,255,0.75);
+    backdrop-filter:blur(8px);
+    font-size:.96rem;
+    color:var(--text);
+    outline:none;
+    transition:all .25s ease;
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.9),
+        0 4px 12px rgba(15,23,42,0.04);
+}
+
+.f-input:focus{
+    border-color:#6366f1;
+    background:#fff;
+    transform:translateY(-2px);
+    box-shadow:
+        0 0 0 4px rgba(99,102,241,0.12),
+        0 12px 25px rgba(99,102,241,0.14);
+}
+
+textarea.f-input{
+    resize:vertical;
+    min-height:120px;
+}
+
+/* ===== DIVIDER ===== */
+
+.divider{
+    border:none;
+    height:1px;
+    margin:36px 0;
+    background:linear-gradient(to right,
+        transparent,
+        rgba(148,163,184,0.4),
+        transparent);
+}
+
+/* ===== DYNAMIC SECTION ===== */
+
+.dyn-container{
+    margin-top:26px;
+    padding:30px;
+    border-radius:28px;
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,0.7),
+        rgba(255,255,255,0.4));
+    border:1px solid rgba(255,255,255,0.45);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.8),
+        0 12px 28px rgba(15,23,42,0.08);
+}
+
+.dyn-hd{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.dyn-title{
+    font-size:1.15rem;
+    font-weight:700;
+    color:var(--dark);
+}
+
+/* ===== QUESTION CARD ===== */
+
+.q-card{
+    background:
+        linear-gradient(145deg,
+        rgba(255,255,255,0.95),
+        rgba(248,250,252,0.85));
+    border-radius:24px;
+    padding:28px;
+    margin-bottom:22px;
+    border:1px solid rgba(255,255,255,0.55);
+    box-shadow:
+        0 12px 30px rgba(15,23,42,0.08),
+        inset 0 1px 1px rgba(255,255,255,0.9);
+    transition:all .28s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+.q-card:hover{
+    transform:translateY(-4px);
+    box-shadow:
+        0 20px 45px rgba(37,99,235,0.14),
+        0 8px 18px rgba(124,58,237,0.12);
+}
+
+.q-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:linear-gradient(90deg,#2563eb,#7c3aed);
+}
+
+/* ===== QUESTION HEADER ===== */
+
+.q-card-hd{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.q-num{
+    padding:10px 18px;
+    border-radius:50px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    font-size:.82rem;
+    font-weight:700;
+    letter-spacing:.5px;
+    box-shadow:0 8px 18px rgba(79,70,229,0.25);
+}
+
+/* ===== OPTION GRID ===== */
+
+.opt-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-top:20px;
+}
+
+.opt-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:rgba(255,255,255,0.75);
+    border-radius:18px;
+    padding:14px;
+    border:1px solid rgba(255,255,255,0.55);
+    box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.9),
+        0 4px 12px rgba(15,23,42,0.04);
+}
+
+.opt-lbl{
+    width:38px;
+    height:38px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    font-weight:700;
+    flex-shrink:0;
+    box-shadow:0 8px 18px rgba(79,70,229,0.25);
+}
+
+/* ===== BUTTONS ===== */
+
+.btn-add-q,
+.btn-remove,
+.btn-publish{
+    border:none;
+    cursor:pointer;
+    transition:all .25s ease;
+    font-family:'Outfit',sans-serif;
+}
+
+/* Add Question */
+
+.btn-add-q{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:#fff;
+    padding:14px 22px;
+    border-radius:18px;
+    font-size:.9rem;
+    font-weight:700;
+    box-shadow:
+        0 12px 24px rgba(79,70,229,0.28);
+}
+
+.btn-add-q:hover{
+    transform:translateY(-3px) scale(1.02);
+}
+
+/* Remove */
+
+.btn-remove{
+    background:#fff1f2;
+    color:#dc2626;
+    padding:10px 16px;
+    border-radius:14px;
+    font-size:.8rem;
+    font-weight:700;
+    box-shadow:0 6px 16px rgba(239,68,68,0.12);
+}
+
+.btn-remove:hover{
+    transform:translateY(-2px);
+}
+
+/* Publish */
+
+.btn-publish{
+    width:100%;
+    margin-top:36px;
+    padding:20px;
+    border-radius:22px;
+    background:
+        linear-gradient(135deg,#2563eb,#4f46e5,#7c3aed);
+    color:#fff;
+    font-size:1rem;
+    font-weight:800;
+    letter-spacing:.4px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:
+        0 18px 40px rgba(79,70,229,0.28);
+}
+
+.btn-publish::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-120%;
+    width:80%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transition:.7s;
+}
+
+.btn-publish:hover::before{
+    left:140%;
+}
+
+.btn-publish:hover{
+    transform:translateY(-4px);
+    box-shadow:
+        0 24px 50px rgba(79,70,229,0.35);
+}
+
+/* ===== FLASH MESSAGE ===== */
+
+.msg-wrap{
+    margin-bottom:20px;
+}
+
+.msg{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 22px;
+    border-radius:18px;
+    margin-bottom:12px;
+    backdrop-filter:blur(10px);
+    box-shadow:var(--shadow);
+    animation:slideDown .4s ease;
+}
+
+.msg-ok{
+    background:rgba(16,185,129,0.12);
+    color:#065f46;
+    border:1px solid rgba(16,185,129,0.18);
+}
+
+.msg-err{
+    background:rgba(239,68,68,0.10);
+    color:#991b1b;
+    border:1px solid rgba(239,68,68,0.18);
+}
+
+.msg button{
+    background:none;
+    border:none;
+    font-size:20px;
+    cursor:pointer;
+    color:inherit;
+}
+
+/* ===== ANIMATION ===== */
+
+.animated-entry{
+    animation:cardIn .45s ease;
+}
+
+@keyframes cardIn{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.98);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes slideDown{
+    from{
+        opacity:0;
+        transform:translateY(-15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+    .tp-title{
+        font-size:2.2rem;
+    }
+
+    .tp-card{
+        padding:24px;
+    }
+
+    .f-row,
+    .opt-grid{
+        grid-template-columns:1fr;
+    }
+
+    .dyn-hd,
+    .q-card-hd{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .btn-add-q,
+    .btn-remove{
+        width:100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}

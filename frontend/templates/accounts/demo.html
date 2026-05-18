@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Demo Session</title>
+  <style>
+    body {
+      background-color: #5c5f9e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    h2 {
+      color: #4fc3f7;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .video-row {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Demo Session Video</h2>
+
+  <div class="video-row">
+
+    <iframe width="560" height="315" 
+      src="https://www.youtube.com/embed/xRB0-cyZGic?si=_TBK3tI3MZ9cMVB5" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" 
+      allowfullscreen>
+    </iframe>
+
+    <iframe width="560" height="315" 
+      src="https://www.youtube.com/embed/Y8Tko2YC5hA?si=__cvf8zfztSMbBzV" 
+      title="YouTube video player" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+      referrerpolicy="strict-origin-when-cross-origin" 
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+</body>
+</html>

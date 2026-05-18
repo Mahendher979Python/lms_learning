@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LMS Admin</title>
+
+<link rel="stylesheet" href="{% static 'dashboard/css/base.css' %}">
+</head>
+<style>
+
+.notification-wrapper{
+    position:relative;
+}
+
+.notification-link{
+    position:relative;
+    text-decoration:none;
+    font-size:24px;
+}
+
+#notif-count{
+
+    position:absolute;
+
+    top:-8px;
+
+    right:-10px;
+
+    background:red;
+
+    color:white;
+
+    min-width:20px;
+
+    height:20px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    padding:2px 6px;
+}
+
+</style>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+
+    <!-- LEFT -->
+    <div style="display:flex; align-items:center; gap:10px;">
+        <div onclick="toggleSidebar()" style="cursor:pointer; font-size:22px;">☰</div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+            <img src="{% static 'accounts/images/spylogo.png' %}"
+                 style="height:45px; width:45px; border-radius:8px; object-fit:cover;">
+            <strong>LMS ADMIN</strong>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="display:flex; align-items:center; gap:18px;">
+
+        <!-- NOTIFICATIONS -->
+        <div class="notification-wrapper">
+
+    <a href="{% url 'admin_notifications' %}"
+       class="notification-link">
+
+        🔔
+
+        <span id="notif-count">
+            0
+        </span>
+
+    </a>
+
+</div>
+
+        <!-- USER -->
+        <span class="username">👤 {{ request.user.username }}</span>
+
+        <!-- DARK MODE -->
+        <button onclick="toggleDark()">🌙</button>
+
+        <!-- LOGOUT -->
+        <a href="{% url 'index' %}" style="color:inherit; text-decoration:none;">Logout</a>
+    </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'manage_users' %}">Manage Users</a>
+    <a href="{% url 'admin_courses' %}">Manage Courses</a>
+    
+    <a href="{% url 'assignments:admin_assignments' %}">Manage Assignments</a>
+    <a href="{% url 'admin_progress' %}">Manage Progress</a>
+    <a href="{% url 'teams:course_slides' %}">Classes</a>
+    
+    <a href="{% url 'admin_attendance' %}">Attendance</a>
+    <a href="{% url 'admin_certificate_requests' %}">Certificate Requests</a>
+    <a href="{% url 'admin_settings' %}">Settings</a>
+    
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{% static 'dashboard/js/base.js' %}"></script>
+<script>
+
+function loadNotifications(){
+
+    fetch("/notifications/")
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        const badge =
+            document.getElementById(
+                "notif-count"
+            );
+
+        if(data.unread_count > 0){
+
+            badge.innerText =
+                data.unread_count;
+
+            badge.style.display =
+                "flex";
+
+        }else{
+
+            badge.style.display =
+                "none";
+        }
+
+    });
+
+}
+
+loadNotifications();
+
+setInterval(loadNotifications, 5000);
+
+</script>
+</body>
+</html>

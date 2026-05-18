@@ -1,0 +1,188 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#f4f7fb;
+    font-family:Arial, sans-serif;
+    overflow-x:hidden;
+}
+
+/* MAIN CONTAINER */
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:30px auto;
+    background:#ffffff;
+    padding:25px;
+    border-radius:18px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+.title{
+    font-size:30px;
+    font-weight:700;
+    color:#0f172a;
+    margin-bottom:25px;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper{
+    width:100%;
+    overflow-x:auto;
+    border-radius:14px;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+    background:#fff;
+}
+
+table th{
+    background:#2563eb;
+    color:#fff;
+    padding:15px;
+    text-align:left;
+    font-size:15px;
+    white-space:nowrap;
+}
+
+table td{
+    padding:15px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:14px;
+    color:#334155;
+}
+
+/* ROW HOVER */
+table tbody tr{
+    transition:0.3s;
+}
+
+table tbody tr:hover{
+    background:#f8fafc;
+}
+
+/* BADGE */
+.badge{
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:30px;
+    font-size:12px;
+    font-weight:600;
+    text-transform:capitalize;
+    background:#facc15;
+    color:#111827;
+}
+
+/* BUTTONS */
+.action-box{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:10px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:white;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:90px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+/* APPROVE */
+.btn-success{
+    background:#16a34a;
+}
+
+.btn-success:hover{
+    background:#15803d;
+}
+
+/* REJECT */
+.btn-danger{
+    background:#dc2626;
+}
+
+.btn-danger:hover{
+    background:#b91c1c;
+}
+
+/* EMPTY MESSAGE */
+.empty-row td{
+    text-align:center;
+    padding:25px;
+    font-size:15px;
+    color:#64748b;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .container{
+        padding:18px;
+        margin:15px;
+    }
+
+    .title{
+        font-size:22px;
+        line-height:1.4;
+    }
+
+    table{
+        min-width:650px;
+    }
+
+    table th,
+    table td{
+        padding:12px;
+        font-size:13px;
+    }
+
+    .btn{
+        font-size:12px;
+        padding:8px 12px;
+    }
+
+}
+
+@media(max-width:480px){
+
+    .container{
+        padding:15px;
+    }
+
+    .title{
+        font-size:20px;
+    }
+
+    .badge{
+        font-size:11px;
+        padding:6px 10px;
+    }
+
+    .btn{
+        width:100%;
+    }
+
+    .action-box{
+        flex-direction:column;
+    }
+
+}

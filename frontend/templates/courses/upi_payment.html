@@ -1,0 +1,122 @@
+<div class="payment-box">
+
+    <h2>Pay for {{ course.title }}</h2>
+
+    <p>Amount: ₹{{ course.price }}</p>
+
+    <h3>Pay using UPI</h3>
+
+    <!-- <p><b>UPI ID:</b> {{ upi_id }}</p> -->
+    <!-- <p><b>Name:</b> {{ upi_name }}</p> -->
+
+    <!-- Optional QR (you already had QR logic, keep it) -->
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa={{ upi_id }}&pn={{ upi_name }}&am={{ course.price }}" />
+
+    <hr>
+
+    <form method="POST" action="/courses/verify-upi/">
+        {% csrf_token %}
+
+        <input type="hidden" name="course_id" value="{{ course.id }}">
+
+        <input type="text" name="utr" placeholder="Enter UTR / Transaction ID" required>
+
+        <button type="submit">I Have Paid</button>
+    </form>
+
+</div>
+<style>
+    .payment-box {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 25px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.payment-box h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.payment-box p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.payment-box h3 {
+    margin-top: 15px;
+    color: #444;
+}
+
+.payment-box img {
+    margin: 15px 0;
+    border-radius: 10px;
+}
+
+.payment-box hr {
+    margin: 20px 0;
+    border: none;
+    border-top: 1px solid #eee;
+}
+
+.payment-box input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.payment-box input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.payment-box button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #4CAF50;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.payment-box button:hover {
+    background: #45a049;
+}
+
+.payment-box button:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector(".payment-box form");
+    const utrInput = form.querySelector("input[name='utr']");
+    const button = form.querySelector("button");
+
+    form.addEventListener("submit", function (e) {
+        const utr = utrInput.value.trim();
+
+        // Basic validation (UTR usually 10–20 chars)
+        if (utr.length < 8) {
+            alert("Please enter a valid UTR / Transaction ID");
+            e.preventDefault();
+            return;
+        }
+
+        // Disable button after submit
+        button.disabled = true;
+        button.innerText = "Verifying...";
+    });
+});
+</script>
