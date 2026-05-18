@@ -161,8 +161,9 @@
 
         </a>
 
-        <a href="{% url 'terms' %}"
-           class="footer-link">
+        <a href="#"
+           class="footer-link"
+           id="terms-link">
 
             Terms &amp; Conditions
 
@@ -170,9 +171,90 @@
 
     </div>
 
+    <!-- Terms & Conditions Modal -->
+    <div class="terms-modal-overlay" id="terms-modal-overlay">
+        <div class="terms-modal">
+            <button class="terms-close-btn" id="terms-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h2>Terms &amp; Conditions</h2>
+            <div class="terms-meta">Last updated: May 18, 2026</div>
+
+            <div class="terms-content">
+                <p>This page is a placeholder. Replace this content with your full Terms &amp; Conditions text.</p>
+
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing or using this platform, you agree to be bound by these Terms &amp; Conditions.</p>
+
+                <h3>2. User Accounts</h3>
+                <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
+
+                <h3>3. Acceptable Use</h3>
+                <ul>
+                    <li>Do not misuse the platform or attempt unauthorized access.</li>
+                    <li>Do not upload malicious content.</li>
+                    <li>Follow all applicable laws and policies.</li>
+                </ul>
+
+                <h3>4. Changes</h3>
+                <p>We may update these Terms &amp; Conditions from time to time.</p>
+            </div>
+
+            <div class="terms-modal-footer">
+                <a href="#" class="terms-close-btn-bottom" id="terms-close-btn-bottom">Close</a>
+            </div>
+        </div>
+    </div>
+
     <script>
 
         document.addEventListener('DOMContentLoaded', function () {
+
+            // Terms Modal
+            const termsLink = document.getElementById('terms-link');
+            const termsModalOverlay = document.getElementById('terms-modal-overlay');
+            const termsCloseBtn = document.getElementById('terms-close-btn');
+            const termsCloseBtnBottom = document.getElementById('terms-close-btn-bottom');
+
+            if (termsLink && termsModalOverlay) {
+                termsLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    termsModalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            const closeTermsModal = function() {
+                termsModalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            if (termsCloseBtn) {
+                termsCloseBtn.addEventListener('click', closeTermsModal);
+            }
+
+            if (termsCloseBtnBottom) {
+                termsCloseBtnBottom.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeTermsModal();
+                });
+            }
+
+            if (termsModalOverlay) {
+                termsModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === termsModalOverlay) {
+                        closeTermsModal();
+                    }
+                });
+            }
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && termsModalOverlay.classList.contains('active')) {
+                    closeTermsModal();
+                }
+            });
 
             // PASSWORD TOGGLE
             const passwordField =
