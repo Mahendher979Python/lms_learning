@@ -26,13 +26,6 @@ class StudentRegisterForm(UserCreationForm):
             "oninput": "this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
         })
     )
-    terms_accepted = forms.BooleanField(
-        required=True,
-        label="I agree to the Terms & Conditions",
-        error_messages={
-            'required': 'You must agree to the Terms & Conditions to register'
-        }
-    )
     captcha = CaptchaField()
 
     class Meta:
@@ -42,6 +35,7 @@ class StudentRegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
 
+        # 🔴 prevent duplicate email
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Email already exists")
 
@@ -58,7 +52,7 @@ class StudentRegisterForm(UserCreationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'student'
-        user.email = self.cleaned_data['email']
+        user.email = self.cleaned_data['email']  # ✅ ensure saved
 
         if commit:
             user.save()

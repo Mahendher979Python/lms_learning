@@ -3,101 +3,326 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <title>Login - Online Learning System</title>
-</head>
-<body>
-    <div class="card">
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Login to continue learning</p>
 
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li class="{{ message.tags }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+    <link rel="stylesheet"
+          href="{% static 'accounts/css/auth.css' %}">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+
+        .field-container{
+            position: relative;
+        }
+
+        /* Password Eye Icon */
+        .toggle-password{
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+            z-index: 10;
+        }
+
+        /* Password input spacing */
+        input[type="password"],
+        input[type="text"]{
+            width: 100%;
+            padding-right: 45px;
+            box-sizing: border-box;
+        }
+
+        /* =========================
+           CAPTCHA FIX
+        ========================= */
+
+        .captcha-row{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .captcha-box img{
+            border-radius: 10px;
+            transform: scale(0.85);
+            transform-origin: left center;
+        }
+
+        .captcha-refresh-btn{
+            border: none;
+            background: #007bff;
+            color: white;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .captcha-refresh-btn:hover{
+            background: #0056b3;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+
+    <div class="card">
+
+        <h2>Login</h2>
 
         <form method="post">
+
             {% csrf_token %}
-            {{ form.non_field_errors }}
 
             {% for field in form %}
+
                 <div class="form-group">
-                    <label>{{ field.label }}</label>
+
+                    <label>
+                        {{ field.label }}
+                    </label>
+
+                    <!-- PASSWORD FIELD -->
                     {% if "password" in field.id_for_label %}
+
                         <div class="field-container">
+
                             {{ field }}
+
                             <i class="fas fa-eye toggle-password"></i>
+
                         </div>
+
+                    <!-- CAPTCHA FIELD -->
                     {% elif "captcha" in field.id_for_label %}
+
                         <div class="field-container">
+
+                            <!-- CAPTCHA IMAGE + BUTTON ROW -->
                             <div class="captcha-row">
+
                                 <div class="captcha-box">
                                     {{ field }}
                                 </div>
-                                <button type="button" class="captcha-refresh-btn" title="Refresh Captcha">
+
+                                <button type="button"
+                                        class="captcha-refresh-btn"
+                                        title="Refresh Captcha">
+
                                     <i class="fas fa-rotate-right"></i>
+
                                 </button>
+
                             </div>
+
                         </div>
+
+                    <!-- NORMAL FIELD -->
                     {% else %}
+
                         <div class="field-container">
+
                             {{ field }}
+
                         </div>
+
                     {% endif %}
-                    {{ field.errors }}
+
                 </div>
+
             {% endfor %}
 
-            <button type="submit">
-                Login <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+            <button type="submit"
+                    class="login-btn">
+
+                Login
+
             </button>
+
         </form>
 
-        <div class="footer-links">
-            <a href="{% url 'forgot_password' %}">Forgot Password?</a>
-            <a href="{% url 'register' %}">Don't have an account? Register</a>
+        <a href="{% url 'forgot_password' %}"
+           class="footer-link">
+
+            Forgot Password?
+
+        </a>
+
+        <a href="{% url 'register' %}"
+           class="footer-link">
+
+            Don't have account? Register
+
+        </a>
+
+        <a href="#"
+           class="footer-link"
+           id="terms-link">
+
+            Terms &amp; Conditions
+
+        </a>
+
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="terms-modal-overlay" id="terms-modal-overlay">
+        <div class="terms-modal">
+            <button class="terms-close-btn" id="terms-close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <h2>Terms &amp; Conditions</h2>
+            <div class="terms-meta">Last updated: May 18, 2026</div>
+
+            <div class="terms-content">
+                <p>This page is a placeholder. Replace this content with your full Terms &amp; Conditions text.</p>
+
+                <h3>1. Acceptance of Terms</h3>
+                <p>By accessing or using this platform, you agree to be bound by these Terms &amp; Conditions.</p>
+
+                <h3>2. User Accounts</h3>
+                <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
+
+                <h3>3. Acceptable Use</h3>
+                <ul>
+                    <li>Do not misuse the platform or attempt unauthorized access.</li>
+                    <li>Do not upload malicious content.</li>
+                    <li>Follow all applicable laws and policies.</li>
+                </ul>
+
+                <h3>4. Changes</h3>
+                <p>We may update these Terms &amp; Conditions from time to time.</p>
+            </div>
+
+            <div class="terms-modal-footer">
+                <a href="#" class="terms-close-btn-bottom" id="terms-close-btn-bottom">Close</a>
+            </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Password Toggle
-            const toggleBtn = document.querySelector('.toggle-password');
-            const passwordField = document.querySelector('input[type="password"]');
 
-            if (toggleBtn && passwordField) {
-                toggleBtn.addEventListener('click', function() {
-                    const type = passwordField.type === 'password' ? 'text' : 'password';
-                    passwordField.type = type;
-                    this.classList.toggle('fa-eye');
-                    this.classList.toggle('fa-eye-slash');
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Terms Modal
+            const termsLink = document.getElementById('terms-link');
+            const termsModalOverlay = document.getElementById('terms-modal-overlay');
+            const termsCloseBtn = document.getElementById('terms-close-btn');
+            const termsCloseBtnBottom = document.getElementById('terms-close-btn-bottom');
+
+            if (termsLink && termsModalOverlay) {
+                termsLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    termsModalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
                 });
             }
 
-            // Captcha Refresh
-            const refreshBtn = document.querySelector('.captcha-refresh-btn');
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', function() {
+            const closeTermsModal = function() {
+                termsModalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            };
+
+            if (termsCloseBtn) {
+                termsCloseBtn.addEventListener('click', closeTermsModal);
+            }
+
+            if (termsCloseBtnBottom) {
+                termsCloseBtnBottom.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeTermsModal();
+                });
+            }
+
+            if (termsModalOverlay) {
+                termsModalOverlay.addEventListener('click', function(e) {
+                    if (e.target === termsModalOverlay) {
+                        closeTermsModal();
+                    }
+                });
+            }
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && termsModalOverlay.classList.contains('active')) {
+                    closeTermsModal();
+                }
+            });
+
+            // PASSWORD TOGGLE
+            const passwordField =
+                document.querySelector('input[type="password"]');
+
+            const toggleBtn =
+                document.querySelector('.toggle-password');
+
+            if(passwordField && toggleBtn){
+                toggleBtn.addEventListener('click', function(){
+
+                    const type =
+                        passwordField.type === 'password'
+                        ? 'text'
+                        : 'password';
+
+                    passwordField.type = type;
+
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+
+                });
+            }
+
+            // CAPTCHA REFRESH
+            const refreshBtn =
+                document.querySelector('.captcha-refresh-btn');
+
+            if(refreshBtn){
+
+                refreshBtn.addEventListener('click', function(){
+
                     fetch('/captcha/refresh/', {
                         method: 'GET',
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
                     })
                     .then(res => res.json())
                     .then(data => {
-                        const img = document.querySelector('img.captcha');
-                        if (img) img.src = data.image_url;
+
+                        const captchaImg =
+                            document.querySelector('img.captcha');
+
+                        if(captchaImg){
+                            captchaImg.src = data.image_url;
+                        }
+
                         document.getElementById('id_captcha_0').value = data.key;
                         document.getElementById('id_captcha_1').value = '';
+
                     })
                     .catch(err => console.log(err));
+
                 });
+
             }
+
         });
+
     </script>
+
 </body>
 </html>
