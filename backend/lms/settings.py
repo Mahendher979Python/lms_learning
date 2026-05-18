@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # Custom apps
@@ -52,6 +51,10 @@ INSTALLED_APPS = [
     'coding_tasks',
     
 ]
+
+# WhiteNoise for production
+if not DEBUG:
+    INSTALLED_APPS.insert(6, 'whitenoise.runserver_nostatic')
 
 # Custom user model
 AUTH_USER_MODEL = 'accounts.User'
@@ -87,7 +90,6 @@ LOCALE_PATHS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # IMPORTANT FOR LANGUAGE SWITCH
     'django.middleware.locale.LocaleMiddleware',
@@ -97,6 +99,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# WhiteNoise middleware for production
+if not DEBUG:
+    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
 # ROOT URL
 ROOT_URLCONF = 'lms.urls'
@@ -178,8 +184,9 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'frontend', 'static'),
 ]
 
-# WhiteNoise compression and caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise compression and caching for production
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # MEDIA FILES
