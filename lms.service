@@ -1,0 +1,14 @@
+[Unit]
+Description=Gunicorn service for LMS Django project
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/online-learning-system/backend
+Environment="PATH=/home/ubuntu/online-learning-system/venv/bin"
+ExecStart=/home/ubuntu/online-learning-system/venv/bin/gunicorn --config /home/ubuntu/online-learning-system/gunicorn_config.py lms.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
