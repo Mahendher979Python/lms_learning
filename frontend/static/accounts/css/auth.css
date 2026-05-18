@@ -11,7 +11,7 @@ body {
     justify-content: flex-end;
     align-items: center;
     padding-right: 10%;
-    background: url("/static/accounts/images/lms.jpg") no-repeat center center;
+    background: url("/static/accounts/images/lms.jpg") no-repeat center center fixed;
     background-size: cover;
     overflow-x: hidden;
 }
