@@ -60,7 +60,7 @@ class StudentRegisterForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.CharField(label="Username/Email")
     password = forms.CharField(widget=forms.PasswordInput)
     captcha = CaptchaField()
 

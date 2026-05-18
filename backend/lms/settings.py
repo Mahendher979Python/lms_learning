@@ -202,3 +202,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/attendance/student/'
 LOGOUT_REDIRECT_URL = '/login/'
+
+# -----------------------
+# EMAIL SETTINGS (for OTP)
+# -----------------------
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mahibanavath979@gmail.com' # Updated with actual Gmail address
+EMAIL_HOST_PASSWORD = 'txlg yyed uvxi scvg' # Replace with your generated App Password

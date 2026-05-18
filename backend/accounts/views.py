@@ -61,10 +61,16 @@ def login_view(request):
     form = LoginForm(request.POST or None)
 
     if form.is_valid():
-        user = authenticate(
-            username=form.cleaned_data['username'],
-            password=form.cleaned_data['password']
-        )
+        username_or_email = form.cleaned_data['username']
+        password = form.cleaned_data['password']
+        
+        user = None
+        
+        try:
+            user = User.objects.get(email=username_or_email)
+            user = authenticate(request, username=user.username, password=password)
+        except User.DoesNotExist:
+            user = authenticate(request, username=username_or_email, password=password)
 
         if user:
             login(request, user)
@@ -81,7 +87,6 @@ def login_view(request):
         'form': form,
         'error': 'Invalid username or password'
     })
-    return render(request, 'accounts/login.html', {'form': form})
 
 
 def is_admin(user):
@@ -313,7 +318,20 @@ def forgot_password_view(request):
             OTP.objects.filter(user=user, is_verified=False).delete()
             otp = OTP.objects.create(user=user, otp_code=otp_code)
             
-            print(f"OTP for {email}: {otp_code}")
+            try:
+                from django.core.mail import send_mail
+                from django.conf import settings
+                
+                subject = 'Password Reset OTP - Online Learning System'
+                message = f'Hello {user.username},\n\nYour OTP for password reset is: {otp_code}\n\nThis OTP is valid for 10 minutes.\n\nIf you did not request this, please ignore this email.'
+                from_email = settings.EMAIL_HOST_USER
+                recipient_list = [email]
+                
+                send_mail(subject, message, from_email, recipient_list)
+                print(f"OTP sent to {email}: {otp_code}")
+            except Exception as e:
+                print(f"Failed to send email: {e}")
+                print(f"OTP for {email}: {otp_code}")
             
             request.session['reset_email'] = email
             return redirect('otp_verify')
