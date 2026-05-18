@@ -64,29 +64,42 @@ function initCardHover(){
 }
 
 /* =========================
-   SAFE JSON DATA
-========================= */
-
-const courses =
-JSON.parse(
-    document.getElementById("courses-data").textContent
-);
-
-const topics =
-JSON.parse(
-    document.getElementById("topics-data").textContent
-);
-
-const assignments =
-JSON.parse(
-    document.getElementById("assignments-data").textContent
-);
-
-/* =========================
    CHARTS
 ========================= */
 
 function initCharts(){
+
+    let courses = 0;
+    let topics = 0;
+    let assignments = 0;
+
+    const coursesDataEl = document.getElementById('courses-data');
+    const topicsDataEl = document.getElementById('topics-data');
+    const assignmentsDataEl = document.getElementById('assignments-data');
+
+    if (coursesDataEl) {
+        try {
+            courses = JSON.parse(coursesDataEl.textContent);
+        } catch (e) {
+            console.error('Error parsing courses data:', e);
+        }
+    }
+
+    if (topicsDataEl) {
+        try {
+            topics = JSON.parse(topicsDataEl.textContent);
+        } catch (e) {
+            console.error('Error parsing topics data:', e);
+        }
+    }
+
+    if (assignmentsDataEl) {
+        try {
+            assignments = JSON.parse(assignmentsDataEl.textContent);
+        } catch (e) {
+            console.error('Error parsing assignments data:', e);
+        }
+    }
 
     /* BAR CHART */
 
