@@ -678,6 +678,9 @@ button[type="submit"]:hover i,
         overflow-y: hidden;
         padding-top: 15px;
         padding-bottom: 15px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
     
     .register-page .card {
