@@ -19,6 +19,9 @@ urlpatterns += i18n_patterns(
 
     # ACCOUNTS
     path('', include('accounts.urls')),
+    
+    # django-allauth
+    path('accounts/', include('allauth.urls')),
 
     # CAPTCHA
     path('captcha/', include('captcha.urls')),

@@ -15,10 +15,11 @@
         </a>
 
         <nav class="nav-links" aria-label="Main navigation">
-            <a href="#courses">Courses</a>
-            <a href="#blog">Blog</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About</a>
+                <a href="#" class="nav-link">Courses</a>
+                <a href="{% url 'about_us' %}" class="nav-link">About Us</a>
+                <a href="#" class="nav-link">Services</a>
+                <a href="#" class="nav-link">FAQs</a>
+                <a href="#" class="nav-link">Contact</a>
         </nav>
 
         <form class="searchbar" role="search">
@@ -258,7 +259,7 @@
 
         <div>
             <h3>About Us</h3>
-            <a href="#about">Our Platform</a>
+            <a href="{% url 'about_us' %}">Our Platform</a>
             <a href="student_dashboard.html">Student Dashboard</a>
             <a href="instructor_dashboard.html">Instructor Dashboard</a>
         </div>

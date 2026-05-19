@@ -36,6 +36,10 @@ def conditions_page(request):
     return render(request, 'accounts/conditions_page.html')
 
 
+def about_us(request):
+    return render(request, 'accounts/about_us.html')
+
+
 def register_view(request):
     form = StudentRegisterForm(request.POST or None)
 

@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - LMS eLearning</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
+            <span class="logo-icon">L</span>
+            <span>LMS</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="{% url 'index' %}#courses">Courses</a>
+            <a href="{% url 'index' %}#blog">Blog</a>
+            <a href="{% url 'index' %}#contact">Contact</a>
+            <a href="{% url 'about_us' %}">About</a>
+        </nav>
+
+        <form class="searchbar" role="search">
+            <input type="search" placeholder="Search ..." aria-label="Search courses">
+        </form>
+
+        <div class="nav-actions">
+            <a class="button-secondary" href="{% url 'login' %}">Login</a>
+            
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">About Us</p>
+                <h1>Empowering learners through innovative online education.</h1>
+                <p class="hero-text">Our LMS platform is dedicated to providing accessible, high-quality learning experiences for students, instructors, and professionals worldwide.</p>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80" alt="Students learning together">
+            </div>
+        </section>
+
+        <section class="section feature-band">
+            <div class="feature-panel">
+                <p class="eyebrow">Our Mission</p>
+                <h2>Making education accessible to everyone, everywhere.</h2>
+                <p>We believe that quality education should be available to all, regardless of location or background. Our platform brings together learners and educators in a dynamic, interactive environment.</p>
+            </div>
+            <div class="feature-list-grid">
+                <div>
+                    <h3>Accessibility</h3>
+                    <p>Learn anytime, anywhere from any device with our responsive platform.</p>
+                </div>
+                <div>
+                    <h3>Quality</h3>
+                    <p>Curated courses from experienced instructors and industry professionals.</p>
+                </div>
+                <div>
+                    <h3>Community</h3>
+                    <p>Connect with peers, collaborate on projects, and grow together.</p>
+                </div>
+                <div>
+                    <h3>Innovation</h3>
+                    <p>Using the latest technology to enhance the learning experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section split-section">
+            <div>
+                <p class="eyebrow">Our Story</p>
+                <h2>Built by educators, for educators.</h2>
+                <p>Founded with a passion for education, our team of educators, developers, and designers came together to create a learning management system that truly meets the needs of modern learners and instructors.</p>
+                <p>From humble beginnings to a comprehensive platform, we've grown by listening to our community and continuously improving our offerings.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80" alt="Team collaboration">
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <p class="eyebrow">What We Offer</p>
+                <h2>Everything you need for a complete learning experience.</h2>
+            </div>
+
+            <div class="course-grid">
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Online courses">
+                    <div class="course-content">
+                        <span>Students</span>
+                        <h3>Comprehensive Courses</h3>
+                        <p>Access a wide range of courses with video lessons, reading materials, and interactive quizzes.</p>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Live classes">
+                    <div class="course-content">
+                        <span>Instructors</span>
+                        <h3>Live Classes & Webinars</h3>
+                        <p>Host live sessions, interact with students, and share your knowledge in real-time.</p>
+                    </div>
+                </article>
+
+                <article class="course-card">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80" alt="Exams and assessments">
+                    <div class="course-content">
+                        <span>Assessments</span>
+                        <h3>Exams & Certificates</h3>
+                        <p>Test knowledge with assignments, exams, and award certificates upon course completion.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div>
+            <h3>LMS eLearning</h3>
+            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+                <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+            </div>
+        </div>
+
+        <div>
+            <h3>Courses</h3>
+            <a href="{% url 'index' %}#courses">Web Development</a>
+            <a href="{% url 'index' %}#courses">Business Skills</a>
+            <a href="{% url 'index' %}#courses">Data Analytics</a>
+            <a href="{% url 'index' %}#blog">Blog</a>
+        </div>
+
+        <div>
+            <h3>About Us</h3>
+            <a href="{% url 'about_us' %}">Our Platform</a>
+            <a href="student_dashboard.html">Student Dashboard</a>
+            <a href="instructor_dashboard.html">Instructor Dashboard</a>
+        </div>
+
+        <div>
+            <h3>Contact Us</h3>
+            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
+            <a href="tel:9998887776">9998887776</a>
+            <a href="{% url 'index' %}#contact">Help Center</a>
+        </div>
+
+        <div>
+            <h3>Legal</h3>
+            <a href="#privacy-notice">Privacy Notice</a>
+            <a href="#terms">Terms</a>
+            <a href="#candidate-privacy-notice">Candidate Privacy Notice</a>
+            <a href="#cookies">Cookies</a>
+            <a href="#sitemap">Sitemap</a>
+        </div>
+    </footer>
+</body>
+</html>
