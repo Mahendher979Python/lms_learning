@@ -93,139 +93,81 @@ def settings_page(request):
     )
 
 @login_required
-def admin_settings(request):
+def admin_profile(request):
     if request.user.role != "admin":
         return redirect("login")
 
     user = request.user
 
-    settings_obj, created = UserSettings.objects.get_or_create(
-        user=user
-    )
-
     if request.method == "POST":
-        user.username = request.POST.get(
-            "username",
-            ""
-        )
-
-        user.email = request.POST.get(
-            "email",
-            ""
-        )
+        user.username = request.POST.get("username", "").strip()
+        user.email = request.POST.get("email", "").strip()
 
         phone = (request.POST.get("phone") or "").strip()
         if phone and (not phone.isdigit() or len(phone) != 10):
-            messages.error(
-                request,
-                "Phone number must be exactly 10 digits"
-            )
-            return render(
-                request,
-                "settings/admin_settings.html",
-                {
-                    "user": user,
-                    "settings_obj": settings_obj,
-                    "languages": UserSettings.LANGUAGE_CHOICES
-                }
-            )
+            messages.error(request, "Phone number must be exactly 10 digits")
+            return render(request, "settings/admin_profile.html", {"user": user})
         user.phone = phone
 
+        user.specialization = request.POST.get("specialization", "").strip()
+        experience = request.POST.get("experience")
+        user.experience = int(experience) if experience and experience.isdigit() else None
+        
+        dob = request.POST.get("dob")
+        user.dob = dob if dob else None
+        
+        user.gender = request.POST.get("gender", "").strip()
+        user.qualification = request.POST.get("qualification", "").strip()
+        user.bio = request.POST.get("bio", "").strip()
+        user.address = request.POST.get("address", "").strip()
+
         if request.FILES.get("profile_image"):
-            user.profile_image = request.FILES.get(
-                "profile_image"
-            )
+            user.profile_image = request.FILES.get("profile_image")
 
         try:
             user.save()
+            messages.success(request, "Admin profile updated successfully.")
         except Exception:
-            messages.error(
-                request,
-                "Unable to save profile. Please check email/phone uniqueness."
-            )
-            return render(
-                request,
-                "settings/admin_settings.html",
-                {
-                    "user": user,
-                    "settings_obj": settings_obj,
-                    "languages": UserSettings.LANGUAGE_CHOICES
-                }
-            )
+            messages.error(request, "Unable to save profile. Please check email/phone uniqueness.")
 
-        language = request.POST.get(
-            "language"
-        )
+        return redirect("admin_profile")
 
+    return render(request, "settings/admin_profile.html", {"user": user})
+
+
+@login_required
+def admin_settings(request):
+    if request.user.role != "admin":
+        return redirect("login")
+
+    user = request.user
+    settings_obj, created = UserSettings.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        language = request.POST.get("language")
         if language:
             settings_obj.language = language
-            request.session[
-                "django_language"
-            ] = language
+            request.session["django_language"] = language
             activate(language)
 
-        settings_obj.dark_mode = (
-            request.POST.get(
-                "dark_mode"
-            ) == "on"
-        )
-
-        settings_obj.email_notifications = (
-            request.POST.get(
-                "email_notifications"
-            ) == "on"
-        )
-
-        settings_obj.push_notifications = (
-            request.POST.get(
-                "push_notifications"
-            ) == "on"
-        )
-
-        settings_obj.two_factor_auth = (
-            request.POST.get(
-                "two_factor_auth"
-            ) == "on"
-        )
-
-        settings_obj.live_class_reminders = (
-            request.POST.get(
-                "live_class_reminders"
-            ) == "on"
-        )
-
-        settings_obj.allow_chat = (
-            request.POST.get(
-                "allow_chat"
-            ) == "on"
-        )
-
-        settings_obj.allow_discussions = (
-            request.POST.get(
-                "allow_discussions"
-            ) == "on"
-        )
-
+        settings_obj.dark_mode = request.POST.get("dark_mode") == "on"
+        settings_obj.email_notifications = request.POST.get("email_notifications") == "on"
+        settings_obj.push_notifications = request.POST.get("push_notifications") == "on"
+        settings_obj.two_factor_auth = request.POST.get("two_factor_auth") == "on"
+        settings_obj.live_class_reminders = request.POST.get("live_class_reminders") == "on"
+        settings_obj.allow_chat = request.POST.get("allow_chat") == "on"
+        settings_obj.allow_discussions = request.POST.get("allow_discussions") == "on"
         settings_obj.save()
 
-        messages.success(
-            request,
-            "Admin profile updated successfully."
-        )
+        messages.success(request, "Admin settings updated successfully.")
+        return redirect("admin_settings")
 
-        return redirect(
-            "admin_settings"
-        )
+    return render(request, "settings/admin_settings.html", {
+        "user": user,
+        "settings_obj": settings_obj,
+        "languages": UserSettings.LANGUAGE_CHOICES
+    })
 
-    return render(
-        request,
-        "settings/admin_settings.html",
-        {
-            "user": user,
-            "settings_obj": settings_obj,
-            "languages": UserSettings.LANGUAGE_CHOICES
-        }
-    )
 
 
 # =========================================

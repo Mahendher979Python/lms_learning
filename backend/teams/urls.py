@@ -23,6 +23,10 @@ path(
     views.student_course_slides,
     name='student_course_slides'
 ),
-
+path(
+    'video-call/<int:team_id>/',
+    views.video_call,
+    name='video_call'
+),
 
 ]

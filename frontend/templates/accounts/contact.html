@@ -1,0 +1,223 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | LMS eLearning</title>
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/pages.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Premium Global Header Navbar -->
+    <header class="navbar">
+        <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
+            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height: 38px; width: auto;" alt="Logo">
+            <span class="logo-text">LMS</span>
+        </a>
+
+        <nav class="nav-links" id="mainNavbarLinks" aria-label="Main navigation">
+            <a href="{% url 'index' %}" class="nav-link">Home</a>
+            <a href="{% url 'courses' %}" class="nav-link">Courses</a>
+            <a href="{% url 'about' %}" class="nav-link">About Us</a>
+            <a href="{% url 'services' %}" class="nav-link">Services</a>
+            <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
+            <a href="{% url 'contact' %}" class="nav-link active" style="color: var(--primary-color);">Contact</a>
+        </nav>
+
+        <form class="searchbar" role="search" action="{% url 'courses' %}" method="GET">
+            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
+        </form>
+
+      
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="page-hero">
+            <div class="page-hero-content">
+                <p class="eyebrow">Connect With Us</p>
+                <h1>We'd Love to <span>Hear From You</span></h1>
+                <p>Have operational queries, billing questions, or feedback? Send our student support team a direct message and we'll reply within 24 hours.</p>
+            </div>
+        </section>
+
+        <!-- Contact Layout Split -->
+        <section class="contact-layout-split">
+            <!-- Left Panel: Support details cards -->
+            <div class="contact-details-panel">
+                <!-- Card 1: Email -->
+                <div class="contact-meta-card">
+                    <div class="contact-meta-icon"><i class="fas fa-envelope"></i></div>
+                    <div class="contact-meta-text">
+                        <h3>Email Student Support</h3>
+                        <p>For course questions, billing, and credentials:</p>
+                        <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Phone -->
+                <div class="contact-meta-card">
+                    <div class="contact-meta-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div class="contact-meta-text">
+                        <h3>Call Support Desk</h3>
+                        <p>Available Mon-Fri, 9:00 AM - 6:00 PM IST:</p>
+                        <a href="tel:9998887776">+91 9998887776</a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Location -->
+                <div class="contact-meta-card">
+                    <div class="contact-meta-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="contact-meta-text">
+                        <h3>Digital HQ Campus</h3>
+                        <p>Digital Learning Campus, sector 4,<br>Tech Hub, Hyderabad, India</p>
+                    </div>
+                </div>
+
+                <!-- Stylized CSS Map Graphics -->
+                <div class="contact-map-gfx" aria-hidden="true">
+                    <div class="map-glow"></div>
+                    <div class="map-badge"><i class="fas fa-satellite-dish" style="margin-right:8px;"></i> HYDERABAD HQ</div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Modern Contact Form -->
+            <div class="contact-form-panel">
+                <h2>Send Us a Message</h2>
+                <p class="subtitle">Complete the fields below to open a support ticket.</p>
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="success-toast" style="display: flex; margin-bottom: 20px;">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="success-toast-content">
+                                <h4>Success!</h4>
+                                <p>{{ message }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form id="premiumContactForm" method="POST" novalidate>
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <!-- Full Name -->
+                        <div class="form-group-premium">
+                            <label for="contactName">Full Name</label>
+                            <div class="input-wrapper-premium">
+                                <i class="fas fa-user"></i>
+                                {{ form.name }}
+                            </div>
+                            {% if form.name.errors %}
+                                <span class="input-error-msg" style="display: block;">{{ form.name.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Email Address -->
+                        <div class="form-group-premium">
+                            <label for="contactEmail">Email Address</label>
+                            <div class="input-wrapper-premium">
+                                <i class="fas fa-envelope"></i>
+                                {{ form.email }}
+                            </div>
+                            {% if form.email.errors %}
+                                <span class="input-error-msg" style="display: block;">{{ form.email.errors.0 }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="form-group-premium">
+                        <label for="contactSubject">Subject</label>
+                        <div class="input-wrapper-premium">
+                            <i class="fas fa-info-circle"></i>
+                            {{ form.subject }}
+                        </div>
+                        {% if form.subject.errors %}
+                            <span class="input-error-msg" style="display: block;">{{ form.subject.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Message Body -->
+                    <div class="form-group-premium">
+                        <label for="contactMessage">Message Details</label>
+                        <div class="input-wrapper-premium">
+                            {{ form.message }}
+                        </div>
+                        {% if form.message.errors %}
+                            <span class="input-error-msg" style="display: block;">{{ form.message.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn-premium-send">
+                        Send Message <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Success Toast Pop-up Notification -->
+    <div class="success-toast" id="contactSuccessToast">
+        <i class="fas fa-check-circle"></i>
+        <div class="success-toast-content">
+            <h4>Message Sent Successfully!</h4>
+            <p>Our support squad will respond within 24 hours.</p>
+        </div>
+    </div>
+
+    <!-- Premium Unified Footer -->
+    <footer class="footer">
+        <div>
+            <h3>LMS eLearning</h3>
+            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
+            <div class="social-links">
+                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+
+        <div>
+            <h3>Courses</h3>
+            <a href="{% url 'courses' %}?filter=development">Web Development</a>
+            <a href="{% url 'courses' %}?filter=business">Business Skills</a>
+            <a href="{% url 'courses' %}?filter=data">Data Analytics</a>
+            <a href="{% url 'index' %}#blog">Blog</a>
+        </div>
+
+        <div>
+            <h3>Navigation</h3>
+            <a href="{% url 'about' %}">Our Platform</a>
+            <a href="{% url 'services' %}">LMS Services</a>
+            <a href="{% url 'faq' %}">Help & FAQs</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+        </div>
+
+        <div>
+            <h3>Support</h3>
+            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
+            <a href="tel:9998887776">9998887776</a>
+            <a href="{% url 'faq' %}">Help Center</a>
+        </div>
+
+        <div>
+            <h3>Legal</h3>
+            <a href="#privacy-notice">Privacy Notice</a>
+            <a href="{% url 'terms_page' %}">Terms</a>
+            <a href="{% url 'conditions_page' %}">Conditions</a>
+            <a href="#cookies">Cookies</a>
+        </div>
+    </footer>
+
+    <!-- JS Scripts -->
+    <script src="{% static 'accounts/js/pages.js' %}"></script>
+</body>
+
+</html>

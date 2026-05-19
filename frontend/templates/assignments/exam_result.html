@@ -109,21 +109,7 @@
             </div>
             {% endif %}
 
-            <!-- Certificate Button -->
-            {% if passed %}
-            <div class="certificate-section">
-                <div class="certificate-card">
-                    <span class="cert-icon">🎓</span>
-                    <div class="cert-text">
-                        <strong>Certificate Available</strong>
-                        <p>You've earned a certificate for passing this assessment!</p>
-                    </div>
-                    <a href="{% url 'assignments:certificate' submission.id %}" class="btn-cert">
-                        Download Certificate
-                    </a>
-                </div>
-            </div>
-            {% endif %}
+
 
         {% endif %}
 
@@ -309,6 +295,22 @@
             </div>
             {% endif %}
 
+        {% endif %}
+
+        <!-- Universal Certificate Section -->
+        {% if passed %}
+        <div class="certificate-section">
+            <div class="certificate-card">
+                <span class="cert-icon">🎓</span>
+                <div class="cert-text">
+                    <strong>Certificate Available</strong>
+                    <p>You've earned a certificate for passing this assessment!</p>
+                </div>
+                <a href="{% url 'assignments:certificate' submission.id %}" class="btn-cert">
+                    Download Certificate
+                </a>
+            </div>
+        </div>
         {% endif %}
 
         <!-- =============================== -->

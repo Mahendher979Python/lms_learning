@@ -2,7 +2,7 @@
 from courses.models import Course
 from django import forms
 from django.core.validators import RegexValidator
-from .models import User, OTP
+from .models import User, OTP, Contact
 from django.contrib.auth.forms import UserCreationForm
 from captcha.fields import CaptchaField
 
@@ -250,3 +250,28 @@ class ResetPasswordForm(forms.Form):
             raise forms.ValidationError("Passwords do not match")
 
         return cleaned_data
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['name', 'email', 'subject', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'John Doe',
+                'id': 'contactName'
+            }),
+            'email': forms.EmailInput(attrs={
+                'placeholder': 'john@example.com',
+                'id': 'contactEmail'
+            }),
+            'subject': forms.TextInput(attrs={
+                'placeholder': 'e.g. Course access query',
+                'id': 'contactSubject'
+            }),
+            'message': forms.Textarea(attrs={
+                'placeholder': 'Type your detailed message here...',
+                'id': 'contactMessage',
+                'rows': 5
+            })
+        }

@@ -42,21 +42,27 @@ body::before {
 }
 
 .sidebar {
-    background: #05070b !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border) !important;
 }
 
 .sidebar a {
-    color: #94a3b8 !important;
+    color: var(--sidebar-text) !important;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .sidebar a:hover {
-    background: rgba(37, 99, 235, 0.15) !important;
-    color: #ffffff !important;
+    background: var(--sidebar-hover-bg) !important;
+    color: var(--sidebar-text-active) !important;
     transform: translateX(6px);
+}
+
+.sidebar a.active, .sidebar a[href*="active"] {
+    background: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    box-shadow: 0 4px 12px var(--sidebar-active-glow) !important;
 }
 
 /* ==========================================================================

@@ -3,7 +3,8 @@ function toggleSidebar() {
 }
 
 function toggleDark() {
-    document.body.classList.toggle("dark");
+    const isDark = document.body.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
 /* TOGGLE DROPDOWN */
@@ -76,3 +77,32 @@ function getCookie(name) {
     });
     return cookieValue;
 }
+
+/* 3D LOGOUT MODAL ACTION HANDLERS */
+function showLogoutModal(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    const modal = document.getElementById("logout-confirm-modal");
+    if (modal) {
+        modal.classList.add("active");
+    }
+}
+
+function closeLogoutModal() {
+    const modal = document.getElementById("logout-confirm-modal");
+    if (modal) {
+        modal.classList.remove("active");
+    }
+}
+
+function confirmLogout() {
+    const form = document.getElementById("logout-post-form");
+    if (form) {
+        form.submit();
+    } else {
+        // Fallback to simple redirect if form is not found
+        window.location.href = "/en/logout/";
+    }
+}

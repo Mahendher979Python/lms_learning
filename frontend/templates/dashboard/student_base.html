@@ -6,6 +6,16 @@
 <title>{% block title %}Student Dashboard{% endblock %}</title>
 
 <link rel="stylesheet" href="{% static 'dashboard/css/student_base.css' %}">
+<script>
+    (function() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    })();
+</script>
 
 </head>
 <style>
@@ -52,7 +62,12 @@
 }
 
 </style>
-<body>
+<body class="dark">
+<script>
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.remove('dark');
+    }
+</script>
 
 <!-- NAVBAR -->
 <div class="navbar">
@@ -71,33 +86,50 @@
     <!-- RIGHT -->
     <div style="display:flex; align-items:center; gap:18px;">
 
-        <!-- 🔔 NOTIFICATIONS -->
+        <!-- NOTIFICATIONS -->
         <div class="notification-wrapper">
-
-    <a href="{% url 'student_notifications' %}"
-       class="notification-link">
-
-        🔔
-
-        <span id="notif-count">
-            0
-        </span>
-
-    </a>
-
-</div>
+            <a href="{% url 'student_notifications' %}" class="notification-link notif-btn-3d" title="Notifications">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+                <span id="notif-count">0</span>
+            </a>
+        </div>
 
         <!-- USER -->
-        <span class="username">👤 {{ request.user.username }}</span>
+        <span class="username" style="display:flex; align-items:center; gap:6px; font-weight:600; background:rgba(255,255,255,0.05); padding:8px 14px; border-radius:30px; border:1px solid rgba(255,255,255,0.08); box-shadow:0 4px 6px rgba(0,0,0,0.15);">👤 {{ request.user.username }}</span>
 
         <!-- DARK MODE -->
-        <button onclick="toggleDark()">🌙</button>
+        <button class="theme-btn-3d" onclick="toggleDark()" title="Toggle Dark/Light Mode">
+            <!-- Sun Icon -->
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon Icon -->
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
 
         <!-- LOGOUT -->
-        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+        <form id="logout-post-form" action="{% url 'logout' %}" method="POST" style="display:none;">
             {% csrf_token %}
-            <button type="submit">Logout</button>
         </form>
+        <button class="logout-btn-3d" onclick="showLogoutModal(event)" title="Logout">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+            </svg>
+        </button>
     </div>
 </div>
 
@@ -163,5 +195,23 @@ loadNotifications();
 setInterval(loadNotifications, 5000);
 
 </script>
+
+<!-- 3D LOGOUT CONFIRMATION MODAL -->
+<div id="logout-confirm-modal" class="modal-overlay-3d" onclick="closeLogoutModal()">
+    <div class="modal-card-3d" onclick="event.stopPropagation()">
+        <div class="modal-icon-3d">
+            <svg viewBox="0 0 24 24">
+                <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                <line x1="12" y1="2" x2="12" y2="12"></line>
+            </svg>
+        </div>
+        <h3 class="modal-title-3d">Are you sure?</h3>
+        <p class="modal-text-3d">Do you really want to sign out of your LMS session?</p>
+        <div class="modal-buttons-3d">
+            <button class="modal-btn-cancel-3d" onclick="closeLogoutModal()">Cancel</button>
+            <button class="modal-btn-confirm-3d" onclick="confirmLogout()">Yes, Logout</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

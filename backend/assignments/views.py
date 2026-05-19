@@ -658,7 +658,31 @@ def leaderboard(request, assignment_id):
 
 @login_required
 def certificate(request, submission_id):
-    return HttpResponse(f"Certificate for submission {submission_id}")
+    import uuid
+    submission = get_object_or_404(Submission, id=submission_id)
+    
+    is_student_owner = submission.student_id == request.user.id
+    is_trainer = (submission.assignment.trainer_id == request.user.id) or (request.user.role == 'trainer')
+    is_admin = request.user.role == 'admin'
+    
+    if not (is_student_owner or is_trainer or is_admin):
+        messages.error(request, "You are not authorized to view this certificate.")
+        return redirect("assignments:student_assignments")
+
+    if not submission.is_passed:
+        messages.error(request, "This assignment has not been passed yet.")
+        return redirect("assignments:student_assignments")
+
+    cert_uuid = uuid.uuid5(uuid.NAMESPACE_DNS, f"exam_{submission.id}")
+    cert_id_str = f"CERT-EX-{str(cert_uuid)[:18].upper()}"
+
+    return render(request, "assignments/assignment_certificate.html", {
+        "submission": submission,
+        "assignment": submission.assignment,
+        "student": submission.student,
+        "cert_id": cert_id_str,
+        "completion_date": submission.submitted_at
+    })
 
 @login_required
 def export_all_assignments(request):

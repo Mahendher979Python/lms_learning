@@ -1,25 +1,30 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LMS eLearning Home</title>
+    <!-- CSS Dependencies -->
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <header class="navbar">
-        <a class="logo" href="#home" aria-label="LMS home">
-            <span class="logo-icon">L</span>
-            <span>LMS</span>
+        <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
+            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height: 38px; width: auto;" alt="Logo">
+            <span class="logo-text">LMS</span>
         </a>
 
         <nav class="nav-links" aria-label="Main navigation">
-                <a href="#" class="nav-link">Courses</a>
-                <a href="{% url 'about_us' %}" class="nav-link">About Us</a>
-                <a href="#" class="nav-link">Services</a>
-                <a href="#" class="nav-link">FAQs</a>
-                <a href="#" class="nav-link">Contact</a>
+            <a href="{% url 'index' %}" class="nav-link">Home</a>
+            <a href="{% url 'courses' %}" class="nav-link">Courses</a>
+            <a href="{% url 'about' %}" class="nav-link">About Us</a>
+            <a href="{% url 'services' %}" class="nav-link">Services</a>
+            <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
+            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
         </nav>
 
         <form class="searchbar" role="search">
@@ -28,7 +33,7 @@
 
         <div class="nav-actions">
             <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            
+
         </div>
     </header>
 
@@ -37,29 +42,39 @@
             <div class="hero-content">
                 <p class="eyebrow">LMS eLearning Platform</p>
                 <h1>Learn smarter with online courses, exams, and live classes.</h1>
-                <p class="hero-text">Access quality learning resources, track your progress, join instructor-led sessions, and complete assignments from one simple LMS dashboard.</p>
+                <p class="hero-text">Access quality learning resources, track your progress, join instructor-led
+                    sessions, and complete assignments from one simple LMS dashboard.</p>
                 <div class="hero-actions">
-                    <a class="btn btn-solid" href="student_dashboard.html">Get Started</a>
-                    <a class="btn btn-outline" href="instructor_dashboard.html">Demo</a>
+                    <a class="btn btn-solid" href="{% url 'student_view' %}">Get Started</a>
+                    <a class="btn btn-outline" href="{% url 'trainer_view' %}">Demo</a>
                     <a class="btn btn-light" href="#courses">Explore Courses</a>
                 </div>
             </div>
 
             <div class="hero-image">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Students learning together online">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+                    alt="Students learning together online">
             </div>
         </section>
 
         <section class="image-marquee" aria-label="Learning gallery">
             <div class="marquee-track">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="Online learning workspace">
-                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Students studying together">
-                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80" alt="Student using laptop for learning">
-                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Group learning session">
-                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=80" alt="Modern study environment">
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80" alt="Online learning workspace">
-                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80" alt="Students studying together">
-                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80" alt="Student using laptop for learning">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80"
+                    alt="Online learning workspace">
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80"
+                    alt="Students studying together">
+                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
+                    alt="Student using laptop for learning">
+                <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+                    alt="Group learning session">
+                <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=80"
+                    alt="Modern study environment">
+                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80"
+                    alt="Online learning workspace">
+                <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80"
+                    alt="Students studying together">
+                <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
+                    alt="Student using laptop for learning">
             </div>
         </section>
 
@@ -67,7 +82,8 @@
             <div class="section-heading">
                 <p class="eyebrow">Interactive Learning</p>
                 <h2>Move through courses like a guided digital campus.</h2>
-                <p>Students can discover lessons, join live sessions, attempt exams, and review progress from a visually organized learning space.</p>
+                <p>Students can discover lessons, join live sessions, attempt exams, and review progress from a visually
+                    organized learning space.</p>
             </div>
 
             <div class="immersive-layout">
@@ -114,7 +130,8 @@
 
             <div class="course-grid">
                 <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80" alt="Laptop showing an online course">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
+                        alt="Laptop showing an online course">
                     <div class="course-content">
                         <span>Beginner</span>
                         <h3>Web Development</h3>
@@ -123,7 +140,8 @@
                 </article>
 
                 <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80" alt="Team learning business skills">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80"
+                        alt="Team learning business skills">
                     <div class="course-content">
                         <span>Professional</span>
                         <h3>Business Skills</h3>
@@ -132,7 +150,8 @@
                 </article>
 
                 <article class="course-card">
-                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80" alt="Instructor helping students with laptops">
+                    <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80"
+                        alt="Instructor helping students with laptops">
                     <div class="course-content">
                         <span>Advanced</span>
                         <h3>Data Analytics</h3>
@@ -146,7 +165,8 @@
             <div class="feature-panel">
                 <p class="eyebrow">What You Get</p>
                 <h2>Everything needed for a complete LMS experience.</h2>
-                <p>From student onboarding to certificates, this homepage now introduces the full learning flow clearly and visually.</p>
+                <p>From student onboarding to certificates, this homepage now introduces the full learning flow clearly
+                    and visually.</p>
             </div>
             <div class="feature-list-grid">
                 <div>
@@ -155,7 +175,8 @@
                 </div>
                 <div>
                     <h3>Instructor Tools</h3>
-                    <p>Teachers can create assignments, schedule sessions, and guide learners through structured lessons.</p>
+                    <p>Teachers can create assignments, schedule sessions, and guide learners through structured
+                        lessons.</p>
                 </div>
                 <div>
                     <h3>Course Library</h3>
@@ -172,21 +193,26 @@
             <div>
                 <p class="eyebrow">About Us</p>
                 <h2>Built for simple and effective online learning.</h2>
-                <p>Our LMS helps students attend live classes, explore courses, submit exams, and stay organized. Instructors can schedule classes, create assignments, and manage learning activities from one place.</p>
+                <p>Our LMS helps students attend live classes, explore courses, submit exams, and stay organized.
+                    Instructors can schedule classes, create assignments, and manage learning activities from one place.
+                </p>
             </div>
-            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" alt="Students studying in a classroom">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80"
+                alt="Students studying in a classroom">
         </section>
 
         <section class="section blog-section" id="blog">
             <div class="section-heading">
                 <p class="eyebrow">Blog</p>
                 <h2>Latest Learning Insights</h2>
-                <p>Read helpful articles about online learning, course planning, exam preparation, and student success.</p>
+                <p>Read helpful articles about online learning, course planning, exam preparation, and student success.
+                </p>
             </div>
 
             <div class="blog-grid">
                 <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80" alt="Notebook and laptop for online study planning">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=80"
+                        alt="Notebook and laptop for online study planning">
                     <div class="blog-content">
                         <p>Study Tips</p>
                         <h3>How to plan your weekly online learning schedule</h3>
@@ -195,7 +221,8 @@
                 </article>
 
                 <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80" alt="Learner taking notes during an online class">
+                    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=900&q=80"
+                        alt="Learner taking notes during an online class">
                     <div class="blog-content">
                         <p>eLearning</p>
                         <h3>Why interactive courses improve student engagement</h3>
@@ -204,7 +231,8 @@
                 </article>
 
                 <article class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80" alt="Students collaborating around a table">
+                    <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=900&q=80"
+                        alt="Students collaborating around a table">
                     <div class="blog-content">
                         <p>Exams</p>
                         <h3>Simple ways to prepare for online assessments</h3>
@@ -242,10 +270,10 @@
             <h3>LMS eLearning</h3>
             <p>Online courses, live classes, exams, and learning tools for modern education.</p>
             <div class="social-links">
-                <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
-                <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="https://youtube.com" target="_blank" rel="noopener">YouTube</a>
+                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
 
@@ -259,9 +287,9 @@
 
         <div>
             <h3>About Us</h3>
-            <a href="{% url 'about_us' %}">Our Platform</a>
-            <a href="student_dashboard.html">Student Dashboard</a>
-            <a href="instructor_dashboard.html">Instructor Dashboard</a>
+            <a href="{% url 'about' %}">Our Platform</a>
+            <a href="{% url 'student_view' %}">Student Dashboard</a>
+            <a href="{% url 'trainer_view' %}">Instructor Dashboard</a>
         </div>
 
         <div>
@@ -274,11 +302,11 @@
         <div>
             <h3>Legal</h3>
             <a href="#privacy-notice">Privacy Notice</a>
-            <a href="#terms">Terms</a>
-            <a href="#candidate-privacy-notice">Candidate Privacy Notice</a>
+            <a href="{% url 'terms_page' %}">Terms</a>
+            <a href="{% url 'conditions_page' %}">Conditions</a>
             <a href="#cookies">Cookies</a>
-            <a href="#sitemap">Sitemap</a>
         </div>
     </footer>
 </body>
+
 </html>

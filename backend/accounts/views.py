@@ -13,7 +13,8 @@ from .forms import (
     AdminUserCreateForm,
     ForgotPasswordForm,
     OTPVerifyForm,
-    ResetPasswordForm
+    ResetPasswordForm,
+    ContactForm
 )
 from .models import User, OTP
 from django.db.models import Q
@@ -38,6 +39,45 @@ def conditions_page(request):
 
 def about_us(request):
     return render(request, 'accounts/about_us.html')
+
+
+def about_view(request):
+    return render(request, 'accounts/about.html')
+
+
+def courses_view(request):
+    return render(request, 'accounts/courses.html')
+
+
+def services_view(request):
+    return render(request, 'accounts/services.html')
+
+
+def faq_view(request):
+    return render(request, 'accounts/faq.html')
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            contact = form.save()
+            
+            admins = User.objects.filter(role='admin')
+            for admin in admins:
+                Notification.objects.create(
+                    recipient=admin,
+                    type='admin',
+                    title=f'New Contact Message from {contact.name}',
+                    message=f'Subject: {contact.subject}\nFrom: {contact.email}\n\n{contact.message}'
+                )
+            
+            messages.success(request, 'Your message has been sent successfully! We will get back to you soon.')
+            return redirect('contact')
+    else:
+        form = ContactForm()
+    
+    return render(request, 'accounts/contact.html', {'form': form})
 
 
 def register_view(request):

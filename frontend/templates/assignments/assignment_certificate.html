@@ -1,0 +1,402 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Certificate | {{ assignment.title }}</title>
+
+  <!-- Google Fonts for Luxury Aesthetics -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #0d1527;
+      --gold: #dfb23f;
+      --gold-light: #f3dfa2;
+      --teal: #3b82f6;
+      --muted: #94a3b8;
+      --text: #f8fafc;
+    }
+    
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: var(--bg);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .actions {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-primary { 
+      background: linear-gradient(135deg, var(--gold), #b58916); 
+      color: #000; 
+      box-shadow: 0 4px 15px rgba(223, 178, 63, 0.3);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(223, 178, 63, 0.4);
+    }
+
+    .btn-secondary { 
+      background: rgba(255, 255, 255, 0.08); 
+      color: #fff; 
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Certificate Outer Frame */
+    .certificate-container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 50px;
+      box-sizing: border-box;
+      position: relative;
+      border: 4px solid var(--gold);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      background-image: 
+        radial-gradient(circle at top left, rgba(223, 178, 63, 0.08), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.08), transparent 35%);
+      overflow: hidden;
+    }
+
+    /* Ornate Corners */
+    .corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--gold);
+      opacity: 0.8;
+    }
+    .corner.tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+    .corner.tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+    .corner.bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+    .corner.br { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+    /* Content Styling */
+    .cert-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .cert-badge {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .cert-title {
+      font-family: 'Cinzel', serif;
+      font-size: 2.4rem;
+      letter-spacing: 4px;
+      margin: 0;
+      color: var(--gold-light);
+      text-shadow: 0 2px 10px rgba(243, 223, 162, 0.2);
+    }
+
+    .cert-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 5px;
+      margin-bottom: 25px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(223, 178, 63, 0.25);
+      width: 70%;
+      margin: 0 auto 30px;
+    }
+
+    .cert-body {
+      text-align: center;
+    }
+
+    .recipient-label {
+      font-size: 1rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    .recipient-name {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0 0 20px;
+      letter-spacing: 1px;
+    }
+
+    .cert-text {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      max-width: 650px;
+      margin: 0 auto 30px;
+      font-weight: 300;
+    }
+
+    .exam-highlight {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 50px;
+      padding: 0 20px;
+    }
+
+    .footer-col {
+      text-align: center;
+      width: 200px;
+    }
+
+    .footer-col.seal-col {
+      width: auto;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .signature-line {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      margin-top: 8px;
+      padding-top: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+    }
+
+    .signature-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    /* Professional Digital Seal */
+    .digital-seal {
+      width: 90px;
+      height: 90px;
+      border: 2px dashed var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: rgba(223, 178, 63, 0.05);
+      animation: spinSlow 20s linear infinite;
+    }
+
+    .seal-inner {
+      width: 74px;
+      height: 74px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-light);
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cert-meta-info {
+      margin-top: 35px;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .cert-id {
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* Print styling rules */
+    @media print {
+      body {
+        background: #fff;
+        color: #000;
+        padding: 0;
+      }
+      .actions, .hint {
+        display: none !important;
+      }
+      .certificate-container {
+        border-color: #000 !important;
+        box-shadow: none !important;
+        background: #fff !important;
+        color: #000 !important;
+      }
+      .cert-title, .recipient-name, .signature-name, .cert-id {
+        color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="actions">
+    <button class="btn btn-primary" onclick="downloadPDF()">
+      📥 Download PDF
+    </button>
+    <button class="btn btn-secondary" onclick="downloadPNG()">
+      🖼️ Download PNG
+    </button>
+    <a href="{% url 'assignments:student_assignments' %}" class="btn btn-secondary">
+      ← Back
+    </a>
+  </div>
+  
+  <div class="hint">
+    Tip: Click the buttons above to save your official certificate instantly.
+  </div>
+
+  <!-- Capture Area -->
+  <div class="certificate-container" id="certificate">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <div class="cert-header">
+      <div class="cert-badge">🏆</div>
+      <h1 class="cert-title">CERTIFICATE</h1>
+      <div class="cert-subtitle">OF ACHIEVEMENT</div>
+      <hr class="divider">
+    </div>
+
+    <div class="cert-body">
+      <div class="recipient-label">This certificate is proudly awarded to</div>
+      <h2 class="recipient-name">{{ student.get_full_name|default:student.username }}</h2>
+      
+      <p class="cert-text">
+        for successfully passing the professional examination <span class="exam-highlight">"{{ assignment.title }}"</span>
+        in the course <span class="exam-highlight">{{ assignment.course.title }}</span> on this day, 
+        <span class="exam-highlight">{{ completion_date|date:"F d, Y" }}</span>, with an exceptional score of 
+        <span class="exam-highlight">{{ submission.score }}/{{ assignment.total_marks }} ({{ submission.percentage|floatformat:1 }}%)</span>.
+      </p>
+    </div>
+
+    <div class="cert-footer">
+      <div class="footer-col">
+        <div class="signature-name">{{ completion_date|date:"d M Y" }}</div>
+        <div class="signature-line">Date Issued</div>
+      </div>
+      
+      <div class="footer-col seal-col">
+        <div class="digital-seal">
+          <div class="seal-inner">
+            OFFICIAL<br>VERIFIED<br>LMS
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <div class="signature-name">{{ assignment.trainer.get_full_name|default:assignment.trainer.username }}</div>
+        <div class="signature-line">Authorized Instructor</div>
+      </div>
+    </div>
+
+    <div class="cert-meta-info">
+      Verification ID: <span class="cert-id">{{ cert_id }}</span> &nbsp;|&nbsp; Verified Secure Digital Certificate
+    </div>
+  </div>
+
+  <!-- PDF & PNG client export engines -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+
+  <script>
+    async function downloadPDF() {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+      const el = document.getElementById("certificate");
+      const filename = "certificate_{{ assignment.title|slugify }}.pdf";
+
+      const opt = {
+        margin: 15,
+        filename,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#0d1527" },
+        jsPDF: { unit: "pt", format: "a4", orientation: "landscape" }
+      };
+
+      return html2pdf().set(opt).from(el).save();
+    }
+
+    async function downloadPNG() {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+
+      const node = document.getElementById("certificate");
+      const filename = "certificate_{{ assignment.title|slugify }}.png";
+      
+      const dataUrl = await htmlToImage.toPng(node, { cacheBust: true, pixelRatio: 2, backgroundColor: "#0d1527" });
+
+      const a = document.createElement("a");
+      a.download = filename;
+      a.href = dataUrl;
+      a.click();
+    }
+  </script>
+</body>
+</html>

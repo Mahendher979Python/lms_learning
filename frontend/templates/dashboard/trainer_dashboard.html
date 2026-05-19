@@ -1,223 +1,455 @@
 {% extends 'dashboard/trainer_base.html' %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'dashboard/css/trainer_dashboard.css' %}">
-<h2>👨‍🏫 Trainer Dashboard</h2>
-<p>Welcome {{ request.user.username }}</p>
 
-<!-- <style>
+<style>
+
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    overflow-x:hidden !important;
+    background:#071028;
+}
+
+/* ================= MAIN FIX ================= */
+
+.main-content,
+.dashboard-content,
+.content-wrapper,
+.container-fluid{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    padding:20px !important;
+}
+
+/* ================= HEADER ================= */
+
+.premium-header{
+    margin-bottom:32px;
+}
+
+.premium-header h2{
+    font-size:34px;
+    font-weight:800;
+    background:linear-gradient(135deg,#fff,#60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.premium-header p{
+    margin-top:8px;
+    color:#9ca3af;
+}
+
+/* ================= GRID ================= */
 
 .dashboard-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:20px;
-    margin-top:20px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:24px;
+    margin-bottom:32px;
 }
 
-.card{
-    background:white;
-    padding:20px;
+/* ================= STAT CARD ================= */
+
+.premium-stat-card{
+    position:relative;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-stat-card:hover{
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.4),
+    0 0 25px rgba(59,130,246,0.15);
+}
+
+.premium-stat-card-icon{
+    width:68px;
+    height:68px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin-bottom:18px;
+    color:#fff;
+}
+
+.blue{
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+}
+
+.green{
+    background:linear-gradient(135deg,#10b981,#059669);
+}
+
+.orange{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+.purple{
+    background:linear-gradient(135deg,#8b5cf6,#7c3aed);
+}
+
+.premium-stat-card-value{
+    font-size:42px;
+    font-weight:800;
+    color:#fff;
+}
+
+.premium-stat-card-label{
+    color:#9ca3af;
+    margin-top:8px;
+    font-weight:600;
+}
+
+/* ================= SECTION ================= */
+
+.premium-section{
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-section h3{
+    color:#fff;
+    margin-bottom:22px;
+    font-size:22px;
+}
+
+/* ================= BUTTONS ================= */
+
+.premium-btn{
+    display:inline-block;
+    padding:14px 22px;
     border-radius:14px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    text-decoration:none;
+    color:#fff;
+    margin:10px 10px 0 0;
+    font-weight:600;
+
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+
+    transition:.3s;
+
+    box-shadow:
+    0 10px 20px rgba(59,130,246,0.25);
+}
+
+.premium-btn:hover{
+    transform:translateY(-4px);
+}
+
+/* ================= COURSES ================= */
+
+.premium-course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+}
+
+.premium-course-card{
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:20px;
+
+    padding:24px;
+
     transition:.3s;
 }
 
-.card:hover{
-    transform:translateY(-5px);
+.premium-course-card:hover{
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 15px 30px rgba(59,130,246,0.15);
 }
 
-.card h3{
-    margin:0;
-    font-size:18px;
+.premium-course-card h3{
+    color:#fff;
+    margin-bottom:10px;
 }
 
-.card p{
-    font-size:28px;
-    font-weight:bold;
-    margin-top:10px;
+.premium-course-card p{
+    color:#9ca3af;
 }
 
-.section{
-    margin-top:35px;
-}
+/* ================= PROGRESS ================= */
 
-.course-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-}
-
-.course-card{
-    background:white;
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.progress{
+.premium-progress{
     width:100%;
-    height:10px;
-    background:#e5e7eb;
-    border-radius:10px;
+    height:12px;
+    border-radius:20px;
+    background:#111827;
     overflow:hidden;
-    margin-top:10px;
+    margin:16px 0;
 }
 
-.progress-fill{
+.premium-progress-fill{
     height:100%;
-    background:#16a34a;
-    width:0%;
-    transition:0.5s;
+    width:0;
+    border-radius:20px;
+    background:linear-gradient(90deg,#3b82f6,#8b5cf6,#ec4899);
+    transition:1s ease;
 }
 
-.chart-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:20px;
-    margin-top:30px;
-}
+/* ================= TABLE ================= */
 
-.chart-box{
-    background:white;
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-}
-
-.btn{
-    display:inline-block;
-    padding:10px 14px;
-    background:#2563eb;
-    color:white;
-    text-decoration:none;
-    border-radius:8px;
-    margin-top:10px;
-    margin-right:10px;
-}
-
-.table-box{
+.premium-table-box{
     overflow-x:auto;
 }
 
-table{
+.premium-table{
     width:100%;
     border-collapse:collapse;
-    background:white;
-    border-radius:12px;
-    overflow:hidden;
 }
 
-table th,
-table td{
-    padding:12px;
-    border-bottom:1px solid #eee;
+.premium-table th{
+    padding:16px;
+    color:#60a5fa;
     text-align:left;
 }
 
-.badge{
-    padding:5px 10px;
+.premium-table td{
+    padding:16px;
+    color:#d1d5db;
+    border-top:1px solid rgba(255,255,255,0.05);
+}
+
+.premium-badge{
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:#fff;
+    padding:6px 14px;
     border-radius:20px;
     font-size:12px;
-    color:white;
 }
 
-.approved{
-    background:green;
+/* ================= CHARTS ================= */
+
+.premium-chart-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+    gap:24px;
+    overflow:hidden !important;
 }
 
-.pending{
-    background:orange;
+.premium-chart-card{
+    width:100%;
+    height:420px;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    overflow:hidden !important;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
 }
 
-</style> -->
+.premium-chart-card:hover{
+    transform:translateY(-6px);
 
-<!-- TOP CARDS -->
+    box-shadow:
+    0 20px 40px rgba(0,0,0,0.4),
+    0 0 25px rgba(59,130,246,0.15);
+}
+
+.premium-chart-card h3{
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.premium-chart-card canvas{
+    width:100% !important;
+    height:300px !important;
+    max-width:100%;
+    max-height:300px;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .premium-course-grid{
+        grid-template-columns:1fr;
+    }
+
+    .premium-chart-grid{
+        grid-template-columns:1fr;
+    }
+
+    .premium-chart-card{
+        height:360px;
+    }
+
+    .premium-chart-card canvas{
+        height:240px !important;
+    }
+
+}
+
+</style>
+
+<!-- ================= HEADER ================= -->
+
+<div class="premium-header">
+    <h2>👨‍🏫 Trainer Dashboard</h2>
+    <p>Welcome, {{ request.user.username }}</p>
+</div>
+
+<!-- ================= TOP CARDS ================= -->
+
 <div class="dashboard-grid">
 
-    <div class="card">
-        <h3>📚 Courses</h3>
-        <p>{{ courses|length }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon blue">
+            <i class="fas fa-book"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ courses|length }}</div>
+        <div class="premium-stat-card-label">Courses</div>
     </div>
 
-    <div class="card">
-        <h3>📘 Topics</h3>
-        <p>{{ topics|length }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon green">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ topics|length }}</div>
+        <div class="premium-stat-card-label">Topics</div>
     </div>
 
-    <div class="card">
-        <h3>📝 Assignments</h3>
-        <p>{{ assignments|length }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon orange">
+            <i class="fas fa-tasks"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ assignments|length }}</div>
+        <div class="premium-stat-card-label">Assignments</div>
     </div>
 
-    <div class="card">
-        <h3>👨‍🎓 Students</h3>
-        <p>{{ students_count|default:0 }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon purple">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ students_count|default:0 }}</div>
+        <div class="premium-stat-card-label">Students</div>
     </div>
 
 </div>
 
-<!-- QUICK ACTIONS -->
-<div class="section">
+<!-- ================= QUICK ACTIONS ================= -->
+
+<div class="premium-section">
 
     <h3>⚡ Quick Actions</h3>
 
-    <a href="{% url 'trainer_create_topic' %}" class="btn">
-        ➕ Create Topic
+    <a href="{% url 'trainer_create_topic' %}" class="premium-btn">
+        Create Topic
     </a>
 
-    <a href="{% url 'assignments:trainer_assignments' %}" class="btn">
-        📝 Assignments
+    <a href="{% url 'assignments:trainer_assignments' %}" class="premium-btn">
+        Assignments
     </a>
 
-    <a href="{% url 'trainer_attendance' %}" class="btn">
-        📅 Attendance
+    <a href="{% url 'trainer_attendance' %}" class="premium-btn">
+        Attendance
     </a>
 
-    <a href="{% url 'trainer_progress' %}" class="btn">
-        📊 Student Progress
+    <a href="{% url 'trainer_progress' %}" class="premium-btn">
+        Student Progress
     </a>
 
 </div>
 
-<!-- COURSES -->
-<div class="section">
+<!-- ================= COURSES ================= -->
+
+<div class="premium-section">
 
     <h3>📚 Your Courses</h3>
 
-    <div class="course-grid">
+    <div class="premium-course-grid">
 
         {% for c in courses %}
 
-        <div class="course-card">
+        <div class="premium-course-card">
 
             <h3>{{ c.title }}</h3>
 
-            <p>
-                {{ c.description|truncatechars:80 }}
-            </p>
+            <p>{{ c.description|truncatechars:80 }}</p>
 
-            <p>
-                📘 Topics:
-                <b>{{ c.topic_set.count }}</b>
-            </p>
+            <p>Topics: <b>{{ c.topic_set.count }}</b></p>
 
-            <div class="progress">
+            <div class="premium-progress">
 
-                <div class="progress-fill"
-                     data-width="{{ c.progress|default:0 }}">
+                <div class="premium-progress-fill"
+                data-progress="{{ c.progress|default:0 }}">
                 </div>
 
             </div>
 
-            <small>
-                Progress {{ c.progress|default:0 }}%
-            </small>
+            <p>Progress {{ c.progress|default:0 }}%</p>
 
         </div>
 
         {% empty %}
 
-        <p>No Courses Found</p>
+        <p style="color:#9ca3af;">No Courses Found</p>
 
         {% endfor %}
 
@@ -225,14 +457,15 @@ table td{
 
 </div>
 
-<!-- RECENT ASSIGNMENTS -->
-<div class="section">
+<!-- ================= ASSIGNMENTS ================= -->
+
+<div class="premium-section">
 
     <h3>📝 Recent Assignments</h3>
 
-    <div class="table-box">
+    <div class="premium-table-box">
 
-        <table>
+        <table class="premium-table">
 
             <thead>
                 <tr>
@@ -248,24 +481,25 @@ table td{
                 {% for a in assignments|slice:":5" %}
 
                 <tr>
+
                     <td>{{ a.title }}</td>
+
                     <td>{{ a.course }}</td>
 
                     <td>
-                        <span class="badge approved">
+                        <span class="premium-badge">
                             {{ a.status }}
                         </span>
                     </td>
 
                     <td>{{ a.total_marks }}</td>
+
                 </tr>
 
                 {% empty %}
 
                 <tr>
-                    <td colspan="4">
-                        No Assignments
-                    </td>
+                    <td colspan="4">No Assignments</td>
                 </tr>
 
                 {% endfor %}
@@ -278,27 +512,204 @@ table td{
 
 </div>
 
-<!-- CHARTS -->
-<div class="chart-grid">
+<!-- ================= CHARTS ================= -->
 
-    <div class="chart-box">
-        <h3>📊 Trainer Analytics</h3>
+<div class="premium-chart-grid">
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📊 Trainer Analytics
+        </h3>
+
         <canvas id="trainerChart"></canvas>
+
     </div>
 
-    <div class="chart-box">
-        <h3>📈 Student Progress</h3>
+    <div class="premium-chart-card">
+
+        <h3>
+            📈 Student Progress
+        </h3>
+
         <canvas id="studentChart"></canvas>
+
     </div>
 
 </div>
 
-<!-- SAFE JSON -->
 {{ courses|length|json_script:"courses-data" }}
 {{ topics|length|json_script:"topics-data" }}
 {{ assignments|length|json_script:"assignments-data" }}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'dashboard/js/trainer_dashboard.js' %}"></script>
+
+<script>
+
+/* ================= PROGRESS ================= */
+
+document.querySelectorAll('.premium-progress-fill').forEach(fill=>{
+
+    const progress=fill.dataset.progress;
+
+    setTimeout(()=>{
+        fill.style.width=progress+'%';
+    },300);
+
+});
+
+/* ================= COUNTER ================= */
+
+document.querySelectorAll('.premium-stat-card-value').forEach(counter=>{
+
+    const final=parseInt(counter.innerText);
+
+    let current=0;
+
+    const increment=final/50;
+
+    counter.innerText='0';
+
+    const timer=setInterval(()=>{
+
+        current+=increment;
+
+        if(current>=final){
+
+            counter.innerText=final;
+
+            clearInterval(timer);
+
+        }else{
+
+            counter.innerText=Math.floor(current);
+
+        }
+
+    },30);
+
+});
+
+/* ================= TRAINER CHART ================= */
+
+new Chart(document.getElementById('trainerChart'),{
+
+    type:'bar',
+
+    data:{
+
+        labels:['Courses','Topics','Assignments','Students'],
+
+        datasets:[{
+
+            label:'Analytics',
+
+            data:[
+                JSON.parse(document.getElementById('courses-data').textContent),
+                JSON.parse(document.getElementById('topics-data').textContent),
+                JSON.parse(document.getElementById('assignments-data').textContent),
+                {{ students_count|default:0 }}
+            ],
+
+            backgroundColor:[
+                '#3b82f6',
+                '#10b981',
+                '#f59e0b',
+                '#8b5cf6'
+            ],
+
+            borderRadius:12
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        },
+
+        scales:{
+            x:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            },
+            y:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            }
+        }
+    }
+
+});
+
+/* ================= STUDENT CHART ================= */
+
+new Chart(document.getElementById('studentChart'),{
+
+    type:'line',
+
+    data:{
+
+        labels:['Jan','Feb','Mar','Apr','May','Jun'],
+
+        datasets:[{
+
+            label:'Progress',
+
+            data:[20,35,45,65,80,95],
+
+            borderColor:'#3b82f6',
+
+            backgroundColor:'rgba(59,130,246,0.2)',
+
+            fill:true,
+
+            tension:0.4,
+
+            pointRadius:5,
+
+            pointBackgroundColor:'#fff'
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        },
+
+        scales:{
+            x:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            },
+            y:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            }
+        }
+    }
+
+});
+
+</script>
 
 {% endblock %}

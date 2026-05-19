@@ -81,6 +81,16 @@ class Attendance(models.Model):
         null=True
     )
 
+    status = models.CharField(
+        max_length=20,
+        choices=(
+            ("Present", "Present"),
+            ("Absent", "Absent"),
+            ("Pending", "Pending")
+        ),
+        default="Pending"
+    )
+
     created_at = models.DateTimeField(
         auto_now_add=True
     )

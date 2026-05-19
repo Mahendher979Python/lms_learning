@@ -1,101 +1,469 @@
 {% extends 'dashboard/base.html' %}
+{% block content %}
 {% load static %}
 
-{% block content %}
-
-<h2>📊 Admin Dashboard</h2>
-<p>Welcome {{ request.user.username }}</p>
- 
 <style>
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-.card {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    text-align: center;
+body{
+    overflow-x:hidden !important;
+    background:#071028;
 }
 
-.chart-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 20px;
-    margin-top: 30px;
+/* ================= MAIN FIX ================= */
+
+.main-content,
+.dashboard-content,
+.content-wrapper,
+.container-fluid{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    padding:20px !important;
 }
 
-.chart-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+/* ================= HEADER ================= */
+
+.premium-header{
+    margin-bottom:32px;
 }
-</style> 
 
-<!-- CARDS -->
-<div class="cards">
+.premium-header h2{
+    font-size:34px;
+    font-weight:800;
+    background:linear-gradient(135deg,#fff,#60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
 
-    <div class="card">
-        <h3>Trainers</h3>
-        <p>{{ trainers }}</p>
+.premium-header p{
+    margin-top:8px;
+    color:#9ca3af;
+}
+
+/* ================= GRID ================= */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:24px;
+    margin-bottom:32px;
+}
+
+/* ================= STAT CARD ================= */
+
+.premium-stat-card{
+    position:relative;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-stat-card-icon{
+    width:68px;
+    height:68px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin-bottom:18px;
+    color:#fff;
+}
+
+.blue{
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+}
+
+.green{
+    background:linear-gradient(135deg,#10b981,#059669);
+}
+
+.orange{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+.purple{
+    background:linear-gradient(135deg,#8b5cf6,#7c3aed);
+}
+
+.pink{
+    background:linear-gradient(135deg,#ec4899,#be185d);
+}
+
+.premium-stat-card-value{
+    font-size:42px;
+    font-weight:800;
+    color:#fff;
+}
+
+.premium-stat-card-label{
+    color:#9ca3af;
+    margin-top:8px;
+    font-weight:600;
+}
+
+/* ================= SECTION ================= */
+
+.premium-section{
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-section h3{
+    color:#fff;
+    margin-bottom:22px;
+    font-size:22px;
+}
+
+/* ================= CHARTS ================= */
+
+.premium-chart-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+    gap:24px;
+    overflow:hidden !important;
+}
+
+.premium-chart-card{
+    width:100%;
+    height:420px;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    overflow:hidden !important;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-chart-card h3{
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.premium-chart-card canvas{
+    width:100% !important;
+    height:300px !important;
+    max-width:100%;
+    max-height:300px;
+}
+
+</style>
+
+<!-- ================= HEADER ================= -->
+
+<div class="premium-header">
+    <h2>🎯 Admin Dashboard</h2>
+    <p>Welcome, {{ request.user.username }} | Advanced Analytics & Insights</p>
+</div>
+
+<!-- ================= TOP CARDS ================= -->
+
+<div class="dashboard-grid">
+
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon blue">
+            <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ trainers }}</div>
+        <div class="premium-stat-card-label">Trainers</div>
     </div>
 
-    <div class="card">
-        <h3>Students</h3>
-        <p>{{ students }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon green">
+            <i class="fas fa-user-friends"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ students }}</div>
+        <div class="premium-stat-card-label">Students</div>
     </div>
 
-    <div class="card">
-        <h3>Courses</h3>
-        <p>{{ courses }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon orange">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ courses }}</div>
+        <div class="premium-stat-card-label">Courses</div>
     </div>
 
-    <div class="card">
-        <h3>Assignments</h3>
-        <p>{{ assignments }}</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon pink">
+            <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ assignments }}</div>
+        <div class="premium-stat-card-label">Assignments</div>
     </div>
 
 </div>
 
-<!-- SAFE DATA (NO JS ERROR FIX) -->
+<!-- ================= CHARTS ================= -->
+
+<div class="premium-chart-grid">
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📊 Users Overview
+        </h3>
+
+        <canvas id="adminUserChart"></canvas>
+
+    </div>
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📈 Trainers vs Students
+        </h3>
+
+        <canvas id="adminRoleChart"></canvas>
+
+    </div>
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📉 Courses Stats
+        </h3>
+
+        <canvas id="adminCourseChart"></canvas>
+
+    </div>
+
+</div>
+
 {{ trainers|json_script:"trainers-data" }}
 {{ students|json_script:"students-data" }}
 {{ courses|json_script:"courses-data" }}
 
-<br>
-
-<!-- CHART AREA -->
-<div class="chart-container">
-
-    <div class="chart-box">
-        <h3>👥 Users Overview</h3>
-        <canvas id="userChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>📊 Trainers vs Students</h3>
-        <canvas id="roleChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>📚 Courses Stats</h3>
-        <canvas id="courseChart"></canvas>
-    </div>
-
-    <div class="chart-box">
-        <h3>📈 Weekly Growth</h3>
-        <canvas id="growthChart"></canvas>
-    </div>
-
-</div>
-
-<!-- CHART JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'dashboard/js/admin_dashboard.js' %}"></script>
+
+<script>
+
+/* ================= COUNTER ================= */
+
+document.querySelectorAll('.premium-stat-card-value').forEach(counter=>{
+
+    const final=parseInt(counter.innerText);
+
+    let current=0;
+
+    const increment=final/50;
+
+    counter.innerText='0';
+
+    const timer=setInterval(()=>{
+
+        current+=increment;
+
+        if(current>=final){
+
+            counter.innerText=final;
+
+            clearInterval(timer);
+
+        }else{
+
+            counter.innerText=Math.floor(current);
+
+        }
+
+    },30);
+
+});
+
+/* ================= USER CHART ================= */
+
+const trainersCount = {{ trainers }};
+const studentsCount = {{ students }};
+const coursesCount = {{ courses }};
+
+new Chart(document.getElementById('adminUserChart'),{
+
+    type:'pie',
+
+    data:{
+
+        labels:['Trainers','Students','Courses'],
+
+        datasets:[{
+
+            data:[trainersCount, studentsCount, coursesCount],
+
+            backgroundColor:[
+                '#3b82f6',
+                '#10b981',
+                '#f59e0b'
+            ],
+
+            borderWidth:3,
+            borderColor:'#071028'
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        }
+    }
+
+});
+
+/* ================= ROLE CHART ================= */
+
+new Chart(document.getElementById('adminRoleChart'),{
+
+    type:'bar',
+
+    data:{
+
+        labels:['Trainers','Students'],
+
+        datasets:[{
+
+            label:'Count',
+
+            data:[trainersCount, studentsCount],
+
+            backgroundColor:[
+                '#3b82f6',
+                '#10b981'
+            ],
+
+            borderRadius:12
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        },
+
+        scales:{
+            x:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            },
+            y:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            }
+        }
+    }
+
+});
+
+/* ================= COURSE CHART ================= */
+
+new Chart(document.getElementById('adminCourseChart'),{
+
+    type:'doughnut',
+
+    data:{
+
+        labels:['Active Courses'],
+
+        datasets:[{
+
+            data:[coursesCount, Math.max(0, 30 - coursesCount)],
+
+            backgroundColor:[
+                '#f59e0b',
+                'rgba(245,158,11,0.15)'
+            ],
+
+            borderWidth:3,
+            borderColor:'#071028',
+            cutout:'65%'
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                display:false
+            }
+        }
+    }
+
+});
+
+</script>
 
 {% endblock %}

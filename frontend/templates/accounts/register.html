@@ -1,57 +1,31 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | LMS</title>
 
-    <!-- FontAwesome -->
+    <!-- Unified 3D Framework Stylesheet -->
+    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+    <!-- FontAwesome Elements -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        .field-container {
-            position: relative;
-        }
-
-        /* Eye Icon */
-        .toggle-password {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #666;
-            z-index: 10;
-            font-size: 18px;
-        }
-
-        /* Space for eye icon */
-        .field-container input[type="password"],
-        .field-container input[type="text"] {
-            width: 100%;
-            padding-right: 55px;
-            box-sizing: border-box;
-        }
-    </style>
-
 </head>
 
-<body class="register-page">
+<body>
 
-    <div class="overlay"></div>
     <div class="shape shape1"></div>
     <div class="shape shape2"></div>
 
-    <!-- Beautiful Header Navbar -->
     <header class="landing-header">
         <div class="nav-container">
             <a href="{% url 'index' %}" class="nav-logo">
-                <img src="{% static 'accounts/images/spylogo.png' %}" alt="LMS Logo" class="logo-img">
+                <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" alt="Logo">
                 <span class="logo-text">LMS</span>
             </a>
 
-            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -59,29 +33,23 @@
 
             <nav class="nav-menu" id="navMenu">
                 <a href="{% url 'index' %}" class="nav-link">Home</a>
-                <a href="#" class="nav-link">Courses</a>
-                <a href="{% url 'about_us' %}" class="nav-link">About Us</a>
-                <a href="#" class="nav-link">Services</a>
-                <a href="#" class="nav-link">FAQs</a>
-                <a href="#" class="nav-link">Contact</a>
-                <div class="mobile-nav-buttons">
-
-
-                </div>
+                <a href="{% url 'courses' %}" class="nav-link">Courses</a>
+                <a href="{% url 'about' %}" class="nav-link">About Us</a>
+                <a href="{% url 'services' %}" class="nav-link">Services</a>
+                <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
+                <a href="{% url 'contact' %}" class="nav-link">Contact</a>
             </nav>
-
-
         </div>
     </header>
 
     <div class="auth-wrapper">
-        <div class="card">
-
+        <div class="card" id="interactiveCard">
             <h2>Create Account</h2>
-            <div class="card-subtitle">Sign up for student access</div>
+            <div class="card-subtitle">Sign up for immediate student access</div>
 
             <form method="post">
                 {% csrf_token %}
+
                 {% if form.non_field_errors %}
                 <div class="non-field-errors">
                     {{ form.non_field_errors }}
@@ -100,7 +68,7 @@
 
                 <!-- Email -->
                 <div class="form-group">
-                    <label>Email</label>
+                    <label>Email Address</label>
                     <div class="field-container">
                         <i class="fas fa-envelope prefix-icon"></i>
                         {{ form.email }}
@@ -110,7 +78,7 @@
 
                 <!-- Phone -->
                 <div class="form-group">
-                    <label>Phone</label>
+                    <label>Phone Number</label>
                     <div class="field-container">
                         <i class="fas fa-phone prefix-icon"></i>
                         {{ form.phone }}
@@ -140,202 +108,102 @@
                     {{ form.password2.errors }}
                 </div>
 
-
-
                 <button type="submit" class="login-btn">
                     Sign Up <i class="fas fa-arrow-right"></i>
                 </button>
-
             </form>
 
             <a href="{% url 'login' %}" class="footer-link">
                 Already have an account? <span class="highlight">Sign in</span>
             </a>
 
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
-                <a href="{% url 'terms_page' %}" class="footer-link" style="margin-top: 0;">
-                    Terms &amp; Privacy
-                </a>
-                <a href="{% url 'conditions_page' %}" class="footer-link" style="margin-top: 0;">
-                    Conditions
-                </a>
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+                <a href="#" id="terms-link" class="footer-link" style="margin-top: 0; font-size:12px;">Terms &amp;
+                    Privacy</a>
+                <a href="{% url 'conditions_page' %}" class="footer-link"
+                    style="margin-top: 0; font-size:12px;">Conditions</a>
             </div>
 
-        </div>
-
-        <div class="copyright-footer">
-            © 2026 LMS. All rights reserved.
+            <div class="copyright-footer">
+                © 2026 LMS. All rights reserved.
+            </div>
         </div>
     </div>
 
-    <!-- Terms & Conditions Modal -->
+    <!-- 3D Transform Modal Module -->
     <div class="terms-modal-overlay" id="terms-modal-overlay">
         <div class="terms-modal">
-            <button class="terms-close-btn" id="terms-close-btn">
-                <i class="fas fa-times"></i>
-            </button>
-
+            <button class="terms-close-btn" id="terms-close-btn"><i class="fas fa-times"></i></button>
             <h2>Terms &amp; Conditions</h2>
-            <div class="terms-meta">Last updated: May 18, 2026</div>
-
+            <div class="terms-meta" style="color:var(--text-muted); font-size:12px; text-align:center;">Last updated:
+                May 18, 2026</div>
             <div class="terms-content">
-                <p>This page is a placeholder. Replace this content with your full Terms &amp; Conditions text.</p>
-
-                <h3>1. Acceptance of Terms</h3>
-                <p>By accessing or using this platform, you agree to be bound by these Terms &amp; Conditions.</p>
-
-                <h3>2. User Accounts</h3>
-                <p>You are responsible for maintaining the confidentiality of your account credentials.</p>
-
-                <h3>3. Acceptable Use</h3>
-                <ul>
-                    <li>Do not misuse the platform or attempt unauthorized access.</li>
-                    <li>Do not upload malicious content.</li>
-                    <li>Follow all applicable laws and policies.</li>
-                </ul>
-
-                <h3>4. Changes</h3>
-                <p>We may update these Terms &amp; Conditions from time to time.</p>
+                <p>Welcome to LMS. By signing up, you explicitly agree to the usage layout frameworks established below:
+                </p>
+                <h3 style="margin-top:15px; font-size:14px; color:var(--text-main);">1. Account Protection</h3>
+                <p style="font-size:13px; color:var(--text-muted);">Keep your security passkeys guarded. Sharing login
+                    attributes violates system security rules.</p>
+                <h3 style="margin-top:15px; font-size:14px; color:var(--text-main);">2. Content Guidelines</h3>
+                <p style="font-size:13px; color:var(--text-muted);">Abuse filters will remove any corrupted components,
+                    scripts, or malicious content payloads.</p>
             </div>
-
-            <div class="terms-modal-footer">
-                <a href="#" class="terms-close-btn-bottom" id="terms-close-btn-bottom">Close</a>
+            <div class="terms-modal-footer" style="text-align:right;">
+                <button class="login-btn" id="terms-close-btn-bottom"
+                    style="width:auto; display:inline-flex; padding:8px 20px;">Close</button>
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Terms Modal
-            const termsLink = document.getElementById('terms-link');
-            const termsModalOverlay = document.getElementById('terms-modal-overlay');
-            const termsCloseBtn = document.getElementById('terms-close-btn');
-            const termsCloseBtnBottom = document.getElementById('terms-close-btn-bottom');
-
-            if (termsLink && termsModalOverlay) {
-                termsLink.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    termsModalOverlay.classList.add('active');
-                    document.body.style.overflow = 'hidden';
-                });
+        // Modern Dynamic 3D Interaction Engine
+        const card = document.getElementById('interactiveCard');
+        document.addEventListener('mousemove', (e) => {
+            let xAxis = (window.innerWidth / 2 - e.pageX) / 45;
+            let yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+            if (window.innerWidth > 768) {
+                card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
             }
+        });
 
-            const closeTermsModal = function () {
-                termsModalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            };
+        document.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
+        });
 
-            if (termsCloseBtn) {
-                termsCloseBtn.addEventListener('click', closeTermsModal);
-            }
-
-            if (termsCloseBtnBottom) {
-                termsCloseBtnBottom.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    closeTermsModal();
-                });
-            }
-
-            if (termsModalOverlay) {
-                termsModalOverlay.addEventListener('click', function (e) {
-                    if (e.target === termsModalOverlay) {
-                        closeTermsModal();
-                    }
-                });
-            }
-
-            // Close on Escape key
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && termsModalOverlay.classList.contains('active')) {
-                    closeTermsModal();
+        // Universal Password View Handler
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const input = this.parentElement.querySelector('input');
+                if (input) {
+                    const type = input.type === 'password' ? 'text' : 'password';
+                    input.type = type;
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
                 }
             });
         });
-    </script>
 
-    <!-- PASSWORD TOGGLE SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        // Modal Interaction Code Blocks 
+        const termsLink = document.getElementById('terms-link');
+        const termsModalOverlay = document.getElementById('terms-modal-overlay');
+        const termsCloseBtn = document.getElementById('terms-close-btn');
+        const termsCloseBtnBottom = document.getElementById('terms-close-btn-bottom');
 
-            const toggles =
-                document.querySelectorAll('.toggle-password');
-
-            toggles.forEach(function (btn) {
-
-                btn.addEventListener('click', function () {
-
-                    const input =
-                        this.parentElement.querySelector('input');
-
-                    if (!input) return;
-
-                    const type =
-                        input.type === 'password'
-                            ? 'text'
-                            : 'password';
-
-                    input.type = type;
-
-                    this.classList.toggle('fa-eye');
-                    this.classList.toggle('fa-eye-slash');
-
-                });
-
+        if (termsLink) {
+            termsLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                termsModalOverlay.classList.add('active');
             });
+        }
 
-        });
+        const dropModal = () => {
+            termsModalOverlay.classList.remove('active');
+        };
 
-        // Mobile Menu Toggle
-        document.addEventListener("DOMContentLoaded", function () {
-            const menuToggle = document.getElementById("menuToggle");
-            const navMenu = document.getElementById("navMenu");
+        [termsCloseBtn, termsCloseBtnBottom].forEach(el => el && el.addEventListener('click', dropModal));
 
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener("click", function () {
-                    menuToggle.classList.toggle("active");
-                    navMenu.classList.toggle("active");
-                });
-            }
-        });
-    </script>
-
-    <!-- CAPTCHA REFRESH SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const refreshBtn =
-                document.querySelector('.captcha-refresh-btn');
-
-            if (refreshBtn) {
-
-                refreshBtn.addEventListener('click', function () {
-
-                    fetch('/captcha/refresh/', {
-                        method: 'GET',
-                        headers: {
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-
-                            const img =
-                                document.querySelector('img.captcha');
-
-                            if (img) {
-                                img.src = data.image_url;
-                            }
-
-                            document.getElementById('id_captcha_0').value = data.key;
-                            document.getElementById('id_captcha_1').value = '';
-
-                        })
-                        .catch(err => console.log(err));
-
-                });
-
-            }
-
+        // Header Responsive Trigger
+        document.getElementById("menuToggle").addEventListener("click", function () {
+            document.getElementById("navMenu").classList.toggle("active");
         });
     </script>
 

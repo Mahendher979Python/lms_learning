@@ -7,17 +7,25 @@
     font-family: 'Inter', sans-serif;
 }
 
-body {
+html, body {
+    margin: 0;
+    padding: 0;
     min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto;   /* Allow vertical scroll if card overflows on small screens */
+    box-sizing: border-box;
+}
+
+body {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 40px 10%;
+    justify-content: flex-end; /* Align to right */
+    align-items: center;     /* Center vertically */
+    padding: 100px 5% 40px 5%; /* Proper vertical balance with header space */
     background: url("/static/accounts/images/lms.jpg") no-repeat center center fixed;
     background-size: cover;
-    overflow-x: hidden;
-    overflow-y: auto;
     position: relative;
+    min-height: 100vh;
 }
 
 /* Base overlay for the page - elegant blue tint */
@@ -74,9 +82,20 @@ body {
     }
 }
 
+/* Card wrapper for centering and mobile responsiveness */
+.auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    z-index: 5;
+    position: relative;
+}
+
 /* Premium White Login Card to match Reference Image */
 .card {
-    width: 450px;
+    width: 100%;
     padding: 48px 40px;
     border-radius: 36px;
     background: #f8fafc;
@@ -672,69 +691,91 @@ button[type="submit"]:hover i,
     pointer-events: none;
 }
 
-/* Specific styling to make register page fit without scrolling on desktop */
-@media (min-height: 650px) {
-    .register-page {
-        overflow-y: hidden;
-        padding-top: 15px;
-        padding-bottom: 15px;
-    }
-    
-    .register-page .card {
-        padding: 24px 32px 20px 32px;
-        border-radius: 28px;
-    }
-    
-    .register-page .card h2 {
-        font-size: 28px;
-        margin-bottom: 2px;
-    }
-    
-    .register-page .card-subtitle {
-        font-size: 13px;
-        margin-bottom: 15px;
-    }
-    
-    .register-page form {
-        gap: 10px;
-    }
-    
-    .register-page .form-group {
-        gap: 2px;
-    }
-    
-    .register-page form label {
-        font-size: 12px;
-        margin-left: 8px;
-        margin-bottom: 0;
-    }
-    
-    .register-page input[type="text"],
-    .register-page input[type="email"],
-    .register-page input[type="password"],
-    .register-page input[type="tel"] {
-        padding: 12px 20px 12px 48px !important;
-        font-size: 14px;
-    }
-    
-    .register-page .field-container .prefix-icon,
-    .register-page .field-container .toggle-password {
-        font-size: 14px;
-    }
-    
-    .register-page .login-btn {
-        padding: 12px 24px;
-        font-size: 14px;
-        margin-top: 5px;
-    }
-    
-    .register-page .footer-link {
-        margin-top: 10px;
-        font-size: 13px;
+/* Unified styling for BOTH Login and Register cards on desktop to prevent scroll */
+@media (min-height: 600px) and (min-width: 851px) {
+    html, body {
+        overflow: hidden !important;
+        height: 100vh !important;
     }
 
-    .register-page .copyright-footer {
-        margin-top: 10px;
+    body {
+        padding-top: 80px !important;
+        padding-bottom: 20px !important;
+    }
+
+    .card {
+        height: 560px !important; /* Force exact same height & size for cards */
+        width: 450px !important;
+        padding: 24px 32px 20px 32px !important;
+        border-radius: 28px !important;
+        justify-content: space-between !important;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .card h2 {
+        font-size: 26px !important;
+        margin-bottom: 2px !important;
+    }
+    
+    .card-subtitle {
+        font-size: 13px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    form {
+        gap: 8px !important;
+    }
+    
+    .form-group {
+        gap: 1px !important;
+    }
+    
+    form label {
+        font-size: 11px !important;
+        margin-left: 8px !important;
+        margin-bottom: 0 !important;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    form select {
+        padding: 8px 16px 8px 48px !important;
+        font-size: 13px !important;
+    }
+    
+    .field-container .prefix-icon,
+    .field-container .toggle-password {
+        font-size: 13px !important;
+    }
+    
+    .login-btn {
+        padding: 10px 24px !important;
+        font-size: 13px !important;
+        margin-top: 2px !important;
+    }
+
+    .google-btn {
+        padding: 8px 16px !important;
+        font-size: 13px !important;
+        margin-top: 0 !important;
+    }
+
+    .or-divider {
+        margin: 8px 0 !important;
+    }
+    
+    .card a.footer-link,
+    .card-footer-text {
+        margin-top: 4px !important;
+        font-size: 12px !important;
+    }
+
+    .copyright-footer {
+        margin-top: 4px !important;
+        font-size: 11px !important;
     }
 }
 
@@ -742,21 +783,17 @@ button[type="submit"]:hover i,
    PREMIUM RESPONSIVE LANDING NAVBAR STYLES
    ========================================================================== */
 
-body {
-    padding-top: 100px !important;
-}
-
 .landing-header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 80px;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(15, 23, 42, 0.75); /* Dark slate glassmorphism background */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(241, 245, 249, 0.8);
-    box-shadow: 0 4px 30px rgba(15, 23, 42, 0.04);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     z-index: 999;
     display: flex;
     align-items: center;
@@ -765,9 +802,9 @@ body {
 
 .nav-container {
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 40px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0 5%; /* Generous left/right spacing */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -793,11 +830,11 @@ body {
     font-family: 'Outfit', sans-serif;
     font-size: 22px;
     font-weight: 800;
-    color: #0f172a;
+    color: #ffffff; /* White text for contrast */
     letter-spacing: -0.5px;
 }
 
-/* Navigation Links (Desktop) */
+/* Navigation Links (Desktop - Aligned to Right) */
 .nav-menu {
     display: flex;
     align-items: center;
@@ -808,7 +845,7 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 500;
-    color: #475569;
+    color: rgba(255, 255, 255, 0.75); /* Soft light gray color */
     text-decoration: none;
     transition: all 0.25s ease;
     position: relative;
@@ -822,13 +859,13 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background: #2563eb;
+    background: #38bdf8; /* Vibrant sky blue hover underline line */
     transition: width 0.25s ease;
     border-radius: 99px;
 }
 
 .nav-link:hover {
-    color: #2563eb;
+    color: #ffffff;
 }
 
 .nav-link:hover::after {
@@ -846,13 +883,13 @@ body {
     font-family: 'Inter', sans-serif;
     font-size: 15px;
     font-weight: 600;
-    color: #475569;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
     transition: color 0.25s ease;
 }
 
 .nav-btn-link:hover {
-    color: #2563eb;
+    color: #ffffff;
 }
 
 .nav-btn-pill {
@@ -861,11 +898,11 @@ body {
     font-weight: 700;
     color: #ffffff !important;
     background: #2563eb;
-    padding: 11px 24px;
+    padding: 10px 22px;
     border-radius: 99px;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.25);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -875,7 +912,7 @@ body {
 .nav-btn-pill:hover {
     background: #1d4ed8;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.35);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
 }
 
 /* Mobile Menu Toggle Button */
@@ -895,12 +932,12 @@ body {
 .menu-toggle .bar {
     width: 100%;
     height: 2px;
-    background-color: #0f172a;
+    background-color: #ffffff; /* White bars for dark theme */
     border-radius: 99px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Mobile buttons wrapper inside dropdown (hidden by default) */
+/* Mobile buttons wrapper inside dropdown */
 .mobile-nav-buttons {
     display: none;
 }
@@ -908,7 +945,7 @@ body {
 /* Responsive Styles */
 @media (max-width: 1024px) {
     body {
-        padding-top: 90px !important;
+        padding-top: 100px !important;
     }
 
     .landing-header {
@@ -916,7 +953,7 @@ body {
     }
 
     .nav-container {
-        padding: 0 24px;
+        padding: 0 5%;
     }
     
     .menu-toggle {
@@ -929,8 +966,10 @@ body {
         right: -100%;
         width: 300px;
         height: 100vh;
-        background: #ffffff;
-        box-shadow: -10px 0 40px rgba(15, 23, 42, 0.15);
+        background: rgba(15, 23, 42, 0.96); /* Dark background matching the theme */
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
         flex-direction: column;
         align-items: flex-start;
         justify-content: flex-start;
@@ -938,6 +977,7 @@ body {
         gap: 24px;
         transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 1000;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
     }
     
     .nav-menu.active {
@@ -948,7 +988,16 @@ body {
         font-size: 17px;
         width: 100%;
         padding: 8px 0;
-        color: #0f172a;
+        color: rgba(255, 255, 255, 0.85);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav-link::after {
+        background: #38bdf8;
+    }
+    
+    .nav-link:hover {
+        color: #ffffff;
     }
     
     .nav-buttons {
@@ -968,8 +1017,9 @@ body {
         width: 100%;
         padding: 12px;
         border-radius: 99px;
-        background: #f1f5f9;
-        color: #475569;
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+        border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     .mobile-nav-buttons .nav-btn-pill {
@@ -986,5 +1036,16 @@ body {
     }
     .menu-toggle.active .bar:nth-child(3) {
         transform: translateY(-8px) rotate(-45deg);
+    }
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 90px 16px 30px 16px; /* Optimized padding for small mobile devices */
+    }
+
+    .card {
+        padding: 32px 24px;
+        border-radius: 24px;
     }
 }

@@ -31,8 +31,28 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    const isDark = document.body.classList.contains('dark');
+    const textColor = isDark ? '#f8fafc' : '#1e293b';
+    const gridColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
+    const chartOptions = {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: {
+                labels: {
+                color: textColor,
+                font: {
+                family: 'Segoe UI',
+                size: 13,
+                weight: '600'
+            }
+            }
+        }
+    };
+
     /* =========================
-       1. USERS PIE CHART
+       1. USERS PIE CHART (3D Style)
     ========================= */
     const userChartEl = document.getElementById('userChart');
     if (userChartEl) {
@@ -42,14 +62,34 @@ document.addEventListener("DOMContentLoaded", function() {
                 labels: ['Trainers', 'Students', 'Courses'],
                 datasets: [{
                     data: [trainers, students, courses],
-                    backgroundColor: ['#2563eb', '#16a34a', '#f59e0b']
+                    backgroundColor: [
+                    '#3b82f6',
+                    '#10b981',
+                    '#f59e0b'
+                    ],
+                    borderColor: isDark ? '#1e293b' : '#ffffff',
+                    borderWidth: 3,
+                    hoverOffset: 12,
+                    borderRadius: 8
                 }]
+            },
+            options: {
+                ...chartOptions,
+                plugins: {
+                    ...chartOptions.plugins,
+                    legend: {
+                    position: 'bottom',
+                    labels: {
+                        ...chartOptions.plugins.legend.labels,
+                        padding: 20
+                    }
+                }
             }
         });
     }
 
     /* =========================
-       2. TRAINERS vs STUDENTS
+       2. TRAINERS vs STUDENTS (Bar)
     ========================= */
     const roleChartEl = document.getElementById('roleChart');
     if (roleChartEl) {
@@ -58,33 +98,83 @@ document.addEventListener("DOMContentLoaded", function() {
             data: {
                 labels: ['Trainers', 'Students'],
                 datasets: [{
-                    label: 'Users',
+                    label: 'Count',
                     data: [trainers, students],
-                    backgroundColor: ['#2563eb', '#16a34a']
+                    backgroundColor: [
+                        'rgba(59, 130, 246, 0.9)',
+                        'rgba(16, 185, 129, 0.9)'
+                    ],
+                    borderColor: [
+                        '#3b82f6',
+                        '#10b981'
+                    ],
+                    borderWidth: 3,
+                    borderRadius: 12,
+                    borderSkipped: false
                 }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: textColor
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: textColor,
+                        font: {
+                            weight: '600'
+                        }
+                    }
+                }
             }
         });
     }
 
     /* =========================
-       3. COURSES CHART
+       3. COURSES CHART (Doughnut 3D)
     ========================= */
     const courseChartEl = document.getElementById('courseChart');
     if (courseChartEl) {
         new Chart(courseChartEl, {
             type: 'doughnut',
             data: {
-                labels: ['Courses'],
+                labels: ['Active Courses'],
                 datasets: [{
-                    data: [courses],
-                    backgroundColor: ['#f59e0b']
+                    data: [courses, Math.max(0, 20 - courses)],
+                    backgroundColor: [
+                        '#f59e0b',
+                        'rgba(245, 158, 11, 0.15)'
+                    ],
+                    borderColor: isDark ? '#1e293b' : '#ffffff',
+                    borderWidth: 3,
+                    cutout: '65%',
+                    hoverOffset: 8
                 }]
+            },
+            options: {
+                ...chartOptions,
+                plugins: {
+                    ...chartOptions.plugins,
+                    legend: {
+                        display: false
+                    }
+                }
             }
         });
     }
 
     /* =========================
-       4. WEEKLY GROWTH (STATIC SAMPLE)
+       4. WEEKLY GROWTH (Premium Line)
     ========================= */
     const growthChartEl = document.getElementById('growthChart');
     if (growthChartEl) {
@@ -92,12 +182,55 @@ document.addEventListener("DOMContentLoaded", function() {
             type: 'line',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Growth',
-                    data: [5, 10, 8, 15, 20, 18, 25],
-                    borderColor: '#2563eb',
-                    tension: 0.4
-                }]
+                datasets: [
+                    {
+                        label: 'Students',
+                        data: [12, 19, 15, 25, 22, 30, 35],
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 10,
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: isDark ? '#0f172a' : '#ffffff',
+                        pointBorderWidth: 3
+                    },
+                    {
+                        label: 'Trainers',
+                        data: [3, 5, 4, 6, 8, 7, 10],
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 10,
+                        pointBackgroundColor: '#10b981',
+                        pointBorderColor: isDark ? '#0f172a' : '#ffffff',
+                        pointBorderWidth: 3
+                    }
+                ]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: textColor
+                    }
+                },
+                    x: {
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: textColor
+                    }
+                }
             }
         });
     }

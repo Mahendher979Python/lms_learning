@@ -1,205 +1,597 @@
 {% extends 'dashboard/student_base.html' %}
-{% load static %}
-
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
+{% load static %}
 
+<style>
 
+/* ================= GLOBAL ================= */
 
-<link rel="stylesheet" href="{% static 'dashboard/css/student_dashboard.css' %}">
-<div class="dashboard">
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-    <!-- HEADER -->
-    <div class="header">
+body{
+    overflow-x:hidden !important;
+    background:#071028;
+}
 
-        <h2>
-            👋 Welcome, {{ request.user.username }}
-        </h2>
+/* ================= MAIN FIX ================= */
 
-        <p>
-            Keep learning and improving your skills 🚀
-        </p>
+.main-content,
+.dashboard-content,
+.content-wrapper,
+.container-fluid{
+    width:100% !important;
+    max-width:100% !important;
+    overflow-x:hidden !important;
+    padding:20px !important;
+}
 
+/* ================= HEADER ================= */
+
+.premium-header{
+    margin-bottom:32px;
+}
+
+.premium-header h2{
+    font-size:34px;
+    font-weight:800;
+    background:linear-gradient(135deg,#fff,#60a5fa);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.premium-header p{
+    margin-top:8px;
+    color:#9ca3af;
+}
+
+/* ================= GRID ================= */
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:24px;
+    margin-bottom:32px;
+}
+
+/* ================= STAT CARD ================= */
+
+.premium-stat-card{
+    position:relative;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-stat-card-icon{
+    width:68px;
+    height:68px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    margin-bottom:18px;
+    color:#fff;
+}
+
+.blue{
+    background:linear-gradient(135deg,#3b82f6,#2563eb);
+}
+
+.green{
+    background:linear-gradient(135deg,#10b981,#059669);
+}
+
+.orange{
+    background:linear-gradient(135deg,#f59e0b,#d97706);
+}
+
+.purple{
+    background:linear-gradient(135deg,#8b5cf6,#7c3aed);
+}
+
+.premium-stat-card-value{
+    font-size:42px;
+    font-weight:800;
+    color:#fff;
+}
+
+.premium-stat-card-label{
+    color:#9ca3af;
+    margin-top:8px;
+    font-weight:600;
+}
+
+/* ================= SECTION ================= */
+
+.premium-section{
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:28px;
+
+    margin-bottom:30px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-section h3{
+    color:#fff;
+    margin-bottom:22px;
+    font-size:22px;
+}
+
+/* ================= COURSES ================= */
+
+.premium-course-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
+}
+
+.premium-course-card{
+    background:rgba(255,255,255,0.04);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:20px;
+
+    padding:24px;
+}
+
+.premium-course-card h3{
+    color:#fff;
+    margin-bottom:10px;
+}
+
+.premium-course-card p{
+    color:#9ca3af;
+}
+
+/* ================= PROGRESS ================= */
+
+.premium-progress{
+    width:100%;
+    height:12px;
+    border-radius:20px;
+    background:#111827;
+    overflow:hidden;
+    margin:16px 0;
+}
+
+.premium-progress-fill{
+    height:100%;
+    width:0;
+    border-radius:20px;
+    background:linear-gradient(90deg,#3b82f6,#8b5cf6,#ec4899);
+    transition:1s ease;
+}
+
+/* ================= TABLE ================= */
+
+.premium-table-box{
+    overflow-x:auto;
+}
+
+.premium-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.premium-table th{
+    padding:16px;
+    color:#60a5fa;
+    text-align:left;
+}
+
+.premium-table td{
+    padding:16px;
+    color:#d1d5db;
+    border-top:1px solid rgba(255,255,255,0.05);
+}
+
+.premium-badge{
+    background:linear-gradient(135deg,#10b981,#059669);
+    color:#fff;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+/* ================= CHARTS ================= */
+
+.premium-chart-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+    gap:24px;
+    overflow:hidden !important;
+}
+
+.premium-chart-card{
+    width:100%;
+    height:420px;
+
+    background:
+    linear-gradient(145deg,
+    rgba(255,255,255,0.08),
+    rgba(255,255,255,0.03));
+
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:24px;
+
+    padding:24px;
+
+    overflow:hidden !important;
+
+    transition:.4s ease;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+.premium-chart-card h3{
+    color:#fff;
+    margin-bottom:20px;
+}
+
+.premium-chart-card canvas{
+    width:100% !important;
+    height:300px !important;
+    max-width:100%;
+    max-height:300px;
+}
+
+</style>
+
+<!-- ================= HEADER ================= -->
+
+<div class="premium-header">
+    <h2>👋 Welcome, {{ request.user.username }}</h2>
+    <p>Keep learning and improving your skills 🚀</p>
+</div>
+
+<!-- ================= TOP CARDS ================= -->
+
+<div class="dashboard-grid">
+
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon blue">
+            <i class="fas fa-book"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ request.user.courses.count }}</div>
+        <div class="premium-stat-card-label">Assigned Courses</div>
     </div>
 
-    <!-- STATS -->
-    <div class="stats">
-
-        <div class="stat-card">
-            <h2>{{ request.user.courses.count }}</h2>
-            <p>📚 Assigned Courses</p>
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon green">
+            <i class="fas fa-file-alt"></i>
         </div>
-
-        <div class="stat-card">
-            <h2>{{ total_assignments }}</h2>
-            <p>📝 Assignments</p>
-        </div>
-
-        <div class="stat-card">
-            <h2>{{ certificates }}</h2>
-            <p>🏆 Certificates</p>
-        </div>
-
-        <div class="stat-card">
-            <h2>{{ progress_percent }}%</h2>
-            <p>📈 Progress</p>
-        </div>
-
+        <div class="premium-stat-card-value">{{ total_assignments }}</div>
+        <div class="premium-stat-card-label">Assignments</div>
     </div>
 
-    <!-- MAIN -->
-    <div class="grid">
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon orange">
+            <i class="fas fa-trophy"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ certificates }}</div>
+        <div class="premium-stat-card-label">Certificates</div>
+    </div>
 
-        <!-- LEFT -->
-        <div class="section">
+    <div class="premium-stat-card">
+        <div class="premium-stat-card-icon purple">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="premium-stat-card-value">{{ progress_percent }}%</div>
+        <div class="premium-stat-card-label">Progress</div>
+    </div>
 
-            <h3>📚 My Assigned Courses</h3>
+</div>
 
-            {% for course in request.user.courses.all %}
+<!-- ================= COURSES ================= -->
 
-            <div class="course">
+<div class="premium-section">
 
-                <h4>{{ course.title }}</h4>
+    <h3>📚 My Assigned Courses</h3>
 
-                <span class="badge">
-                    Active
-                </span>
+    <div class="premium-course-grid">
 
-                <p style="color:gray;font-size:13px;">
-                    Trainer:
-                    {{ course.trainer.username }}
-                </p>
+        {% for course in request.user.courses.all %}
 
-                {% if course.thumbnail %}
-                    <img src="{{ course.thumbnail.url }}">
-                {% endif %}
+        <div class="premium-course-card">
 
-                <div class="progress-bar">
+            <h3>{{ course.title }}</h3>
 
-                    <div
-                        class="progress-fill"
-                        data-progress="{{ course.progress|default:40 }}">
-                    </div>
+            <span class="premium-badge">Active</span>
 
+            <p style="margin:8px 0;">Trainer: {{ course.trainer.username }}</p>
+
+            <div class="premium-progress">
+
+                <div class="premium-progress-fill"
+                data-progress="{{ course.progress|default:40 }}">
                 </div>
-
-                <p style="font-size:12px;">
-                    Progress:
-                    {{ course.progress|default:40 }}%
-                </p>
-
-                <a href="{% url 'course_detail' course.id %}"
-                   class="open-btn">
-
-                    Open Course
-
-                </a>
 
             </div>
 
-            {% empty %}
-
-            <p>
-                No assigned courses yet.
-            </p>
-
-            {% endfor %}
+            <p>Progress: {{ course.progress|default:40 }}%</p>
 
         </div>
 
-        <!-- RIGHT -->
-        <div>
+        {% empty %}
 
-            <div class="section">
+        <p style="color:#9ca3af;">No assigned courses yet.</p>
 
-                <h3>📊 Progress Overview</h3>
-
-                <div class="mini-box">
-                    Completed Assignments:
-                    <b>{{ completed_assignments }}</b>
-                </div>
-
-                <div class="mini-box">
-                    Total Certificates:
-                    <b>{{ certificates }}</b>
-                </div>
-
-                <div class="mini-box">
-                    Total Courses:
-                    <b>{{ request.user.courses.count }}</b>
-                </div>
-
-            </div>
-
-            <!-- ASSIGNMENTS -->
-            <div class="section" style="margin-top:20px;">
-
-                <h3>📝 Recent Assignments</h3>
-
-                <table>
-
-                    <tr>
-                        <th>Title</th>
-                        <th>Status</th>
-                    </tr>
-
-                    {% for assignment in assignments %}
-
-                    <tr>
-
-                        <td>{{ assignment.title }}</td>
-
-                        <td>{{ assignment.status }}</td>
-
-                    </tr>
-
-                    {% empty %}
-
-                    <tr>
-                        <td colspan="2">
-                            No assignments
-                        </td>
-                    </tr>
-
-                    {% endfor %}
-
-                </table>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- BOTTOM -->
-    <div class="bottom-cards">
-
-        <div class="card">
-            <h4>Today Hours</h4>
-            <h2>{{ records.last.total_hours }}</h2>
-        </div>
-
-        <div class="card">
-            <h4>Weekly OT</h4>
-            <h2>{{ weekly_ot }}</h2>
-        </div>
-
-        <div class="card">
-            <h4>Monthly OT</h4>
-            <h2>{{ monthly_ot }}</h2>
-        </div>
-
-        <div class="card">
-            <h4>Attendance</h4>
-            <h2>{{ present_month }}/{{ absent_month }}</h2>
-        </div>
+        {% endfor %}
 
     </div>
 
 </div>
 
-<script src="{% static 'dashboard/js/student_dashboard.js' %}"></script>
+<!-- ================= ASSIGNMENTS ================= -->
 
+<div class="premium-section">
+
+    <h3>📝 Recent Assignments</h3>
+
+    <div class="premium-table-box">
+
+        <table class="premium-table">
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for assignment in assignments %}
+
+                <tr>
+
+                    <td>{{ assignment.title }}</td>
+
+                    <td>
+                        <span class="premium-badge">
+                            {{ assignment.status }}
+                        </span>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+                    <td colspan="2" style="padding:40px; text-align:center; color:#9ca3af;">
+                        No assignments
+                    </td>
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- ================= CHARTS ================= -->
+
+<div class="premium-chart-grid">
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📊 Learning Progress
+        </h3>
+
+        <canvas id="studentProgressChart"></canvas>
+
+    </div>
+
+    <div class="premium-chart-card">
+
+        <h3>
+            📈 Overall Performance
+        </h3>
+
+        <canvas id="studentPerformanceChart"></canvas>
+
+    </div>
+
+</div>
+
+{{ request.user.courses.count|json_script:"courses-data" }}
+{{ total_assignments|json_script:"assignments-data" }}
+{{ certificates|json_script:"certificates-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+/* ================= PROGRESS ================= */
+
+document.querySelectorAll('.premium-progress-fill').forEach(fill=>{
+
+    const progress=fill.dataset.progress;
+
+    setTimeout(()=>{
+        fill.style.width=progress+'%';
+    },300);
+
+});
+
+/* ================= COUNTER ================= */
+
+document.querySelectorAll('.premium-stat-card-value').forEach(counter=>{
+
+    const final=parseInt(counter.innerText);
+
+    let current=0;
+
+    const increment=final/50;
+
+    counter.innerText='0';
+
+    const timer=setInterval(()=>{
+
+        current+=increment;
+
+        if(current>=final){
+
+            counter.innerText=final;
+
+            clearInterval(timer);
+
+        }else{
+
+            counter.innerText=Math.floor(current);
+
+        }
+
+    },30);
+
+});
+
+/* ================= PROGRESS CHART ================= */
+
+new Chart(document.getElementById('studentProgressChart'),{
+
+    type:'doughnut',
+
+    data:{
+
+        labels:['Completed','Pending'],
+
+        datasets:[{
+
+            data:[{{ progress_percent }}, 100 - {{ progress_percent }}],
+
+            backgroundColor:[
+                '#3b82f6',
+                'rgba(59,130,246,0.15)'
+            ],
+
+            borderWidth:3,
+            borderColor:'#071028',
+            cutout:'65%'
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        }
+    }
+
+});
+
+/* ================= PERFORMANCE CHART ================= */
+
+new Chart(document.getElementById('studentPerformanceChart'),{
+
+    type:'line',
+
+    data:{
+
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+
+        datasets:[{
+
+            label:'Progress',
+
+            data:[20,35,45,65,{{ progress_percent }},{{ progress_percent|add:10 }},{{ progress_percent|add:15 }}],
+
+            borderColor:'#3b82f6',
+
+            backgroundColor:'rgba(59,130,246,0.2)',
+
+            fill:true,
+
+            tension:0.4,
+
+            pointRadius:5,
+
+            pointBackgroundColor:'#fff'
+
+        }]
+    },
+
+    options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        plugins:{
+            legend:{
+                labels:{
+                    color:'#fff'
+                }
+            }
+        },
+
+        scales:{
+            x:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            },
+            y:{
+                ticks:{ color:'#d1d5db' },
+                grid:{ color:'rgba(255,255,255,0.05)' }
+            }
+        }
+    }
+
+});
+
+</script>
 
 {% endblock %}

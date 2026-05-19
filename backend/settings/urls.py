@@ -11,7 +11,13 @@ urlpatterns = [
     ),
 
     path(
-        'admin/',
+        'admin/profile/',
+        views.admin_profile,
+        name='admin_profile'
+    ),
+
+    path(
+        'admin/settings/',
         views.admin_settings,
         name='admin_settings'
     ),
