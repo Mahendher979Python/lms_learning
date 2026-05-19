@@ -70,15 +70,15 @@ document.querySelectorAll(".user-card").forEach(card=>{
 
         card.style.background=`
             radial-gradient(circle at ${x}px ${y}px,
-            rgba(37,99,235,0.15),
-            rgba(255,255,255,0.9) 40%)
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 255, 255, 0.04) 60%)
         `;
 
     });
 
     card.addEventListener("mouseleave",()=>{
 
-        card.style.background="rgba(255,255,255,0.85)";
+        card.style.background="rgba(255, 255, 255, 0.04)";
 
     });
 

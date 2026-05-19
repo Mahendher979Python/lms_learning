@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+    <style>
+        body {
+            min-height: auto;
+            display: block;
+            padding: 40px 10%;
+            overflow-y: visible;
+            justify-content: center;
+            align-items: center;
+        }
+        .card{
+            width: min(1000px, 92vw);
+            max-height: none;
+            overflow: visible;
+            padding: 40px 50px;
+            margin: 0 auto;
+        }
+        .card h2{
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .terms-content{
+            color: #1b1b4b;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .terms-content h3{
+            margin: 24px 0 12px;
+            font-size: 20px;
+            color: #2d2d7a;
+        }
+        .terms-content p{
+            margin: 0 0 16px;
+        }
+        .terms-content ul{
+            padding-left: 28px;
+            margin: 0 0 16px;
+        }
+        .terms-content ul li{
+            margin-bottom: 8px;
+        }
+        .terms-meta{
+            font-size: 14px;
+            opacity: 0.85;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .nav-links{
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-links a{
+            margin: 8px 12px;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+
+    <div class="card">
+        <h2>Terms of Service</h2>
+        <div class="terms-meta">Last updated: May 18, 2026</div>
+
+        <div class="terms-content">
+            <h3>1. Introduction</h3>
+            <p>Welcome to our Online Learning System. These Terms of Service govern your use of our platform and services.</p>
+
+            <h3>2. Acceptance of Terms</h3>
+            <p>By accessing or using this platform, you agree to be bound by these Terms of Service and all applicable laws and regulations.</p>
+
+            <h3>3. User Accounts</h3>
+            <p>You must provide accurate and complete information when creating your account. You are responsible for maintaining the confidentiality of your account credentials.</p>
+
+            <h3>4. User Responsibilities</h3>
+            <ul>
+                <li>Use the platform only for lawful purposes</li>
+                <li>Respect the rights of other users</li>
+                <li>Do not share your account credentials</li>
+                <li>Maintain the security of your account</li>
+            </ul>
+
+            <h3>5. Intellectual Property</h3>
+            <p>All content on this platform, including courses, materials, and designs, is protected by intellectual property laws.</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'conditions_page' %}">View Conditions</a>
+            <a href="{% url 'login' %}">Back to Login</a>
+            <a href="{% url 'register' %}">Back to Register</a>
+        </div>
+    </div>
+</body>
+</html>

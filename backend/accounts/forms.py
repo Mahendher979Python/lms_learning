@@ -26,7 +26,6 @@ class StudentRegisterForm(UserCreationForm):
             "oninput": "this.value=this.value.replace(/[^0-9]/g,'').slice(0,10)"
         })
     )
-    captcha = CaptchaField()
 
     class Meta:
         model = User
@@ -62,7 +61,6 @@ class StudentRegisterForm(UserCreationForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label="Username/Email")
     password = forms.CharField(widget=forms.PasswordInput)
-    captcha = CaptchaField()
 
 
 class AdminUserCreateForm(forms.ModelForm):
@@ -211,7 +209,6 @@ class StudentForm(forms.ModelForm):
 
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(required=True, label="Email")
-    captcha = CaptchaField()
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
@@ -232,7 +229,6 @@ class OTPVerifyForm(forms.Form):
             "inputmode": "numeric"
         })
     )
-    captcha = CaptchaField()
 
 
 class ResetPasswordForm(forms.Form):
@@ -244,7 +240,6 @@ class ResetPasswordForm(forms.Form):
         widget=forms.PasswordInput,
         label="Confirm New Password"
     )
-    captcha = CaptchaField()
 
     def clean(self):
         cleaned_data = super().clean()

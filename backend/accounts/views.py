@@ -29,6 +29,12 @@ def index(request):
 def terms_view(request):
     return render(request, 'accounts/terms.html')
 
+def terms_page(request):
+    return render(request, 'accounts/terms_page.html')
+
+def conditions_page(request):
+    return render(request, 'accounts/conditions_page.html')
+
 
 def register_view(request):
     form = StudentRegisterForm(request.POST or None)
@@ -83,14 +89,45 @@ def register_otp_verify_view(request):
             if entered_otp == session_otp:
                 temp_user = request.session['temp_user']
                 
-                user = User.objects.create_user(
-                    username=temp_user['username'],
-                    email=temp_user['email'],
-                    password=temp_user['password']
-                )
-                user.phone = temp_user['phone']
-                user.role = 'student'
-                user.save()
+                # Check if username or email already exists to prevent IntegrityError
+                if User.objects.filter(username=temp_user['username']).exists():
+                    existing_user = User.objects.get(username=temp_user['username'])
+                    if existing_user.email == temp_user['email']:
+                        # The user has already successfully registered (e.g. via double submit)
+                        if 'temp_user' in request.session: del request.session['temp_user']
+                        if 'registration_otp' in request.session: del request.session['registration_otp']
+                        if 'registration_email' in request.session: del request.session['registration_email']
+                        messages.success(request, 'You are already registered! Please login.')
+                        return redirect('login')
+                    else:
+                        otp_form.add_error(None, 'A user with this username already exists.')
+                        return render(request, 'accounts/register_otp_verify.html', {'form': otp_form})
+                        
+                if User.objects.filter(email=temp_user['email']).exists():
+                    existing_user = User.objects.get(email=temp_user['email'])
+                    if existing_user.username == temp_user['username']:
+                        # The user has already successfully registered (e.g. via double submit)
+                        if 'temp_user' in request.session: del request.session['temp_user']
+                        if 'registration_otp' in request.session: del request.session['registration_otp']
+                        if 'registration_email' in request.session: del request.session['registration_email']
+                        messages.success(request, 'You are already registered! Please login.')
+                        return redirect('login')
+                    else:
+                        otp_form.add_error(None, 'A user with this email already exists.')
+                        return render(request, 'accounts/register_otp_verify.html', {'form': otp_form})
+
+                try:
+                    user = User.objects.create_user(
+                        username=temp_user['username'],
+                        email=temp_user['email'],
+                        password=temp_user['password']
+                    )
+                    user.phone = temp_user['phone']
+                    user.role = 'student'
+                    user.save()
+                except Exception as e:
+                    otp_form.add_error(None, f'Registration failed: {str(e)}')
+                    return render(request, 'accounts/register_otp_verify.html', {'form': otp_form})
                 
                 admins = User.objects.filter(role='admin')
                 for admin in admins:
@@ -101,9 +138,9 @@ def register_otp_verify_view(request):
                         message=f'New student registered: {user.username}'
                     )
                 
-                del request.session['temp_user']
-                del request.session['registration_otp']
-                del request.session['registration_email']
+                if 'temp_user' in request.session: del request.session['temp_user']
+                if 'registration_otp' in request.session: del request.session['registration_otp']
+                if 'registration_email' in request.session: del request.session['registration_email']
                 
                 messages.success(request, 'Registration successful! Please login.')
                 return redirect('login')

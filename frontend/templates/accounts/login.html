@@ -69,19 +69,54 @@
         }
 
     </style>
-
 </head>
 
-<body>
+<body class="login-page">
 
     <div class="overlay"></div>
 
     <div class="shape shape1"></div>
     <div class="shape shape2"></div>
 
-    <div class="card">
+    <!-- Beautiful Header Navbar -->
+    <header class="landing-header">
+        <div class="nav-container">
+            <a href="{% url 'index' %}" class="nav-logo">
+                <img src="{% static 'accounts/images/spylogo.png' %}" alt="LMS Logo" class="logo-img">
+                <span class="logo-text">LMS</span>
+            </a>
+            
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
 
-        <h2>Login</h2>
+            <nav class="nav-menu" id="navMenu">
+                <a href="{% url 'index' %}" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Courses</a>
+                <a href="#" class="nav-link">About Us</a>
+                <a href="#" class="nav-link">Services</a>
+                <a href="#" class="nav-link">FAQs</a>
+                <a href="#" class="nav-link">Contact</a>
+                <div class="mobile-nav-buttons">
+                    <a href="{% url 'login' %}" class="nav-btn-link">Login</a>
+                    <a href="{% url 'register' %}" class="nav-btn-pill">Get Started</a>
+                </div>
+            </nav>
+
+            <div class="nav-buttons">
+                <a href="{% url 'login' %}" class="nav-btn-link">Login</a>
+                <a href="{% url 'register' %}" class="nav-btn-pill">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="auth-wrapper">
+        <div class="card">
+
+        <h2>Welcome Back</h2>
+        <div class="card-subtitle">Sign in to your account</div>
 
         <form method="post">
 
@@ -99,44 +134,24 @@
                     {% if "password" in field.id_for_label %}
 
                         <div class="field-container">
-
+                            <i class="fas fa-lock prefix-icon"></i>
                             {{ field }}
-
                             <i class="fas fa-eye toggle-password"></i>
-
                         </div>
 
-                    <!-- CAPTCHA FIELD -->
-                    {% elif "captcha" in field.id_for_label %}
+                    <!-- USERNAME / EMAIL FIELD -->
+                    {% elif "username" in field.id_for_label or "email" in field.id_for_label %}
 
                         <div class="field-container">
-
-                            <!-- CAPTCHA IMAGE + BUTTON ROW -->
-                            <div class="captcha-row">
-
-                                <div class="captcha-box">
-                                    {{ field }}
-                                </div>
-
-                                <button type="button"
-                                        class="captcha-refresh-btn"
-                                        title="Refresh Captcha">
-
-                                    <i class="fas fa-rotate-right"></i>
-
-                                </button>
-
-                            </div>
-
+                            <i class="fas fa-envelope prefix-icon"></i>
+                            {{ field }}
                         </div>
 
                     <!-- NORMAL FIELD -->
                     {% else %}
 
                         <div class="field-container">
-
                             {{ field }}
-
                         </div>
 
                     {% endif %}
@@ -145,38 +160,45 @@
 
             {% endfor %}
 
+            <a href="{% url 'forgot_password' %}"
+               class="forgot-password-link">
+                Forgot password?
+            </a>
+
             <button type="submit"
                     class="login-btn">
-
-                Login
-
+                Sign In <i class="fas fa-arrow-right"></i>
             </button>
 
         </form>
 
-        <a href="{% url 'forgot_password' %}"
-           class="footer-link">
+        <div class="or-divider">OR</div>
 
-            Forgot Password?
-
+        <a href="#" class="google-btn" onclick="alert('Google Authentication is a placeholder for this demo'); return false;">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google Logo">
+            Google
         </a>
 
         <a href="{% url 'register' %}"
            class="footer-link">
-
-            Don't have account? Register
-
+            Don't have an account? <span class="highlight">Sign up</span>
         </a>
 
-        <a href="#"
-           class="footer-link"
-           id="terms-link">
-
-            Terms &amp; Conditions
-
-        </a>
+        <div style="display: flex; gap: 15px; justify-content: center; margin-top: 15px;">
+            <a href="{% url 'terms_page' %}" class="footer-link" style="margin-top: 0;">
+                Terms &amp; Privacy
+            </a>
+            <a href="{% url 'conditions_page' %}" class="footer-link" style="margin-top: 0;">
+                Conditions
+            </a>
+        </div>
 
     </div>
+
+    <div class="copyright-footer">
+        © 2026 LMS. All rights reserved.
+    </div>
+</div>
 
     <!-- Terms & Conditions Modal -->
     <div class="terms-modal-overlay" id="terms-modal-overlay">
@@ -322,6 +344,18 @@
 
         });
 
+        // Mobile Menu Toggle
+        document.addEventListener("DOMContentLoaded", function() {
+            const menuToggle = document.getElementById("menuToggle");
+            const navMenu = document.getElementById("navMenu");
+
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener("click", function() {
+                    menuToggle.classList.toggle("active");
+                    navMenu.classList.toggle("active");
+                });
+            }
+        });
     </script>
 
 </body>

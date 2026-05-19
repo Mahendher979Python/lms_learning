@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions</title>
+    <link rel="stylesheet" href="{% static 'accounts/css/auth.css' %}">
+    <style>
+        body {
+            min-height: auto;
+            display: block;
+            padding: 40px 10%;
+            overflow-y: visible;
+            justify-content: center;
+            align-items: center;
+        }
+        .card{
+            width: min(1000px, 92vw);
+            max-height: none;
+            overflow: visible;
+            padding: 40px 50px;
+            margin: 0 auto;
+        }
+        .card h2{
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .terms-content{
+            color: #1b1b4b;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .terms-content h3{
+            margin: 24px 0 12px;
+            font-size: 20px;
+            color: #2d2d7a;
+        }
+        .terms-content p{
+            margin: 0 0 16px;
+        }
+        .terms-content ul{
+            padding-left: 28px;
+            margin: 0 0 16px;
+        }
+        .terms-content ul li{
+            margin-bottom: 8px;
+        }
+        .terms-meta{
+            font-size: 14px;
+            opacity: 0.85;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .nav-links{
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-links a{
+            margin: 8px 12px;
+            display: inline-block;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="shape shape1"></div>
+    <div class="shape shape2"></div>
+
+    <div class="card">
+        <h2>Conditions</h2>
+        <div class="terms-meta">Last updated: May 18, 2026</div>
+
+        <div class="terms-content">
+            <h3>1. Payment Terms</h3>
+            <p>All payments for courses are processed through our platform are subject to these conditions.</p>
+
+            <h3>2. Refund Policy</h3>
+            <ul>
+                <li>Refund requests must be submitted within 7 days of purchase</li>
+                <li>Refunds are processed within 5-7 business days</li>
+                <li>Partial refunds may be offered for completed course access</li>
+            </ul>
+
+            <h3>3. Course Access</h3>
+            <p>Course access is granted upon successful payment and remains active for the duration specified in the course details.</p>
+
+            <h3>4. Content Usage</h3>
+            <ul>
+                <li>Course materials are for personal use only</li>
+                <li>Sharing or redistributing content is prohibited</li>
+                <li>Downloading content may be restricted</li>
+            </ul>
+
+            <h3>5. Termination</h3>
+            <p>We reserve the right to terminate access for violations of these conditions.</p>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'terms_page' %}">View Terms of Service</a>
+            <a href="{% url 'login' %}">Back to Login</a>
+            <a href="{% url 'register' %}">Back to Register</a>
+        </div>
+    </div>
+</body>
+</html>
