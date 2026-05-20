@@ -1,5 +1,14 @@
 function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("closed");
+    document.getElementById("main").classList.toggle("full");
+    const navbar = document.querySelector(".navbar");
+    if (navbar) {
+        if (navbar.style.left === "260px") {
+            navbar.style.left = "0px";
+        } else {
+            navbar.style.left = "260px";
+        }
+    }
 }
 
 function toggleDark() {
@@ -105,4 +114,4 @@ function confirmLogout() {
         // Fallback to simple redirect if form is not found
         window.location.href = "/en/logout/";
     }
-}
+}

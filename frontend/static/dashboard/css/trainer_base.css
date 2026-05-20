@@ -10,6 +10,13 @@
     font-size: 18px;
 }
 
+/* Mobile styles for trainer navbar */
+@media (max-width: 768px) {
+    .navbar .username {
+        display: none !important;
+    }
+}
+
 #count {
     background: red;
     color: white;

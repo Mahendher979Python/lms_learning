@@ -1,4 +1,4 @@
-{% extends 'dashboard/trainer_base.html' %}
+{% extends 'dashboard/base.html' %}
 {% block content %}
 {% load static %}
 
@@ -63,6 +63,9 @@
                     <h4 style="margin: 0 0 10px; color: var(--text);">{{ topic.name }}</h4>
                     <p style="margin: 5px 0; color: var(--text-muted); font-size: 14px;">Course: {{ topic.course.title }}</p>
                     <p style="margin: 5px 0; color: var(--text-muted); font-size: 13px;">Created: {{ topic.created_at|date:"M d, Y" }}</p>
+                    {% if topic.created_by %}
+                        <p style="margin: 5px 0; color: var(--text-muted); font-size: 13px;">By: {{ topic.created_by.username }}</p>
+                    {% endif %}
                     <div style="display: flex; gap: 10px; margin-top: 15px;">
                         <a href="{% url 'edit_topic' topic.id %}" style="flex: 1; padding: 8px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-size: 14px;">Edit</a>
                         <form method="post" action="{% url 'delete_topic' topic.id %}" style="flex: 1;">
@@ -78,5 +81,4 @@
     {% endif %}
 
 </div>
-<script src="{% static 'courses/js/trainer_create_topic.js' %}"></script>
 {% endblock %}

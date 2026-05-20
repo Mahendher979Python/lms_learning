@@ -48,7 +48,46 @@
                 <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
             {% endif %}
         </div>
+
+        <button class="hamburger-btn" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
+
+    <div class="sidebar-overlay"></div>
+    <aside class="sidebar">
+        <div class="sidebar-close">
+            <button class="close-btn" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav" aria-label="Mobile navigation">
+            <a href="{% url 'index' %}" class="sidebar-link">Home</a>
+            <a href="{% url 'courses' %}" class="sidebar-link">Courses</a>
+            <a href="{% url 'about' %}" class="sidebar-link">About Us</a>
+            <a href="{% url 'services' %}" class="sidebar-link">Services</a>
+            <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
+            <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
+        </nav>
+        <form class="sidebar-searchbar" role="search" action="{% url 'courses' %}" method="GET">
+            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
+        </form>
+        <div class="sidebar-actions">
+            {% if user.is_authenticated %}
+                {% if user.role == 'student' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                {% elif user.role == 'trainer' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                {% else %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                {% endif %}
+                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
+                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </aside>
 
     <main>
         <!-- Hero Section -->
@@ -220,6 +259,27 @@
 
     <!-- JS Scripts -->
     <script src="{% static 'accounts/js/pages.js' %}"></script>
+    <script>
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarOverlay = document.querySelector('.sidebar-overlay');
+        const closeBtn = document.querySelector('.close-btn');
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        }
+
+        hamburgerBtn.addEventListener('click', toggleSidebar);
+        closeBtn.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', toggleSidebar);
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', toggleSidebar);
+        });
+    </script>
 </body>
 
 </html>

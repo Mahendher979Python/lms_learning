@@ -9,6 +9,7 @@ urlpatterns = [
     path('admin-payments/', views.admin_payments, name='admin_payments'),
     path('mark-payment-success/<int:payment_id>/', views.mark_payment_success, name='mark_payment_success'),
     path('admin-create-course/', views.admin_create_course, name='admin_create_course'),
+    path('admin-create-topic/', views.admin_create_topic, name='admin_create_topic'),
     path('edit-course/<int:id>/', views.edit_course, name='edit_course'),
     path('delete-course/<int:id>/', views.delete_course, name='delete_course'),
 

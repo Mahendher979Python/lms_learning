@@ -15,7 +15,7 @@ function addQuestion() {
     div.className = "premium-q-card";
     div.id = "q_block_" + qCount;
     div.innerHTML = `
-    <h4 style="color:#fff; margin-bottom:16px;">Question ${qCount}</h4>
+    <h4 style="margin-bottom:16px;">Question ${qCount}</h4>
 
     <input type="text"
            name="q_${qCount}_text"

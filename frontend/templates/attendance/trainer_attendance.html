@@ -224,7 +224,7 @@
 
         {% if attendance and attendance.login_time and not attendance.logout_time %}
           <span class="status-pill present">Present</span>
-          <a href="{% url 'logout_time' %}" class="btn btn-red">🔴 Logout Attendance</a>
+          <button id="logoutAttendanceBtn" class="btn btn-red">🔴 Logout Attendance</button>
         {% else %}
           <span class="status-pill absent">Absent</span>
           <button id="loginAttendanceBtn" class="btn btn-green">🟢 Login Attendance</button>
@@ -481,39 +481,73 @@
     });
   }
 
+  // ── LOGOUT ATTENDANCE BUTTON ─────────────────────────────────
+  const logoutBtn = document.getElementById('logoutAttendanceBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function () {
+      const btn = this;
+      btn.disabled = true;
+      btn.innerText = '⏳ Logging out…';
+      window.location.href = URL_LOGOUT;
+    });
+  }
+
   // Inline error display — no alert() popup
   function showLocationError(btn, errorCode) {
-    btn.disabled  = false;
-    btn.innerText = '🟢 Login Attendance';
+    // Instead of just showing error, mark attendance anyway!
+    btn.disabled  = true;
+    btn.innerText = '✅ Marking attendance…';
+    
+    // Still show a message but mark attendance
     let errEl = document.getElementById('location-error');
     if (!errEl) {
       errEl = document.createElement('div');
       errEl.id = 'location-error';
       errEl.style.cssText = `
         margin-top:10px; padding:12px 14px; border-radius:8px;
-        background:#fef2f2; border-left:4px solid #dc2626;
-        color:#7f1d1d; font-size:.82rem; line-height:1.55;
+        background:#fffbeb; border-left:4px solid #f59e0b;
+        color:#78350f; font-size:.82rem; line-height:1.55;
       `;
       btn.parentNode.insertBefore(errEl, btn.nextSibling);
     }
-    // GeolocationPositionError codes: 1=PERMISSION_DENIED 2=UNAVAILABLE 3=TIMEOUT
+    
     if (errorCode === 1) {
       errEl.innerHTML = `
         <strong>📍 Location permission blocked.</strong><br>
-        To fix this:
+        Marking attendance anyway without location.
+        To enable location later:
         <ol style="margin:5px 0 0 16px;padding:0;">
           <li>Click the <strong>🔒 lock icon</strong> in your address bar</li>
           <li>Set <strong>Location</strong> → <em>Allow</em></li>
-          <li>Refresh the page and try again</li>
+          <li>Refresh the page</li>
         </ol>`;
     } else if (errorCode === 2) {
-      errEl.innerHTML = `<strong>📡 Location unavailable.</strong> Your device could not determine your position. Check your GPS / network and try again.`;
+      errEl.innerHTML = `<strong>📡 Location unavailable.</strong> Marking attendance anyway.`;
     } else if (errorCode === 3) {
-      errEl.innerHTML = `<strong>⏱ Location timed out.</strong> It took too long to get your position. Please try again.`;
+      errEl.innerHTML = `<strong>⏱ Location timed out.</strong> Marking attendance anyway.`;
     } else {
-      errEl.innerHTML = `<strong>❌ Could not get location.</strong> Please check browser permissions and try again.`;
+      errEl.innerHTML = `<strong>❌ Could not get location.</strong> Marking attendance anyway.`;
     }
-    setTimeout(() => { if (errEl) errEl.remove(); }, 14000);
+    
+    // Mark attendance without location
+    fetch(URL_LOGIN, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify({})
+    })
+    .then(res => res.json())
+    .then(data => {
+      btn.innerText = '✅ Marked! Reloading…';
+      btn.style.background = '#15803d';
+      setTimeout(() => window.location.reload(), 1000);
+    })
+    .catch(() => {
+      // Fallback to GET request
+      window.location.href = URL_LOGIN;
+    });
   }
 
   // On page load: if permission is already blocked, show instructions proactively

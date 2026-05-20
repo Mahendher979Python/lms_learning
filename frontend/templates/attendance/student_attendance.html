@@ -192,9 +192,7 @@ body {
         <br>
 
         {% if attendance and attendance.login_time and not attendance.logout_time %}
-            <a href="{% url 'logout_time' %}">
-                <button class="btn btn-red">🔴 Logout Attendance</button>
-            </a>
+            <button class="btn btn-red" id="logoutBtn">🔴 Logout Attendance</button>
         {% else %}
             <button class="btn btn-green" id="loginBtn" onclick="loginWithLocation()">
                 ✅ Login Attendance
@@ -515,11 +513,41 @@ function loginWithLocation(){
         // ── Error: GPS denied/failed ──
         function(err){
             text.innerHTML = "⚠️ Location unavailable. Marking attendance anyway…";
-            setTimeout(() => { window.location.href = "{% url 'login_time' %}"; }, 1200);
+            
+            // Mark attendance with POST without location
+            fetch("{% url 'login_time' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify({})
+            })
+            .then(r => r.json())
+            .then(data => {
+                text.innerHTML = "✅ Attendance marked! Redirecting…";
+                setTimeout(() => { window.location.href = "{% url 'student_attendance' %}"; }, 800);
+            })
+            .catch(() => {
+                // Fallback to GET if POST fails
+                setTimeout(() => { window.location.href = "{% url 'login_time' %}"; }, 1200);
+            });
         },
         { timeout: 10000, maximumAge: 0 }
     );
 }
+
+/* ── Logout button handler ── */
+document.addEventListener("DOMContentLoaded", function(){
+    const logoutBtn = document.getElementById("logoutBtn");
+    if(logoutBtn){
+        logoutBtn.addEventListener("click", function(){
+            this.disabled = true;
+            this.innerText = "⏳ Logging out…";
+            window.location.href = "{% url 'logout_time' %}";
+        });
+    }
+});
 
 /* ── Helpers ── */
 function formatTime(diff){

@@ -124,10 +124,15 @@ def login_time(request):
     today = timezone.now().date()
 
     attendance, created = Attendance.objects.get_or_create(user=request.user, date=today)
-    attendance.logout_time = None
 
+    # Set login_time if not already clocked in
     if not attendance.login_time:
-        attendance.login_time = timezone.now()
+        attendance.login_time  = timezone.now()
+        attendance.logout_time = None
+        attendance.status      = "Present"
+    
+    # Always save attendance (even if login was already set)
+    attendance.save()
 
     if request.method == "POST":
         try:
@@ -147,11 +152,11 @@ def login_time(request):
                     longitude=lng
                 )
                 return JsonResponse({"status": "success", "location": place})
-        except Exception:
-            attendance.save()
+            else:
+                return JsonResponse({"status": "success", "location": ""})
+        except Exception as e:
+            print(f"Error in login_time POST: {e}")
             return JsonResponse({"status": "success", "location": ""})
-
-    attendance.save()
 
     if request.user.role == "trainer":
         return redirect('trainer_attendance')
@@ -176,6 +181,7 @@ def logout_time(request):
             # ✅ Present only if worked >= 4 hours
             attendance.status = "Present" if final_hours >= 4 else "Absent"
         attendance.save()
+        print(f"Logout attendance saved: {attendance.user.username}, logout time: {attendance.logout_time}")
 
     if request.user.role == "trainer":
         return redirect('trainer_attendance')
@@ -429,7 +435,7 @@ def export_attendance_csv(request):
         if date_query:
             records = records.filter(date=date_query)
         if user_query:
-            records = records.filter(user_username_icontains=user_query)
+            records = records.filter(user__username__icontains=user_query)
     elif scope == 'students' and user.role == 'trainer':
         # Trainer's assigned students
         records = records.filter(user__trainer=user)

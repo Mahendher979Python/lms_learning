@@ -332,6 +332,49 @@ def trainer_courses(request):
     })
 
 # =====================================
+# ADMIN - CREATE TOPIC
+# =====================================
+@login_required
+def admin_create_topic(request):
+    if request.user.role != "admin":
+        return redirect("login")
+
+    courses = Course.objects.all()
+    topics = Topic.objects.all()
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        course_id = request.POST.get("course")
+
+        course = get_object_or_404(Course, id=course_id)
+
+        Topic.objects.create(
+            name=name,
+            course=course,
+            created_by=request.user,
+            thumbnail=request.FILES.get("thumbnail"),
+            video=request.FILES.get("video"),
+            pdf=request.FILES.get("pdf"),
+        )
+        # notify students
+        students = course.students.all()
+
+        for student in students:
+            send_notification(
+                recipient=student,
+                sender=request.user,
+                notif_type='course',
+                message=f"New topic '{name}' added in {course.title}",
+                course_name=course.title
+            )
+        return redirect("admin_create_topic")
+
+    return render(request, "courses/admin_create_topic.html", {
+        "courses": courses,
+        "topics": topics,
+    })
+
+# =====================================
 # TRAINER - CREATE TOPIC
 # =====================================
 @login_required
@@ -541,7 +584,7 @@ def course_detail(request, id):
 def edit_topic(request, id):
     topic = get_object_or_404(Topic, id=id)
 
-    if request.user.role != "trainer":
+    if request.user.role not in ["trainer", "admin"]:
         return redirect("login")
 
     if request.method == "POST":
@@ -558,6 +601,8 @@ def edit_topic(request, id):
 
         topic.save()
 
+        if request.user.role == "admin":
+            return redirect("admin_create_topic")
         return redirect("trainer_courses")
 
     return render(request, "courses/edit_topic.html", {
@@ -572,11 +617,13 @@ def edit_topic(request, id):
 def delete_topic(request, id):
     topic = get_object_or_404(Topic, id=id)
 
-    if request.user.role != "trainer":
+    if request.user.role not in ["trainer", "admin"]:
         return redirect("login")
 
     if request.method == "POST":
         topic.delete()
+        if request.user.role == "admin":
+            return redirect("admin_create_topic")
         return redirect("trainer_courses")
 
     return render(request, "courses/confirm_delete.html", {

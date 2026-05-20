@@ -8,9 +8,8 @@
     <title>{% block title %}Trainer Dashboard{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'dashboard/css/trainer_base.css' %}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        (function() {
+        (function () {
             const theme = localStorage.getItem('theme') || 'dark';
             if (theme === 'dark') {
                 document.documentElement.classList.add('dark');
@@ -19,6 +18,7 @@
             }
         })();
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body class="dark">
@@ -28,26 +28,79 @@
         }
     </script>
 
-    <!-- NAVBAR -->
-    <div class="navbar">
+    <!-- PREMIUM DARK GRADIENT SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+        <!-- Logo -->
+        <div style="margin-bottom: 30px; padding: 8px 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <span style="font-size: 20px; font-weight: 800; color: white;">LMS TRAINER</span>
+            </div>
+        </div>
 
-        <!-- LEFT -->
+        <a href="{% url 'trainer_dashboard' %}" class="{% if request.resolver_match.url_name == 'trainer_dashboard' %}active{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{% url 'trainer_create_topic' %}" class="{% if request.resolver_match.url_name == 'trainer_create_topic' %}active{% endif %}">
+            <i class="fas fa-plus-circle"></i>
+            <span>Create topic</span>
+        </a>
+        <a href="{% url 'trainer_courses' %}" class="{% if request.resolver_match.url_name == 'trainer_courses' %}active{% endif %}">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Your Courses</span>
+        </a>
+        <a href="{% url 'teams:trainer_course_slides' %}" class="{% if request.resolver_match.url_name == 'trainer_course_slides' %}active{% endif %}">
+            <i class="fas fa-users"></i>
+            <span>Classes</span>
+        </a>
+        <a href="{% url 'assignments:trainer_assignments' %}" class="{% if request.resolver_match.url_name == 'trainer_assignments' %}active{% endif %}">
+            <i class="fas fa-file-alt"></i>
+            <span>Assignments</span>
+        </a>
+        <a href="{% url 'trainer_progress' %}" class="{% if request.resolver_match.url_name == 'trainer_progress' %}active{% endif %}">
+            <i class="fas fa-chart-line"></i>
+            <span>Student Progress</span>
+        </a>
+        <a href="{% url 'coding_tasks:create_task' %}" class="{% if request.resolver_match.url_name == 'create_task' %}active{% endif %}">
+            <i class="fas fa-code"></i>
+            <span>Coding Tasks</span>
+        </a>
+        <a href="{% url 'trainer_attendance' %}" class="{% if request.resolver_match.url_name == 'trainer_attendance' %}active{% endif %}">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Attendance</span>
+        </a>
+        <a href="{% url 'trainer_profile' %}" class="{% if request.resolver_match.url_name == 'trainer_profile' %}active{% endif %}">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+        </a>
+        <a href="{% url 'trainer_settings' %}" class="{% if request.resolver_match.url_name == 'trainer_settings' %}active{% endif %}">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </a>
+    </div>
+
+    <!-- PREMIUM NEUMORPHIC NAVBAR -->
+    <div class="navbar">
+        <!-- LEFT SECTION -->
         <div style="display:flex; align-items:center; gap:10px;">
             <div onclick="toggleSidebar()" style="cursor:pointer; font-size:22px;">☰</div>
 
             <div style="display:flex; align-items:center; gap:8px;">
-                <img src="{% static 'accounts/images/spylogo.png' %}"
-                    style="height:45px; width:45px; border-radius:8px; object-fit:cover;">
-                <strong>LMS</strong>
+                <div style="width: 45px; height: 45px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <strong>LMS TRAINER</strong>
             </div>
         </div>
 
-        <!-- RIGHT -->
-        <div style="display:flex; align-items:center; gap:18px;">
-
-            <!-- NOTIFICATIONS -->
-            <div class="notification-wrapper">
-                <a href="{% url 'trainer_notifications' %}" class="notification-link notif-btn-3d" title="Notifications">
+        <!-- RIGHT SECTION (Profile, Notifications, Logout) -->
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <!-- Notifications Bell -->
+            <div class="notification-wrapper" style="position: relative;">
+                <a href="{% url 'trainer_notifications' %}" class="notif-btn-3d" title="Notifications" style="width: 48px; height: 48px; border-radius: 50%; background: var(--card); border: none; box-shadow: var(--shadow-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #f59e0b; transition: all 0.3s ease; text-decoration: none;">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -56,10 +109,7 @@
                 </a>
             </div>
 
-            <!-- USER -->
-            <span class="username" style="display:flex; align-items:center; gap:6px; font-weight:600; background:rgba(255,255,255,0.05); padding:8px 14px; border-radius:30px; border:1px solid rgba(255,255,255,0.08); box-shadow:0 4px 6px rgba(0,0,0,0.15);">👤 {{ request.user.username }}</span>
-
-            <!-- DARK MODE -->
+            <!-- Theme Toggle Button -->
             <button class="theme-btn-3d" onclick="toggleDark()" title="Toggle Dark/Light Mode">
                 <!-- Sun Icon -->
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -79,44 +129,67 @@
                 </svg>
             </button>
 
-            <!-- LOGOUT -->
-            <form id="logout-post-form" action="{% url 'logout' %}" method="POST" style="display:none;">
+            <!-- User Profile -->
+            <div style="display: flex; align-items: center; gap: 12px; background: var(--card); padding: 10px 18px; border-radius: 50px; box-shadow: var(--shadow-light);">
+                <div style="width: 38px; height: 38px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px;">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span style="font-weight: 700; color: var(--text);">{{ request.user.username }}</span>
+                <i class="fas fa-chevron-down" style="color: var(--text-muted); font-size: 12px;"></i>
+            </div>
+
+            <!-- Logout Button -->
+            <form id="logout-post-form" action="{% url 'logout' %}" method="POST" style="display: none;">
                 {% csrf_token %}
             </form>
-            <button class="logout-btn-3d" onclick="showLogoutModal(event)" title="Logout" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s ease;">
+            <button class="logout-btn-3d" onclick="showLogoutModal(event)" style="width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; box-shadow: var(--shadow-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s ease;">
                 <i class="fas fa-power-off"></i>
             </button>
         </div>
     </div>
 
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <a href="{% url 'trainer_dashboard' %}">Dashboard</a>
-        <a href="{% url 'trainer_create_topic' %}">Create topic</a>
-        <a href="{% url 'trainer_courses' %}">Your Courses</a>
-        <a href="{% url 'teams:trainer_course_slides' %}">Classes</a>
-        <a href="{% url 'assignments:trainer_assignments' %}">Assignments</a>
-        <a href="{% url 'trainer_progress' %}">Student Progress</a>
-        <a href="{% url 'coding_tasks:create_task'%}">Coding Tasks</a>
-        {% for enrollment in course.enrollments.all %}
-        <a href="{% url 'send_certificate_request' course.id enrollment.student.id %}">Send Certificate</a>
-
-        {% endfor %}
-        <a href="{% url 'trainer_attendance' %}">Attendance</a>
-        <a href="{% url 'trainer_settings' %}"> Settings</a>
-
-    </div>
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <!-- MAIN -->
     <div class="main" id="main">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </div>
 
+    <script src="{% static 'dashboard/js/trainer_base.js' %}"></script>
     <script>
         function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("closed");
-            document.getElementById("main").classList.toggle("full");
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            const main = document.getElementById("main");
+            const navbar = document.querySelector(".navbar");
+            
+            sidebar.classList.toggle("closed");
+            overlay.classList.toggle("active");
+            main.classList.toggle("full");
+            
+            if (navbar) {
+                if (navbar.style.left === "260px") {
+                    navbar.style.left = "0px";
+                } else {
+                    navbar.style.left = "260px";
+                }
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("sidebar-overlay");
+            const main = document.getElementById("main");
+            const navbar = document.querySelector(".navbar");
+            
+            sidebar.classList.remove("closed");
+            overlay.classList.remove("active");
+            main.classList.remove("full");
+            
+            if (navbar) {
+                navbar.style.left = "0px";
+            }
         }
 
         function toggleDark() {
@@ -124,6 +197,23 @@
             const isDark = document.body.classList.contains("dark");
             localStorage.setItem("theme", isDark ? "dark" : "light");
         }
+
+        function loadNotifications() {
+            fetch("/notifications/")
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById("notif-count");
+                    if (data.unread_count > 0) {
+                        badge.innerText = data.unread_count;
+                        badge.style.display = "flex";
+                    } else {
+                        badge.style.display = "none";
+                    }
+                });
+        }
+
+        setInterval(loadNotifications, 5000);
+        loadNotifications();
 
         /* 3D LOGOUT MODAL ACTION HANDLERS */
         function showLogoutModal(e) {
@@ -152,122 +242,13 @@
                 window.location.href = "/en/logout/";
             }
         }
-
-        /* dropdown toggle */
-        function toggleDropdown(e) {
-            e.stopPropagation();
-            let d = document.getElementById("dropdown");
-            d.style.display = (d.style.display === "block") ? "none" : "block";
-        }
-
-        /* close outside click */
-        document.addEventListener("click", function () {
-            document.getElementById("dropdown").style.display = "none";
-        });
-
-        /* LOAD NOTIFICATIONS */
-        function loadNotifications() {
-            fetch("/notifications/")
-                .then(res => res.json())
-                .then(data => {
-
-                    let dropdown = document.getElementById("dropdown");
-                    let count = document.getElementById("count");
-
-                    dropdown.innerHTML = "";
-                    count.innerText = data.unread_count;
-
-                    if (data.notifications.length === 0) {
-                        dropdown.innerHTML = "<div style='padding:10px;'>No notifications</div>";
-                        return;
-                    }
-
-                    data.notifications.forEach(n => {
-                        let div = document.createElement("div");
-
-                        div.className = "notif-item " + n.type;
-
-                        div.innerHTML = `
-                <b>${n.type.toUpperCase()}</b><br>
-                ${n.message}<br>
-                <small>${n.course || ""}</small><br>
-                <small style="color:gray">${n.time}</small>
-            `;
-
-                        div.onclick = function () {
-                            fetch(`/notifications/read/${n.id}/`, {
-                                method: "POST",
-                                headers: {
-                                    "X-CSRFToken": getCookie("csrftoken")
-                                }
-                            });
-                            div.style.opacity = "0.5";
-                        };
-
-                        dropdown.appendChild(div);
-                    });
-                });
-        }
-
-        setInterval(loadNotifications, 5000);
-        loadNotifications();
-
-        /* CSRF */
-        function getCookie(name) {
-            let cookieValue = null;
-            document.cookie.split(';').forEach(c => {
-                c = c.trim();
-                if (c.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(c.substring(name.length + 1));
-                }
-            });
-            return cookieValue;
-        }
-    </script>
-    <script>
-
-        function loadNotifications() {
-
-            fetch("/notifications/")
-
-                .then(response => response.json())
-
-                .then(data => {
-
-                    const badge =
-                        document.getElementById(
-                            "notif-count"
-                        );
-
-                    if (data.unread_count > 0) {
-
-                        badge.innerText =
-                            data.unread_count;
-
-                        badge.style.display =
-                            "flex";
-
-                    } else {
-
-                        badge.style.display =
-                            "none";
-                    }
-
-                });
-
-        }
-
-        loadNotifications();
-
-        setInterval(loadNotifications, 5000);
-
     </script>
 
     <!-- 3D LOGOUT CONFIRMATION MODAL -->
     <div id="logout-confirm-modal" class="modal-overlay-3d" onclick="closeLogoutModal()">
         <div class="modal-card-3d" onclick="event.stopPropagation()">
             <div class="modal-icon-3d">
-                <svg viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" width="32" height="32">
                     <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
                     <line x1="12" y1="2" x2="12" y2="12"></line>
                 </svg>

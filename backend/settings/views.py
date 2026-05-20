@@ -171,206 +171,139 @@ def admin_settings(request):
 
 
 # =========================================
-# TRAINER SETTINGS
+# TRAINER PROFILE
 # =========================================
 
 @login_required
-def trainer_settings(request):
-
+def trainer_profile(request):
     if request.user.role != "trainer":
         return redirect("login")
 
     user = request.user
 
-    settings_obj, created = UserSettings.objects.get_or_create(
-        user=user
-    )
-
     if request.method == "POST":
+        user.username = request.POST.get("username", "").strip()
+        user.email = request.POST.get("email", "").strip()
 
-        # =====================================
-        # USER DETAILS
-        # =====================================
+        phone = (request.POST.get("phone") or "").strip()
+        if phone and (not phone.isdigit() or len(phone) != 10):
+            messages.error(request, "Phone number must be exactly 10 digits")
+            return render(request, "settings/trainer_profile.html", {"user": user})
+        user.phone = phone
 
-        user.username = request.POST.get(
-            "username",
-            ""
-        )
-
-        user.email = request.POST.get(
-            "email",
-            ""
-        )
-
-        user.phone = request.POST.get(
-            "phone",
-            ""
-        )
-
-        user.specialization = request.POST.get(
-            "specialization",
-            ""
-        )
-
-        user.experience = request.POST.get(
-            "experience",
-            ""
-        )
-
-        user.qualification = request.POST.get(
-            "qualification",
-            ""
-        )
-
-        user.gender = request.POST.get(
-            "gender",
-            ""
-        )
-
+        user.specialization = request.POST.get("specialization", "").strip()
+        experience = request.POST.get("experience")
+        user.experience = int(experience) if experience and experience.isdigit() else None
+        
         dob = request.POST.get("dob")
-
-        if dob:
-            user.dob = dob
-        else:
-            user.dob = None
-
-        user.address = request.POST.get(
-            "address",
-            ""
-        )
-
-        # =====================================
-        # BIO
-        # =====================================
-
-        bio = request.POST.get(
-            "bio",
-            ""
-        ).strip()
-
-        word_count = len(
-            bio.split()
-        )
-
+        user.dob = dob if dob else None
+        
+        user.gender = request.POST.get("gender", "").strip()
+        user.qualification = request.POST.get("qualification", "").strip()
+        
+        bio = request.POST.get("bio", "").strip()
+        word_count = len(bio.split())
         if word_count < 120 or word_count > 150:
-
-            messages.error(
-                request,
-                "Professional Bio must contain 120 to 150 words only."
-            )
-
-            return render(
-                request,
-                "settings/trainer_settings.html",
-                {
-                    "user": user,
-                    "settings_obj": settings_obj,
-                    "languages": UserSettings.LANGUAGE_CHOICES
-                }
-            )
-
+            messages.error(request, "Professional Bio must contain 120 to 150 words only.")
+            return render(request, "settings/trainer_profile.html", {"user": user})
         user.bio = bio
-
-        # =====================================
-        # PROFILE IMAGE
-        # =====================================
+        
+        user.address = request.POST.get("address", "").strip()
 
         if request.FILES.get("profile_image"):
+            user.profile_image = request.FILES.get("profile_image")
 
-            user.profile_image = request.FILES.get(
-                "profile_image"
-            )
+        try:
+            user.save()
+            messages.success(request, "Trainer profile updated successfully.")
+        except Exception:
+            messages.error(request, "Unable to save profile. Please check email/phone uniqueness.")
 
-        # =====================================
-        # SAVE USER
-        # =====================================
+        return redirect("trainer_profile")
 
-        user.save()
+    return render(request, "settings/trainer_profile.html", {"user": user})
 
-        # =====================================
-        # LANGUAGE
-        # =====================================
 
-        language = request.POST.get(
-            "language"
-        )
+# =========================================
+# TRAINER SETTINGS
+# =========================================
 
+@login_required
+def trainer_settings(request):
+    if request.user.role != "trainer":
+        return redirect("login")
+
+    user = request.user
+    settings_obj, created = UserSettings.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        language = request.POST.get("language")
         if language:
-
             settings_obj.language = language
-
-            request.session[
-                "django_language"
-            ] = language
-
+            request.session["django_language"] = language
             activate(language)
 
-        # =====================================
-        # SETTINGS
-        # =====================================
-
-        settings_obj.dark_mode = (
-            request.POST.get(
-                "dark_mode"
-            ) == "on"
-        )
-
-        settings_obj.email_notifications = (
-            request.POST.get(
-                "email_notifications"
-            ) == "on"
-        )
-
-        settings_obj.push_notifications = (
-            request.POST.get(
-                "push_notifications"
-            ) == "on"
-        )
-
-        settings_obj.two_factor_auth = (
-            request.POST.get(
-                "two_factor_auth"
-            ) == "on"
-        )
-
-        settings_obj.live_class_reminders = (
-            request.POST.get(
-                "live_class_reminders"
-            ) == "on"
-        )
-
-        settings_obj.allow_chat = (
-            request.POST.get(
-                "allow_chat"
-            ) == "on"
-        )
-
-        settings_obj.allow_discussions = (
-            request.POST.get(
-                "allow_discussions"
-            ) == "on"
-        )
-
+        settings_obj.dark_mode = request.POST.get("dark_mode") == "on"
+        settings_obj.email_notifications = request.POST.get("email_notifications") == "on"
+        settings_obj.push_notifications = request.POST.get("push_notifications") == "on"
+        settings_obj.fingerprint_login = request.POST.get("fingerprint_login") == "on"
+        settings_obj.two_factor_auth = request.POST.get("two_factor_auth") == "on"
+        settings_obj.autoplay_videos = request.POST.get("autoplay_videos") == "on"
+        settings_obj.offline_downloads = request.POST.get("offline_downloads") == "on"
+        settings_obj.allow_chat = request.POST.get("allow_chat") == "on"
+        settings_obj.allow_discussions = request.POST.get("allow_discussions") == "on"
+        settings_obj.live_class_reminders = request.POST.get("live_class_reminders") == "on"
         settings_obj.save()
 
-        messages.success(
-            request,
-            "Trainer profile updated successfully."
-        )
+        messages.success(request, "Trainer settings updated successfully.")
+        return redirect("trainer_settings")
 
-        return redirect(
-            "trainer_settings"
-        )
+    return render(request, "settings/trainer_settings.html", {
+        "user": user,
+        "settings_obj": settings_obj,
+        "languages": UserSettings.LANGUAGE_CHOICES
+    })
 
-    return render(
-        request,
-        "settings/trainer_settings.html",
-        {
-            "user": user,
-            "settings_obj": settings_obj,
-            "languages": UserSettings.LANGUAGE_CHOICES
-        }
-    )
+
+# =========================================
+# STUDENT PROFILE
+# =========================================
+
+@login_required
+def student_profile(request):
+    if request.user.role != "student":
+        return redirect("login")
+
+    user = request.user
+
+    if request.method == "POST":
+        user.username = request.POST.get("username", "").strip()
+        user.email = request.POST.get("email", "").strip()
+
+        phone = (request.POST.get("phone") or "").strip()
+        if phone and (not phone.isdigit() or len(phone) != 10):
+            messages.error(request, "Phone number must be exactly 10 digits")
+            return render(request, "settings/student_profile.html", {"user": user})
+        user.phone = phone
+        
+        dob = request.POST.get("dob")
+        user.dob = dob if dob else None
+        
+        user.gender = request.POST.get("gender", "").strip()
+        user.address = request.POST.get("address", "").strip()
+
+        if request.FILES.get("profile_image"):
+            user.profile_image = request.FILES.get("profile_image")
+
+        try:
+            user.save()
+            messages.success(request, "Student profile updated successfully.")
+        except Exception:
+            messages.error(request, "Unable to save profile. Please check email/phone uniqueness.")
+
+        return redirect("student_profile")
+
+    return render(request, "settings/student_profile.html", {"user": user})
 
 
 # =========================================
@@ -379,151 +312,36 @@ def trainer_settings(request):
 
 @login_required
 def student_settings(request):
-
     if request.user.role != "student":
         return redirect("login")
 
     user = request.user
-
-    settings_obj, created = UserSettings.objects.get_or_create(
-        user=user
-    )
+    settings_obj, created = UserSettings.objects.get_or_create(user=user)
 
     if request.method == "POST":
-
-        # =====================================
-        # USER DETAILS
-        # =====================================
-
-        user.username = request.POST.get(
-            "username",
-            ""
-        )
-
-        user.email = request.POST.get(
-            "email",
-            ""
-        )
-
-        user.phone = request.POST.get(
-            "phone",
-            ""
-        )
-
-        user.gender = request.POST.get(
-            "gender",
-            ""
-        )
-
-        dob = request.POST.get("dob")
-
-        if dob:
-            user.dob = dob
-        else:
-            user.dob = None
-
-        user.address = request.POST.get(
-            "address",
-            ""
-        )
-
-        # =====================================
-        # PROFILE IMAGE
-        # =====================================
-
-        if request.FILES.get("profile_image"):
-
-            user.profile_image = request.FILES.get(
-                "profile_image"
-            )
-
-        # =====================================
-        # SAVE USER
-        # =====================================
-
-        user.save()
-
-        # =====================================
-        # LANGUAGE
-        # =====================================
-
-        language = request.POST.get(
-            "language"
-        )
-
+        language = request.POST.get("language")
         if language:
-
             settings_obj.language = language
-
-            request.session[
-                "django_language"
-            ] = language
-
+            request.session["django_language"] = language
             activate(language)
 
-        # =====================================
-        # SETTINGS
-        # =====================================
-
-        settings_obj.dark_mode = (
-            request.POST.get(
-                "dark_mode"
-            ) == "on"
-        )
-
-        settings_obj.email_notifications = (
-            request.POST.get(
-                "email_notifications"
-            ) == "on"
-        )
-
-        settings_obj.push_notifications = (
-            request.POST.get(
-                "push_notifications"
-            ) == "on"
-        )
-
-        settings_obj.two_factor_auth = (
-            request.POST.get(
-                "two_factor_auth"
-            ) == "on"
-        )
-
-        settings_obj.live_class_reminders = (
-            request.POST.get(
-                "live_class_reminders"
-            ) == "on"
-        )
-
-        settings_obj.allow_chat = (
-            request.POST.get(
-                "allow_chat"
-            ) == "on"
-        )
-
-        settings_obj.allow_discussions = (
-            request.POST.get(
-                "allow_discussions"
-            ) == "on"
-        )
-
+        settings_obj.dark_mode = request.POST.get("dark_mode") == "on"
+        settings_obj.email_notifications = request.POST.get("email_notifications") == "on"
+        settings_obj.push_notifications = request.POST.get("push_notifications") == "on"
+        settings_obj.fingerprint_login = request.POST.get("fingerprint_login") == "on"
+        settings_obj.two_factor_auth = request.POST.get("two_factor_auth") == "on"
+        settings_obj.autoplay_videos = request.POST.get("autoplay_videos") == "on"
+        settings_obj.offline_downloads = request.POST.get("offline_downloads") == "on"
+        settings_obj.live_class_reminders = request.POST.get("live_class_reminders") == "on"
+        settings_obj.allow_chat = request.POST.get("allow_chat") == "on"
+        settings_obj.allow_discussions = request.POST.get("allow_discussions") == "on"
         settings_obj.save()
 
-        messages.success(
-            request,
-            "Student profile updated successfully."
-        )
+        messages.success(request, "Student settings updated successfully.")
+        return redirect("student_settings")
 
-        return redirect(
-            "student_settings"
-        )
-
-    return render(
-        request,
-        "settings/student_settings.html",
-        {
-            "user": user,
-            "settings_obj": settings_obj,
-            "languages": UserSettings.LANGUAGE_CHOICES
-        }
-    )
+    return render(request, "settings/student_settings.html", {
+        "user": user,
+        "settings_obj": settings_obj,
+        "languages": UserSettings.LANGUAGE_CHOICES
+    })
