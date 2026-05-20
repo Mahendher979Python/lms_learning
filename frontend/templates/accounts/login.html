@@ -1,5 +1,5 @@
 {% load static %}
-{% load socialaccount %}
+{# {% load socialaccount %} #}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,12 +84,14 @@
                 </button>
             </form>
 
+            {% comment %}
             <div class="or-divider">OR</div>
 
             <a href="{% provider_login_url 'google' %}" class="google-btn">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google">
                 Continue with Google
             </a>
+            {% endcomment %}
 
             <a href="{% url 'register' %}" class="footer-link">
                 Don't have an account? <span class="highlight">Register</span>
