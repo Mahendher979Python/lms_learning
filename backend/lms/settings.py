@@ -19,7 +19,7 @@ load_dotenv(PROJECT_ROOT / '.env')
 # SECURITY
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-vz5&_)17wlbwn3##qv@_m)w9(#0uub-q+lq)no3mieg)irp3x^')
 DEBUG = os.getenv('DEBUG', 'False') == 'False'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '3.7.16.2,localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '3.7.16.2, localhost,127.0.0.1').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', 'http://localhost,http://127.0.0.1').split(',')
 
 
