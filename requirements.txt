@@ -4,7 +4,10 @@ django-jazzmin
 daphne
 django-allauth
 django-recaptcha
+django-simple-captcha
 channels
 whitenoise
 Pillow
 reportlab
+psycopg2-binary
+gunicorn

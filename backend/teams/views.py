@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from django.db.models import Q, Max
 from django.http import JsonResponse
+from django.utils import timezone
+from django.views.decorators.http import require_http_methods
 
 from notifications.models import Notification  # FIXED IMPORT
 
-from .models import Team, Message, PrivateMessage, Reaction
+from .models import Team, Message, PrivateMessage, Reaction, PrivateChatRequest
 from .forms import TeamForm
 from courses.models import Course
 
@@ -72,6 +74,61 @@ def student_course_slides(request):
     )
 
 
+def _messages_template_for_user(user):
+    if user.role == 'admin':
+        return 'teams/admin_messages.html'
+    if user.role == 'trainer':
+        return 'teams/trainer_messages.html'
+    return 'teams/student_messages.html'
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def messages_hub(request):
+    user = request.user
+    user_id = request.GET.get('user_id')
+
+    selected_user = None
+    private_messages = []
+
+    if user_id:
+        selected_user = get_object_or_404(User, id=user_id)
+
+    if request.method == "POST" and selected_user:
+        msg = (request.POST.get("message") or "").strip()
+        uploaded_file = request.FILES.get("file")
+        if msg or uploaded_file:
+            PrivateMessage.objects.create(
+                sender=user,
+                receiver=selected_user,
+                message=msg,
+                file=uploaded_file
+            )
+            return redirect(f"{request.path}?user_id={selected_user.id}")
+
+    users = User.objects.exclude(id=user.id).filter(
+        role__in=['admin', 'trainer', 'student']
+    ).order_by('username')
+
+    recent_users = User.objects.filter(
+        Q(sent_pm__receiver=user) |
+        Q(received_pm__sender=user)
+    ).distinct().order_by('username')
+
+    if selected_user:
+        private_messages = PrivateMessage.objects.filter(
+            Q(sender=user, receiver=selected_user) |
+            Q(sender=selected_user, receiver=user)
+        ).order_by('timestamp')
+
+    return render(request, _messages_template_for_user(user), {
+        'users': users,
+        'recent_users': recent_users,
+        'selected_user': selected_user,
+        'private_messages': private_messages,
+    })
+
+
 # =========================
 # COURSE TEAMS + CHAT
 # =========================
@@ -116,6 +173,16 @@ def course_teams(request, course_id):
         is_read=False
     )
 
+    dm_requests_received = PrivateChatRequest.objects.filter(
+        recipient=user,
+        status='pending'
+    ).select_related('requester')
+
+    dm_requests_sent = PrivateChatRequest.objects.filter(
+        requester=user,
+        status='pending'
+    ).select_related('recipient')
+
     # GROUP CHAT
     if team_id:
         team = get_object_or_404(Team, id=team_id)
@@ -136,6 +203,16 @@ def course_teams(request, course_id):
             Q(sender=user, receiver=selected_user) |
             Q(sender=selected_user, receiver=user)
         ).order_by('timestamp')
+
+    dm_request = None
+    dm_allowed = False
+    if selected_user:
+        dm_request = PrivateChatRequest.objects.filter(
+            Q(requester=user, recipient=selected_user) |
+            Q(requester=selected_user, recipient=user)
+        ).first()
+
+        dm_allowed = True
 
     # SEND MESSAGE
     if request.method == 'POST':
@@ -180,6 +257,10 @@ def course_teams(request, course_id):
         'selected_user': selected_user,
         'recent_users': recent_users,
         'notifications': notifications,
+        'dm_requests_received': dm_requests_received,
+        'dm_requests_sent': dm_requests_sent,
+        'dm_request': dm_request,
+        'dm_allowed': dm_allowed,
         'trainers': trainers,
     })
 
@@ -310,3 +391,38 @@ def video_call(request, team_id):
         'team': team,
         'notifications': notifications
     })
+
+
+@login_required
+@require_http_methods(["POST"])
+def request_dm(request, user_id):
+    recipient = get_object_or_404(User, id=user_id)
+    if recipient.id == request.user.id:
+        return JsonResponse({"error": "invalid"}, status=400)
+
+    req, _ = PrivateChatRequest.objects.update_or_create(
+        requester=request.user,
+        recipient=recipient,
+        defaults={
+            "status": "pending",
+            "responded_at": None,
+        }
+    )
+
+    return JsonResponse({"success": True, "request_id": req.id})
+
+
+@login_required
+@require_http_methods(["POST"])
+def respond_dm_request(request, request_id):
+    req = get_object_or_404(PrivateChatRequest, id=request_id)
+    if req.recipient_id != request.user.id:
+        return JsonResponse({"error": "not allowed"}, status=403)
+
+    action = request.POST.get("action")
+    if req.status == "pending" and action in ["accept", "decline"]:
+        req.status = "accepted" if action == "accept" else "declined"
+        req.responded_at = timezone.now()
+        req.save()
+
+    return JsonResponse({"success": True, "status": req.status})

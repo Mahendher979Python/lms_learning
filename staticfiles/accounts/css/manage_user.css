@@ -40,6 +40,18 @@ body {
     background: var(--sidebar-bg) !important;
     border-right: 1px solid var(--border) !important;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+.sidebar.closed {
+    width: 260px !important;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+=======
+>>>>>>> 176976718af92fb8ad0d547f2f6f78e15d438279
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
 
 .sidebar a {
     color: var(--sidebar-text) !important;
@@ -482,3 +494,12 @@ body {
         font-size: 45px;
     }
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> 176976718af92fb8ad0d547f2f6f78e15d438279
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377

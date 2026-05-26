@@ -123,7 +123,7 @@
         </a>
         <a href="{% url 'teams:trainer_course_slides' %}" class="{% if request.resolver_match.url_name == 'trainer_course_slides' %}active{% endif %}">
             <i class="fas fa-users"></i>
-            <span>Classes</span>
+            <span>Teams Chat</span>
         </a>
         <a href="{% url 'assignments:trainer_assignments' %}" class="{% if request.resolver_match.url_name == 'trainer_assignments' %}active{% endif %}">
             <i class="fas fa-file-alt"></i>
@@ -180,7 +180,15 @@
                 </a>
             </div>
 
+<<<<<<< HEAD
             <!-- Theme Toggle -->
+=======
+            <a href="{% url 'teams:trainer_course_slides' %}" class="notif-btn-3d" title="Messages" style="width: 48px; height: 48px; border-radius: 50%; background: var(--card); border: none; box-shadow: var(--shadow-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #3b82f6; transition: all 0.3s ease; text-decoration: none;">
+                <span style="font-weight: 900;">💬</span>
+            </a>
+
+            <!-- Theme Toggle Button -->
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
             <button class="theme-btn-3d" onclick="toggleDark()" title="Toggle Dark/Light Mode">
                 <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">

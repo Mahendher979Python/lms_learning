@@ -18,6 +18,7 @@
 
     --sidebar-bg: linear-gradient(180deg, #1a237e 0%, #0d1b60 100%);
     --sidebar-text: #94a3b8;
+<<<<<<< HEAD
     --sidebar-active: #ffffff;
 
     --shadow-light:
@@ -27,6 +28,16 @@
     --shadow-hover:
         12px 12px 24px rgba(163, 177, 198, 0.7),
         -12px -12px 24px rgba(255, 255, 255, 0.95);
+=======
+    --sidebar-text-active: #ffffff;
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+    --sidebar-active-bg: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    --sidebar-active-glow: rgba(59, 130, 246, 0.4);
+
+    /* Layout constants (used in both light/dark) */
+    --navbar-h: 70px;
+    --sidebar-w: 260px;
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
 }
 
 /* ==========================================
@@ -60,6 +71,7 @@ body.dark {
 }
 
 body {
+<<<<<<< HEAD
     font-family: "Segoe UI", sans-serif;
     background: var(--bg);
     color: var(--text);
@@ -71,6 +83,22 @@ body {
 ========================================== */
 
 .sidebar {
+=======
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg) !important;
+    color: var(--text) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Prevent padding/border width overflow that can cause UI overlap */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* PREMIUM NEUMORPHIC NAVBAR */
+.navbar {
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
     position: fixed;
     top: 0;
     left: 0;
@@ -133,7 +161,7 @@ body {
     top: 0;
     left: 0;        /* default: sidebar closed, navbar full width */
     right: 0;
-    height: 70px;
+    height: var(--navbar-h);
     background: var(--card);
     display: flex;
     justify-content: space-between;
@@ -144,6 +172,7 @@ body {
     transition: left 0.3s ease;
 }
 
+<<<<<<< HEAD
 /* when sidebar is open, shift navbar right */
 .navbar.shifted {
     left: 260px;
@@ -165,6 +194,107 @@ body {
 /* when sidebar is open, shift main right */
 .main.shifted {
     margin-left: 260px;
+=======
+/* PREMIUM DARK SIDEBAR - Always Dark Gradient */
+.sidebar {
+    position: fixed;
+    top: var(--navbar-h);
+    left: 0;
+    width: 0;
+    height: calc(100vh - var(--navbar-h));
+    background: var(--sidebar-bg) !important;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior:smooth;
+    border-right: none;
+    box-shadow: 12px 0 32px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+    z-index: 999;
+}
+
+.sidebar.closed {
+    width: var(--sidebar-w);
+    padding: 24px 16px;
+<<<<<<< HEAD
+    overflow-y:auto;
+    overflow-x:hidden ;
+=======
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+>>>>>>> 176976718af92fb8ad0d547f2f6f78e15d438279
+    border-right: none;
+}
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #60a5fa;
+    border-radius: 20px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #3b82f6;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    color: var(--sidebar-text) !important;
+    padding: 12px 16px;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.sidebar a i {
+    flex-shrink: 0;
+}
+
+.sidebar a span {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar a:hover {
+    background: var(--sidebar-hover-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    transform: translateX(4px);
+}
+
+.sidebar a.active, .sidebar a[href*="active"] {
+    background: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    box-shadow: 0 4px 12px var(--sidebar-active-glow) !important;
+}
+
+/* PREMIUM NEUMORPHIC MAIN CONTENT */
+.main {
+    margin-left: 0;
+<<<<<<< HEAD
+    /* leave space for fixed navbar + add consistent page padding */
+    padding: 90px 24px 24px;
+=======
+    padding: var(--navbar-h) 0 0;
+>>>>>>> e84b84b00233123ec627774573663984c2044edf
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+.main.full {
+    margin-left: 0;
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
 }
 
 /* ==========================================
@@ -192,6 +322,7 @@ body {
     display: block;
 }
 
+<<<<<<< HEAD
 /* ==========================================
    CARDS
 ========================================== */
@@ -205,6 +336,46 @@ body {
     border-radius: 24px;
     box-shadow: var(--shadow-light);
     transition: all 0.3s ease;
+=======
+@media (min-width: 769px) {
+    .main.full {
+        margin-left: var(--sidebar-w);
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+}
+
+/* GLOBAL OVERRIDES FOR INTERNAL PAGES - AUTOMATIC DARK THEME INJECTOR */
+body.dark .card,
+body.dark .stat-card,
+body.dark .section,
+body.dark .course,
+body.dark .course-card,
+body.dark .chart-box,
+body.dark .table-box,
+body.dark .mini-box,
+body.dark .user-card,
+body.dark .users-container,
+body.dark .global-actions,
+body.dark .dashboard-wrapper,
+body.dark .dashboard,
+body.dark .grid,
+body.dark main,
+body.dark .main,
+body.dark table,
+body.dark tr,
+body.dark td,
+body.dark th,
+body.dark input,
+body.dark select,
+body.dark textarea,
+body.dark .settings-box {
+    background-color: var(--card) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
 }
 
 .card:hover,
@@ -400,6 +571,39 @@ body.dark .moon-icon { display: none; }
 ========================================== */
 
 @media (max-width: 768px) {
+<<<<<<< HEAD
+=======
+    :root {
+        --navbar-h: 60px;
+    }
+    /* Navbar */
+    .navbar {
+        padding: 0 12px;
+        height: 60px;
+    }
+    
+    .navbar strong {
+        display: none;
+    }
+    
+    /* Hide user profile text and chevron on mobile */
+    .navbar span[style*="font-weight: 700"],
+    .navbar i[class*="fa-chevron-down"] {
+        display: none !important;
+    }
+    
+    /* Also hide the user profile div on mobile for more space */
+    .navbar div[style*="display: flex; align-items: center; gap: 12px; background:"] {
+        padding: 6px !important;
+        gap: 0 !important;
+    }
+    
+    /* Sidebar */
+    .sidebar.closed {
+        width: 280px;
+    }
+    
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
     .sidebar {
         transform: translateX(-260px);
     }
@@ -416,8 +620,12 @@ body.dark .moon-icon { display: none; }
     }
 
     .main {
+<<<<<<< HEAD
         margin-left: 0 !important;
         margin-top: 60px;
+=======
+        padding: 76px 14px 18px;
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
     }
 
     .page-content {
@@ -434,7 +642,26 @@ body.dark .moon-icon { display: none; }
 }
 
 @media (max-width: 480px) {
+<<<<<<< HEAD
     .sidebar {
+=======
+    :root {
+        --navbar-h: 56px;
+    }
+    /* Navbar */
+    .navbar {
+        padding: 0 10px;
+        height: 56px;
+    }
+    
+    /* Hide more navbar elements on very small screens */
+    .navbar div[style*="display:flex; align-items:center; gap:8px;"] img + strong {
+        display: none !important;
+    }
+    
+    /* Sidebar */
+    .sidebar.closed {
+>>>>>>> 0b4d033f75e47fcd700689babb32ce299e149377
         width: 100%;
     }
 
