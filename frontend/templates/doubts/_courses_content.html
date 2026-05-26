@@ -1,0 +1,27 @@
+<style>
+    .doubts-courses-wrap { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-light); padding: 18px; }
+    .doubts-courses-title { font-size: 20px; font-weight: 900; color: var(--text); margin-bottom: 14px; }
+    .doubts-course-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .doubts-course-card { text-decoration: none; color: inherit; border-radius: 14px; padding: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; gap: 10px; }
+    body:not(.dark) .doubts-course-card { background: #fff; border-color: rgba(0,0,0,0.08); }
+    .doubts-course-badge { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #fff; font-size: 18px; }
+    .doubts-course-name { font-weight: 900; color: var(--text); }
+    .doubts-course-cta { margin-top: auto; font-size: 12px; font-weight: 900; color: #93c5fd; }
+    body:not(.dark) .doubts-course-cta { color: #1d4ed8; }
+</style>
+
+<div class="doubts-courses-wrap">
+    <div class="doubts-courses-title">Doubts</div>
+    <div class="doubts-course-grid">
+        {% for c in courses %}
+            <a class="doubts-course-card" href="{% url 'doubts:course_doubts' c.id %}">
+                <div class="doubts-course-badge">{{ c.title|slice:":1"|upper }}</div>
+                <div class="doubts-course-name">{{ c.title }}</div>
+                <div class="doubts-course-cta">Open DoubtBot + Tickets</div>
+            </a>
+        {% empty %}
+            <div style="color: var(--text-muted); font-weight: 800;">No courses available.</div>
+        {% endfor %}
+    </div>
+</div>
+

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,6 +102,23 @@
         <div id="view-activity" class="sidebar-view">
             <div class="sidebar-header"><h3>Activity</h3></div>
             <div class="list-scroll">
+                {% if dm_requests_received %}
+                    <div style="font-size: 12px; color: #616161; font-weight: 700; padding: 15px 15px 5px 15px;">Chat requests</div>
+                    {% for r in dm_requests_received %}
+                        <div class="chat-item" style="cursor: default;">
+                            <div class="avatar" style="background:#0078d4;">{{ r.requester.username|slice:":2"|upper }}</div>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:600;">{{ r.requester.username }}</div>
+                                <div style="font-size:11px; color:gray;">wants to DM you</div>
+                                <div style="margin-top:8px; display:flex; gap:8px;">
+                                    <button type="button" class="create-btn" style="background:#22c55e;" onclick="respondDm('{{ r.id }}','accept')">Accept</button>
+                                    <button type="button" class="create-btn" style="background:#d13438;" onclick="respondDm('{{ r.id }}','decline')">Decline</button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
                 {% if notifications %}
                     {% for n in notifications %}
                     <div class="chat-item">
@@ -168,6 +186,7 @@
                     <span onclick="meet()" title="Start Video Call">📹</span>
                     <span onclick="toggleMembers()" title="View Members">👥</span>
                     {% endif %}
+                    <a href="{% url 'doubts:course_doubts' course.id %}" title="Doubts" style="text-decoration:none;">❓</a>
                 </div>
             </header>
 
@@ -240,32 +259,69 @@
             </div>
 
             <footer class="input-footer">
-                {% if selected_user or team %}
-                <form method="POST" enctype="multipart/form-data" id="messageForm">
-                    {% csrf_token %}
-                    <!-- Updated to reply_id to match your view -->
-                    <input type="hidden" name="reply_id" id="reply_to_id">
-                    
-                    <div class="reply-preview-bar" id="replyPreview">
-                        <span>Replying to <b id="replyUser"></b>: <i id="replyText"></i></span>
-                        <span style="cursor:pointer; font-weight:bold;" onclick="cancelReply()">✕</span>
-                    </div>
-
-                    <div class="input-box-wrapper">
-                        <!-- 'message' matches your Python view request.POST.get('message') -->
-                        <input type="text" autocomplete="off" id="msgInput"
-                               name="message" 
-                               placeholder="Type a message..." required>
+                {% if team %}
+                    <form method="POST" enctype="multipart/form-data" id="messageForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="reply_id" id="reply_to_id">
                         
-                        <div class="input-toolbar">
-                            <label for="file-upload" style="cursor:pointer; font-size: 18px;">📎</label>
-                            <input id="file-upload" type="file" name="file" style="display:none;" onchange="showFileName(this)">
-                            <span id="fileNameDisplay" class="file-preview-name"></span>
-
-                            <button type="submit" style="margin-left:auto; background:#5b5fc7; color:white; border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Send</button>
+                        <div class="reply-preview-bar" id="replyPreview">
+                            <span>Replying to <b id="replyUser"></b>: <i id="replyText"></i></span>
+                            <span style="cursor:pointer; font-weight:bold;" onclick="cancelReply()">✕</span>
                         </div>
-                    </div>
-                </form>
+
+                        <div class="input-box-wrapper">
+                            <input type="text" autocomplete="off" id="msgInput"
+                                   name="message" 
+                                   placeholder="Type a message..." required>
+                            
+                            <div class="input-toolbar">
+                                <label for="file-upload" style="cursor:pointer; font-size: 18px;">📎</label>
+                                <input id="file-upload" type="file" name="file" style="display:none;" onchange="showFileName(this)">
+                                <span id="fileNameDisplay" class="file-preview-name"></span>
+
+                                <button type="submit" style="margin-left:auto; background:#5b5fc7; color:white; border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                {% elif selected_user %}
+                    {% if dm_allowed %}
+                        <form method="POST" enctype="multipart/form-data" id="messageForm">
+                            {% csrf_token %}
+                            <input type="hidden" name="reply_id" id="reply_to_id">
+
+                            <div class="input-box-wrapper">
+                                <input type="text" autocomplete="off" id="msgInput"
+                                       name="message" 
+                                       placeholder="Type a message..." required>
+                                
+                                <div class="input-toolbar">
+                                    <label for="file-upload" style="cursor:pointer; font-size: 18px;">📎</label>
+                                    <input id="file-upload" type="file" name="file" style="display:none;" onchange="showFileName(this)">
+                                    <span id="fileNameDisplay" class="file-preview-name"></span>
+
+                                    <button type="submit" style="margin-left:auto; background:#5b5fc7; color:white; border:none; padding:5px 15px; border-radius:4px; font-weight:bold; cursor:pointer;">Send</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+                            <div style="font-size:12px; color:#616161;">
+                                Direct messaging requires acceptance.
+                            </div>
+                            {% if dm_request and dm_request.status == 'pending' %}
+                                {% if dm_request.requester.id == request.user.id %}
+                                    <button class="create-btn" type="button" disabled style="opacity:0.7; cursor:not-allowed;">Request sent</button>
+                                {% else %}
+                                    <div style="display:flex; gap:8px;">
+                                        <button class="create-btn" type="button" style="background:#22c55e;" onclick="respondDm('{{ dm_request.id }}','accept')">Accept</button>
+                                        <button class="create-btn" type="button" style="background:#d13438;" onclick="respondDm('{{ dm_request.id }}','decline')">Decline</button>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <button class="create-btn" type="button" onclick="requestDm('{{ selected_user.id }}')">Request chat</button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 {% endif %}
             </footer>
         </div>
@@ -376,6 +432,51 @@
                 box.innerHTML += `<label style="display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:5px; cursor:pointer;">
                     <input type="checkbox" name="students" value="${s.id}"> ${s.username}</label>`;
             });
+        });
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return "";
+    }
+
+    function requestDm(userId) {
+        fetch(`/teams/request-dm/${userId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.success) {
+                location.reload();
+            } else {
+                alert("Failed to send request");
+            }
+        });
+    }
+
+    function respondDm(requestId, action) {
+        const form = new FormData();
+        form.append("action", action);
+
+        fetch(`/teams/respond-dm/${requestId}/`, {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: form
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (data && data.success) {
+                location.reload();
+            } else {
+                alert("Failed");
+            }
         });
     }
 

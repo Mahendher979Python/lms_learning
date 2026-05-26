@@ -1,0 +1,126 @@
+{% load static %}
+
+<style>
+    .mh-wrap { display: grid; grid-template-columns: 320px 1fr; gap: 16px; height: calc(100vh - 140px); min-height: 540px; }
+    .mh-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-light); overflow: hidden; display: flex; flex-direction: column; }
+    .mh-header { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    body:not(.dark) .mh-header { border-bottom-color: rgba(0,0,0,0.06); }
+    .mh-title { font-weight: 900; font-size: 18px; color: var(--text); }
+    .mh-search { margin-top: 10px; width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.12); color: var(--text); outline: none; }
+    body:not(.dark) .mh-search { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .mh-list { padding: 8px; overflow-y: auto; }
+    .mh-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; text-decoration: none; color: inherit; }
+    .mh-item:hover { background: rgba(255,255,255,0.04); }
+    body:not(.dark) .mh-item:hover { background: rgba(0,0,0,0.04); }
+    .mh-item.active { background: rgba(59,130,246,0.18); border: 1px solid rgba(59,130,246,0.30); }
+    .mh-avatar { width: 38px; height: 38px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+    .mh-name { font-weight: 900; color: var(--text); }
+    .mh-role { font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.3px; }
+    .mh-chat { display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
+    .mh-chat-head { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    body:not(.dark) .mh-chat-head { border-bottom-color: rgba(0,0,0,0.06); }
+    .mh-chat-name { font-weight: 900; color: var(--text); }
+    .mh-chat-meta { font-size: 12px; font-weight: 800; color: var(--text-muted); }
+    .mh-messages { padding: 16px; overflow-y: auto; background: rgba(0,0,0,0.10); }
+    body:not(.dark) .mh-messages { background: rgba(0,0,0,0.02); }
+    .mh-row { display: flex; gap: 10px; margin-bottom: 12px; }
+    .mh-row.self { justify-content: flex-end; }
+    .mh-bubble { max-width: 80%; padding: 10px 12px; border-radius: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: var(--text); white-space: pre-wrap; }
+    body:not(.dark) .mh-bubble { background: #fff; border-color: rgba(0,0,0,0.08); }
+    .mh-row.self .mh-bubble { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.30); }
+    .mh-time { margin-top: 4px; font-size: 10px; font-weight: 800; color: var(--text-muted); }
+    .mh-footer { padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    body:not(.dark) .mh-footer { border-top-color: rgba(0,0,0,0.06); }
+    .mh-input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.12); color: var(--text); outline: none; }
+    body:not(.dark) .mh-input { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .mh-actions { display: flex; gap: 10px; margin-top: 10px; }
+    .mh-send { flex: 1; border: none; cursor: pointer; border-radius: 12px; padding: 10px 12px; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+    .mh-file { width: 110px; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; padding: 10px 12px; font-weight: 900; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: var(--text); cursor: pointer; }
+    body:not(.dark) .mh-file { background: #fff; border-color: rgba(0,0,0,0.12); }
+</style>
+
+<div class="mh-wrap">
+    <div class="mh-card">
+        <div class="mh-header">
+            <div class="mh-title">Messages</div>
+            <input id="mhSearch" class="mh-search" placeholder="Search users..." onkeyup="mhFilter()">
+        </div>
+        <div class="mh-list" id="mhList">
+            {% for u in users %}
+                <a class="mh-item {% if selected_user and selected_user.id == u.id %}active{% endif %}" href="?user_id={{ u.id }}">
+                    <div class="mh-avatar">{{ u.username|slice:":2"|upper }}</div>
+                    <div style="min-width: 0;">
+                        <div class="mh-name mh-u-name">{{ u.username }}</div>
+                        <div class="mh-role">{{ u.role }}</div>
+                    </div>
+                </a>
+            {% empty %}
+                <div style="padding: 14px 16px; color: var(--text-muted); font-weight: 800;">No users found.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mh-card mh-chat">
+        <div class="mh-chat-head">
+            {% if selected_user %}
+                <div>
+                    <div class="mh-chat-name">{{ selected_user.username }}</div>
+                    <div class="mh-chat-meta">{{ selected_user.role }}</div>
+                </div>
+            {% else %}
+                <div>
+                    <div class="mh-chat-name">Select a user</div>
+                    <div class="mh-chat-meta">Start chatting</div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mh-messages" id="mhMessages">
+            {% if selected_user %}
+                {% for m in private_messages %}
+                    <div class="mh-row {% if m.sender_id == request.user.id %}self{% endif %}">
+                        <div class="mh-bubble">
+                            {% if m.message %}{{ m.message }}{% endif %}
+                            {% if m.file %}
+                                <div style="margin-top: 8px;">
+                                    <a href="{{ m.file.url }}" target="_blank" style="font-weight: 900; color: #93c5fd; text-decoration:none;">Download file</a>
+                                </div>
+                            {% endif %}
+                            <div class="mh-time">{{ m.timestamp|date:"Y-m-d H:i" }}</div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div style="color: var(--text-muted); font-weight: 800;">No messages yet.</div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="mh-footer">
+            {% if selected_user %}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="mh-input" name="message" placeholder="Type a message..." autocomplete="off" required>
+                    <div class="mh-actions">
+                        <label class="mh-file" for="mhFile">File</label>
+                        <input id="mhFile" type="file" name="file" style="display:none;">
+                        <button class="mh-send" type="submit">Send</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function mhFilter() {
+        const q = (document.getElementById("mhSearch").value || "").toLowerCase();
+        document.querySelectorAll("#mhList .mh-item").forEach(item => {
+            const name = item.querySelector(".mh-u-name").textContent.toLowerCase();
+            item.style.display = name.includes(q) ? "flex" : "none";
+        });
+    }
+
+    const box = document.getElementById("mhMessages");
+    if (box) box.scrollTop = box.scrollHeight;
+</script>
+

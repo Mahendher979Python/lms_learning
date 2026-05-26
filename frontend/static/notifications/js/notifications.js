@@ -1,13 +1,8 @@
 
 
-const notifBox =
-document.getElementById("notifBox");
-
-const dropdown =
-document.getElementById("dropdown");
-
-const count =
-document.getElementById("count");
+const notifBox = document.getElementById("notifBox");
+const dropdown = document.getElementById("dropdown");
+const count = document.getElementById("count") || document.getElementById("notif-count");
 
 
 function loadNotifications(){
@@ -18,12 +13,16 @@ function loadNotifications(){
 
     .then(data => {
 
-        count.innerText =
-            data.unread_count;
+        if (count) {
+            count.innerText = data.unread_count || 0;
+        }
+
+        // If this page doesn't render a dropdown list, nothing else to do.
+        if (!dropdown) return;
 
         let html = "";
 
-        if(data.notifications.length === 0){
+        if(!data.notifications || data.notifications.length === 0){
 
             html =
             `<div class="dropdown-item">
@@ -73,6 +72,7 @@ function loadNotifications(){
 }
 
 
+if (notifBox && dropdown) {
 notifBox.addEventListener("click", () => {
 
     if(dropdown.style.display === "block"){
@@ -86,6 +86,7 @@ notifBox.addEventListener("click", () => {
     }
 
 });
+}
 
 
 loadNotifications();

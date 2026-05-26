@@ -1,14 +1,31 @@
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("closed");
-    document.getElementById("main").classList.toggle("full");
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    const overlay = document.getElementById("sidebar-overlay");
+    if (!sidebar || !main) return;
+
+    sidebar.classList.toggle("closed");
+    main.classList.toggle("full");
+    if (overlay) overlay.classList.toggle("active");
     const navbar = document.querySelector(".navbar");
     if (navbar) {
-        if (navbar.style.left === "260px") {
-            navbar.style.left = "0px";
+        if (window.innerWidth >= 769) {
+            navbar.style.left = navbar.style.left === "260px" ? "0px" : "260px";
         } else {
-            navbar.style.left = "260px";
+            navbar.style.left = "0px";
         }
     }
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    const overlay = document.getElementById("sidebar-overlay");
+    if (sidebar) sidebar.classList.remove("closed");
+    if (main) main.classList.remove("full");
+    if (overlay) overlay.classList.remove("active");
+    const navbar = document.querySelector(".navbar");
+    if (navbar) navbar.style.left = "0px";
 }
 
 function toggleDark() {
@@ -23,10 +40,16 @@ function loadNotifications() {
     .then(data => {
 
         const dropdown = document.getElementById("dropdown");
-        const count = document.getElementById("count");
+        const count =
+            document.getElementById("count") ||
+            document.getElementById("notif-count"); // used by newer templates
+
+        if (count) count.innerText = data.unread_count || 0;
+
+        // If the page doesn't have a dropdown list, just update the badge count.
+        if (!dropdown) return;
 
         dropdown.innerHTML = "";
-        count.innerText = data.unread_count || 0;
 
         if (!data.notifications || data.notifications.length === 0) {
             dropdown.innerHTML = "<div style='padding:10px;'>No notifications</div>";
@@ -34,7 +57,7 @@ function loadNotifications() {
         }
 
         data.notifications.forEach(n => {
-            let div = document.createElement("div");
+            const div = document.createElement("div");
 
             div.className = "notif-item " + (n.type || "");
 
@@ -57,7 +80,8 @@ function loadNotifications() {
 
             dropdown.appendChild(div);
         });
-    });
+    })
+    .catch(() => {});
 }
 
 /* dropdown toggle */
@@ -66,15 +90,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const box = document.getElementById("notifBox");
     const dropdown = document.getElementById("dropdown");
 
-    box.addEventListener("click", function (e) {
-        dropdown.style.display =
-            dropdown.style.display === "block" ? "none" : "block";
-        e.stopPropagation();
-    });
+    if (box && dropdown) {
+        box.addEventListener("click", function (e) {
+            dropdown.style.display =
+                dropdown.style.display === "block" ? "none" : "block";
+            e.stopPropagation();
+        });
 
-    document.addEventListener("click", function () {
-        dropdown.style.display = "none";
-    });
+        document.addEventListener("click", function () {
+            dropdown.style.display = "none";
+        });
+    }
 
     loadNotifications();
     setInterval(loadNotifications, 5000);

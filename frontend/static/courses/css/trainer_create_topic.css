@@ -1,20 +1,12 @@
-/* ===== PAGE ===== */
-body{
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background:#f1f5f9;
-}
-
 /* ===== FORM CONTAINER ===== */
 .form-container{
     width:90%;
     max-width:720px;
     margin:40px auto;
-    background:#fff;
+    background:var(--card);
     padding:28px;
     border-radius:16px;
-    box-shadow:0 8px 22px rgba(0,0,0,0.08);
+    box-shadow:var(--shadow-light);
     animation:fadeIn 0.4s ease;
 }
 
@@ -22,7 +14,7 @@ body{
 .form-container h2{
     text-align:center;
     margin-bottom:24px;
-    color:#0f172a;
+    color:var(--text);
     font-size:28px;
 }
 
@@ -36,7 +28,7 @@ label{
     display:block;
     margin-bottom:8px;
     font-weight:600;
-    color:#334155;
+    color:var(--text);
     font-size:14px;
 }
 
@@ -47,26 +39,27 @@ select{
     width:100%;
     padding:12px;
     border-radius:10px;
-    border:1px solid #cbd5e1;
+    border:1px solid var(--border);
     font-size:14px;
     box-sizing:border-box;
     transition:0.3s ease;
-    background:#fff;
+    background:var(--bg);
+    color:var(--text);
 }
 
 /* ===== INPUT FOCUS ===== */
 input:focus,
 textarea:focus,
 select:focus{
-    border-color:#2563eb;
+    border-color:var(--accent);
     outline:none;
-    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+    box-shadow:0 0 0 3px var(--accent-glow);
 }
 
 /* ===== FILE INPUT ===== */
 input[type="file"]{
     padding:10px;
-    background:#f8fafc;
+    background:var(--bg);
 }
 
 /* ===== ROW ===== */
@@ -100,7 +93,7 @@ input[type="file"]{
 .hint{
     margin-top:6px;
     font-size:12px;
-    color:#64748b;
+    color:var(--text-muted);
 }
 
 /* ===== FILE SELECTED ===== */

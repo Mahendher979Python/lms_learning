@@ -250,10 +250,12 @@ body {
                 <td>{{ r.total_hours }}</td>
                 <td>{{ r.break_hours }}</td>
                 <td>
-                    {% if r.logout_time and r.total_hours >= 4 %}
+                    {% if r.status == "Present" %}
                         <span class="status-present">✔ Present</span>
-                    {% else %}
+                    {% elif r.status == "Absent" %}
                         <span class="status-absent">✘ Absent</span>
+                    {% else %}
+                        <span class="status-absent">⏳ Pending</span>
                     {% endif %}
                 </td>
             </tr>

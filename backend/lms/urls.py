@@ -50,6 +50,9 @@ urlpatterns += i18n_patterns(
     # TEAMS
     path('teams/', include('teams.urls')),
 
+    # DOUBTS
+    path('doubts/', include('doubts.urls')),
+
     # ATTENDANCE
     path('attendance/', include('attendance.urls')),
 

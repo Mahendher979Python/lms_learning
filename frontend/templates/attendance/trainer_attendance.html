@@ -227,7 +227,9 @@
           <button id="logoutAttendanceBtn" class="btn btn-red">🔴 Logout Attendance</button>
         {% else %}
           <span class="status-pill absent">Absent</span>
-          <button id="loginAttendanceBtn" class="btn btn-green">🟢 Login Attendance</button>
+          <form action="{% url 'login_time' %}" method="get" style="margin:0;">
+            <button id="loginAttendanceBtn" type="submit" class="btn btn-green">🟢 Login Attendance</button>
+          </form>
         {% endif %}
 
         <div class="break-row">
@@ -264,10 +266,12 @@
               <td>{% if r.logout_time %}{{ r.logout_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
               <td>{{ r.total_hours }}</td>
               <td>
-                {% if r.total_hours >= 4 %}
+                {% if r.status == "Present" %}
                   <span class="tag-present">✔ Present</span>
-                {% else %}
+                {% elif r.status == "Absent" %}
                   <span class="tag-absent">✘ Absent</span>
+                {% else %}
+                  <span class="tag-absent">⏳ Pending</span>
                 {% endif %}
               </td>
             </tr>
@@ -299,14 +303,16 @@
             <tr>
               <td class="student-name">{{ r.user.username }}</td>
               <td>{{ r.date }}</td>
-              <td>{{ r.login_time|date:"H:i:s" }}</td>
-              <td>{{ r.logout_time|date:"H:i:s" }}</td>
+              <td>{% if r.login_time %}{{ r.login_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
+              <td>{% if r.logout_time %}{{ r.logout_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
               <td>{{ r.total_hours }}</td>
               <td>
-                {% if r.total_hours >= 4 %}
+                {% if r.status == "Present" %}
                   <span class="tag-present">✔ Present</span>
-                {% else %}
+                {% elif r.status == "Absent" %}
                   <span class="tag-absent">✘ Absent</span>
+                {% else %}
+                  <span class="tag-absent">⏳ Pending</span>
                 {% endif %}
               </td>
             </tr>
@@ -428,56 +434,15 @@
   // ── LOGIN ATTENDANCE BUTTON ───────────────────────────────────
   const loginBtn = document.getElementById('loginAttendanceBtn');
   if (loginBtn) {
-    loginBtn.addEventListener('click', function () {
+    loginBtn.addEventListener('click', function (e) {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
       const btn = this;
       btn.disabled  = true;
-      btn.innerText = '⏳ Getting location…';
-
-      if (!navigator.geolocation) {
-        showLocationError(btn, 'Geolocation is not supported by your browser.');
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          initTrainerMap(lat, lng);
-
-          fetch(URL_LOGIN, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ lat, lng })
-          })
-          .then(res => res.json())
-          .then(data => {
-            if (data.status === 'success') {
-              document.getElementById('location-name').innerHTML =
-                '📍 ' + (data.location || 'Location captured');
-              btn.innerText        = '✅ Marked! Reloading…';
-              btn.style.background = '#15803d';
-              btn.disabled         = true;
-              startLocationPingLoop();
-              // Reload so timer, status pill and circle all reflect new attendance
-              setTimeout(() => window.location.reload(), 1200);
-            } else {
-              btn.disabled  = false;
-              btn.innerText = '🟢 Login Attendance';
-            }
-          })
-          .catch(() => {
-            window.location.href = URL_LOGIN;
-          });
-        },
-        function (err) {
-          // Show inline error instead of a blocking alert
-          showLocationError(btn, err.code);
-        },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
+      btn.innerText = '⏳ Logging in…';
+      window.location.href = URL_LOGIN;
     });
   }
 
@@ -494,11 +459,9 @@
 
   // Inline error display — no alert() popup
   function showLocationError(btn, errorCode) {
-    // Instead of just showing error, mark attendance anyway!
-    btn.disabled  = true;
-    btn.innerText = '✅ Marking attendance…';
-    
-    // Still show a message but mark attendance
+    btn.disabled  = false;
+    btn.innerText = '🟢 Login Attendance';
+
     let errEl = document.getElementById('location-error');
     if (!errEl) {
       errEl = document.createElement('div');
@@ -514,7 +477,7 @@
     if (errorCode === 1) {
       errEl.innerHTML = `
         <strong>📍 Location permission blocked.</strong><br>
-        Marking attendance anyway without location.
+        Continue without location or enable location permission.
         To enable location later:
         <ol style="margin:5px 0 0 16px;padding:0;">
           <li>Click the <strong>🔒 lock icon</strong> in your address bar</li>
@@ -522,32 +485,12 @@
           <li>Refresh the page</li>
         </ol>`;
     } else if (errorCode === 2) {
-      errEl.innerHTML = `<strong>📡 Location unavailable.</strong> Marking attendance anyway.`;
+      errEl.innerHTML = `<strong>📡 Location unavailable.</strong>`;
     } else if (errorCode === 3) {
-      errEl.innerHTML = `<strong>⏱ Location timed out.</strong> Marking attendance anyway.`;
+      errEl.innerHTML = `<strong>⏱ Location timed out.</strong>`;
     } else {
-      errEl.innerHTML = `<strong>❌ Could not get location.</strong> Marking attendance anyway.`;
+      errEl.innerHTML = `<strong>❌ Could not get location.</strong>`;
     }
-    
-    // Mark attendance without location
-    fetch(URL_LOGIN, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': getCookie('csrftoken')
-      },
-      body: JSON.stringify({})
-    })
-    .then(res => res.json())
-    .then(data => {
-      btn.innerText = '✅ Marked! Reloading…';
-      btn.style.background = '#15803d';
-      setTimeout(() => window.location.reload(), 1000);
-    })
-    .catch(() => {
-      // Fallback to GET request
-      window.location.href = URL_LOGIN;
-    });
   }
 
   // On page load: if permission is already blocked, show instructions proactively
