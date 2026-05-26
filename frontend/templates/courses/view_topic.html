@@ -84,7 +84,8 @@
         {% endif %}
 
         <video class="video-player" controls style="display:none;">
-            <source src="{{ topic.video.url }}">
+            <source src="{{ topic.video.url }}" type="video/mp4">
+            <a href="{{ topic.video.url }}">Download video</a>
         </video>
 
     </div>

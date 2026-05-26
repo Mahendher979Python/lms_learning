@@ -1,0 +1,40 @@
+ body {
+            font-family: Arial;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .box {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .note {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .note:last-child {
+            border-bottom: none;
+        }
+
+        .time {
+            font-size: 11px;
+            color: gray;
+        }
+
+        .empty {
+            text-align: center;
+            color: gray;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            color: #5b5fc7;
+            font-weight: bold;
+        }

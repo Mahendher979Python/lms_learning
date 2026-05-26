@@ -1,0 +1,336 @@
+/* ================= GLOBAL ================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ================= HEADER ================= */
+
+.premium-header {
+    padding: 32px 32px 0;
+    margin-bottom: 32px;
+}
+
+.premium-header h2 {
+    font-size: 34px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.premium-header p {
+    margin-top: 8px;
+    color: #9ca3af;
+}
+
+/* ================= GRID ================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+    padding: 0 32px;
+    margin-bottom: 32px;
+}
+
+/* ================= STAT CARD ================= */
+
+.premium-stat-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 28px;
+    transition: .4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.premium-stat-card-icon {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 18px;
+    color: #fff;
+}
+
+.blue {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.green {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.orange {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.purple {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.pink {
+    background: linear-gradient(135deg, #ec4899, #be185d);
+}
+
+.premium-stat-card-value {
+    font-size: 42px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.premium-stat-card-label {
+    color: #9ca3af;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+/* ================= SECTION ================= */
+
+.premium-section {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 28px;
+    margin: 0 32px 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.premium-section h3 {
+    color: #fff;
+    margin-bottom: 22px;
+    font-size: 22px;
+}
+
+/* ================= CHARTS ================= */
+
+.premium-chart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    padding: 0 32px 32px;
+    overflow: hidden !important;
+}
+
+.premium-chart-card {
+    width: 100%;
+    height: 420px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 24px;
+    overflow: hidden !important;
+    transition: .4s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.premium-chart-card h3 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.premium-chart-card canvas {
+    width: 100% !important;
+    height: 300px !important;
+    max-width: 100%;
+    max-height: 300px;
+}
+
+/* ==========================================
+   LIGHT THEME OVERRIDES
+   ========================================== */
+
+body:not(.dark) .premium-header h2 {
+    background: linear-gradient(135deg, #1e293b, #3b82f6);
+}
+
+body:not(.dark) .premium-stat-card {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark) .premium-stat-card-value {
+    color: #1e293b;
+}
+
+body:not(.dark) .premium-stat-card-label {
+    color: #64748b;
+}
+
+body:not(.dark) .premium-section {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark) .premium-section h3 {
+    color: #1e293b;
+}
+
+body:not(.dark) .premium-chart-card {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body:not(.dark) .premium-chart-card h3 {
+    color: #1e293b;
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE STYLES
+   ========================================== */
+
+@media (max-width: 1024px) {
+    .premium-header {
+        padding: 24px 24px 0;
+    }
+    
+    .dashboard-grid {
+        padding: 0 24px;
+    }
+    
+    .premium-chart-grid {
+        grid-template-columns: 1fr;
+        padding: 0 24px 24px;
+    }
+    
+    .premium-section {
+        margin: 0 24px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .premium-header {
+        padding: 20px 20px 0;
+        margin-bottom: 24px;
+    }
+    
+    .premium-header h2 {
+        font-size: 26px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 20px;
+        margin-bottom: 24px;
+    }
+    
+    .premium-stat-card {
+        padding: 22px;
+    }
+    
+    .premium-stat-card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        font-size: 24px;
+        margin-bottom: 14px;
+    }
+    
+    .premium-stat-card-value {
+        font-size: 32px;
+    }
+    
+    .premium-chart-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 20px 20px;
+    }
+    
+    .premium-chart-card {
+        height: 340px;
+        padding: 20px;
+    }
+    
+    .premium-chart-card canvas {
+        height: 260px !important;
+    }
+    
+    .premium-section {
+        padding: 22px;
+        margin: 0 20px 20px;
+        border-radius: 18px;
+    }
+    
+    .premium-section h3 {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .premium-header {
+        padding: 16px 16px 0;
+        margin-bottom: 20px;
+    }
+    
+    .premium-header h2 {
+        font-size: 22px;
+    }
+    
+    .premium-header p {
+        font-size: 14px;
+    }
+    
+    .dashboard-grid {
+        padding: 0 16px;
+        margin-bottom: 20px;
+        gap: 14px;
+    }
+    
+    .premium-stat-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+    
+    .premium-stat-card-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 22px;
+    }
+    
+    .premium-stat-card-value {
+        font-size: 28px;
+    }
+    
+    .premium-stat-card-label {
+        font-size: 14px;
+    }
+    
+    .premium-chart-grid {
+        padding: 0 16px 16px;
+        gap: 14px;
+    }
+    
+    .premium-chart-card {
+        height: 300px;
+        padding: 18px;
+        border-radius: 18px;
+    }
+    
+    .premium-chart-card canvas {
+        height: 220px !important;
+    }
+    
+    .premium-section {
+        padding: 18px;
+        margin: 0 16px 16px;
+    }
+    
+    .premium-section h3 {
+        font-size: 16px;
+    }
+}

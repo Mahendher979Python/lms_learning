@@ -38,7 +38,8 @@ href="{% static 'courses/css/course_details.css' %}">
         <h3>🎥 Course Video</h3>
 
         <video controls class="video-player">
-            <source src="{{ course.video.url }}">
+            <source src="{{ course.video.url }}" type="video/mp4">
+            <a href="{{ course.video.url }}">Download video</a>
         </video>
         {% endif %}
 
@@ -51,13 +52,13 @@ href="{% static 'courses/css/course_details.css' %}">
             <a href="{{ course.material.url }}"
                target="_blank"
                class="btn view">
-               View PDF
+               View
             </a>
 
             <a href="{{ course.material.url }}"
                download
                class="btn download">
-               Download PDF
+               Download
             </a>
 
         </div>
@@ -78,7 +79,8 @@ href="{% static 'courses/css/course_details.css' %}">
 
             {% if topic.video %}
             <video controls width="100%">
-                <source src="{{ topic.video.url }}">
+                <source src="{{ topic.video.url }}" type="video/mp4">
+                <a href="{{ topic.video.url }}">Download video</a>
             </video>
             {% endif %}
 

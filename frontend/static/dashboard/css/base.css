@@ -73,6 +73,11 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Prevent padding/border width overflow that can cause UI overlap */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 /* PREMIUM NEUMORPHIC NAVBAR */
 .navbar {
     position: fixed;
@@ -142,7 +147,8 @@ body {
 /* PREMIUM NEUMORPHIC MAIN CONTENT */
 .main {
     margin-left: 0;
-    padding: 70px 0 0;
+    /* leave space for fixed navbar + add consistent page padding */
+    padding: 90px 24px 24px;
     min-height: 100vh;
     transition: margin-left 0.3s ease;
 }
@@ -793,7 +799,7 @@ body.dark .theme-btn-3d .moon-icon {
     
     /* Main content */
     .main {
-        padding: 60px 0 0;
+        padding: 76px 14px 18px;
     }
     
     .main.full {

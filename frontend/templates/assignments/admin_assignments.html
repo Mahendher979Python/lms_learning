@@ -154,9 +154,9 @@
                     <tr>
                         <td>
                             <strong>{{ a.title }}</strong><br>
-                            <small style="color: var(--blue);">{{ a.topic.name }}</small>
+                            <small style="color: var(--blue);">{% if a.topic %}{{ a.topic.name }}{% endif %}</small>
                         </td>
-                        <td>{{ a.trainer.user.username }}</td>
+                        <td>{% if a.trainer %}{{ a.trainer.username }}{% endif %}</td>
                         <td><span class="badge-type badge-{{ a.test_type }}">{{ a.get_test_type_display }}</span></td>
                         <td><strong>{{ a.total_marks|default:"100" }}</strong></td>
                         <td><span class="badge-status badge-{{ a.status }}">{{ a.status|title }}</span></td>
@@ -187,11 +187,26 @@
 
 <script>
     let qCount = 0;
+    function setSectionEnabled(sectionId, enabled) {
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+        const fields = section.querySelectorAll("input, select, textarea, button");
+        fields.forEach((el) => {
+            if (el.type === "button") return;
+            el.disabled = !enabled;
+        });
+    }
     function toggleSections() {
         const t = document.getElementById("testType").value;
         document.getElementById("mcqSection").style.display = (t === "mcq") ? "block" : "none";
         document.getElementById("pdfSection").style.display = (t === "pdf") ? "block" : "none";
         document.getElementById("gformSection").style.display = (t === "gform") ? "block" : "none";
+        setSectionEnabled("mcqSection", t === "mcq");
+        setSectionEnabled("pdfSection", t === "pdf");
+        setSectionEnabled("gformSection", t === "gform");
+        if (t === "mcq" && document.getElementById("questionsContainer").children.length === 0) {
+            addQuestion();
+        }
     }
 
     function addQuestion() {
@@ -233,7 +248,7 @@
         return true;
     }
 
-    window.onload = () => { toggleSections(); addQuestion(); };
+    window.onload = () => { toggleSections(); };
 
 
     document.addEventListener("DOMContentLoaded", function () {

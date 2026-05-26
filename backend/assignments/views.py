@@ -498,18 +498,30 @@ def admin_create_assignment(request):
         return redirect("login")
 
     if request.method == "POST":
+        title = (request.POST.get("title") or "").strip()
+        course_id = request.POST.get("course") or None
+        trainer_id = request.POST.get("trainer") or None
+        test_type = request.POST.get("test_type") or "mcq"
+        if not title:
+            messages.error(request, "❌ Assignment title is required.")
+            return redirect("assignments:admin_assignments")
+        if not course_id:
+            messages.error(request, "❌ Course is required.")
+            return redirect("assignments:admin_assignments")
+        if not trainer_id:
+            messages.error(request, "❌ Trainer is required.")
+            return redirect("assignments:admin_assignments")
         try:
             with transaction.atomic():
-                test_type = request.POST.get("test_type")
                 total_marks = int(request.POST.get("total_marks") or 100)
                 pass_marks = int(request.POST.get("pass_marks") or 40)
                 duration = int(request.POST.get("duration") or 30)
 
                 assignment = Assignment.objects.create(
-                    title=request.POST.get("title", "").strip(),
+                    title=title,
                     description=request.POST.get("description", ""),
-                    course_id=request.POST.get("course"),
-                    trainer_id=request.POST.get("trainer"),
+                    course_id=course_id,
+                    trainer_id=trainer_id,
                     topic_id=request.POST.get("topic") or None,
                     created_by=request.user,
                     test_type=test_type,
@@ -527,16 +539,18 @@ def admin_create_assignment(request):
                         i += 1
                     
                     num_questions = len(raw_q_indices)
+                    if num_questions == 0:
+                        raise ValueError("Please add at least one question for MCQ.")
                     marks_per_q = total_marks // num_questions if num_questions > 0 else 0
 
                     for idx in raw_q_indices:
-                        q_text = request.POST.get(f"q_{idx}_text")
-                        time = request.POST.get(f"q_{idx}_time", 30)    #time in seconds
+                        q_text = (request.POST.get(f"q_{idx}_text") or "").strip()
+                        time = int(request.POST.get(f"q_{idx}_time") or 30)
                         question = Question.objects.create(
                             assignment=assignment,
                             text=q_text,
                             marks=marks_per_q,
-                            time_limit=time         #time in seconds
+                            time_limit=time
                         )
                         correct_val = request.POST.get(f"q_{idx}_correct")
                         j = 1
@@ -560,7 +574,7 @@ def admin_create_assignment(request):
                 # SEND NOTIFICATION TO COURSE STUDENTS
                 # =====================================
 
-                students = User.objects.filter(role="student",courses=assignment.course)
+                students = assignment.course.students.all() if assignment.course_id else User.objects.none()
 
                 for student in students:
 
@@ -569,7 +583,7 @@ def admin_create_assignment(request):
                         sender=request.user,
                         notif_type="admin",
                         message=f"Admin published new assignment '{assignment.title}'",
-                        course_name=assignment.course.title
+                        course_name=assignment.course.title if assignment.course_id else ""
                     )
             messages.success(request, f"✅ Assignment '{assignment.title}' published successfully!")
         except Exception as e:

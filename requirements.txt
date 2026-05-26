@@ -4,6 +4,7 @@ django-jazzmin
 daphne
 django-allauth
 django-recaptcha
+django-simple-captcha
 channels
 whitenoise
 Pillow

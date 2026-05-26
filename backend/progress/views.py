@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from assignments.models import Assignment, Submission
-from coding_tasks.models import CodingSubmission,CodingTask
-from django.db.models import Avg
+from coding_tasks.models import CodingSubmission
+from django.db.models import Sum
 from courses.models import Course
 from accounts.models import User
 from notifications.utils import send_notification
@@ -34,9 +34,19 @@ def _compute_course_progress(student, course):
 
     progress_percent = int((completed_items / total_items) * 100) if total_items > 0 else 0
 
-    score = 0
-    for c in coding:
-        score += c.score or 0
+    # Score should reflect both assignment scores (MCQ auto-graded + PDF/GForm trainer-graded)
+    # and coding task scores.
+    assignment_score = (
+        Submission.objects.filter(
+            student=student,
+            assignment__in=assignments,
+            status__in=["submitted", "graded"],
+        ).aggregate(total=Sum("score"))["total"]
+        or 0
+    )
+
+    coding_score = coding.aggregate(total=Sum("score"))["total"] or 0
+    score = int(assignment_score) + int(coding_score)
 
     return {
         "attendance": progress_percent,
@@ -138,8 +148,30 @@ def admin_progress(request):
     if request.user.role != 'admin':
         return redirect('login')
 
-    # Admin view shows saved progress records; if a record doesn't exist,
-    # it won't appear here (admin can create it via Django admin).
-    progress_qs = Progress.objects.select_related("student", "course").all()
+    # Admin view: show progress for all enrolled (student, course) pairs.
+    # If a saved Progress record doesn't exist, compute it on the fly so the page
+    # doesn't look "empty".
+    courses = Course.objects.all().prefetch_related("students")
+    students = User.objects.filter(role="student")
 
-    return render(request, 'progress/admin_progress.html', {'progress': progress_qs})
+    saved_qs = Progress.objects.select_related("student", "course").all()
+    saved_map = {(p.student_id, p.course_id): p for p in saved_qs}
+
+    progress_rows = []
+    # Build rows only for enrolled students (avoid showing random combinations)
+    for course in courses:
+        for student in course.students.filter(role="student"):
+            p = saved_map.get((student.id, course.id))
+            if p is None:
+                computed = _compute_course_progress(student, course)
+                p = Progress(
+                    student=student,
+                    course=course,
+                    attendance=computed["attendance"],
+                    score=computed["score"],
+                    completed=computed["completed"],
+                    certificate_issued=computed["certificate_issued"],
+                )
+            progress_rows.append(p)
+
+    return render(request, 'progress/admin_progress.html', {'progress': progress_rows})

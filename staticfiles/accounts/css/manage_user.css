@@ -1,0 +1,484 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   CYBER DARK GLASS THEME SYSTEM
+   ========================================================================== */
+
+body {
+    background: #080b11 !important;
+    color: #f8fafc !important;
+    font-family: 'Outfit', sans-serif !important;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ==========================================================================
+   GLOBAL LAYOUT OVERRIDES (NAVBAR & SIDEBAR MATCHING)
+   ========================================================================== */
+
+.navbar {
+    background: rgba(8, 11, 17, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.navbar strong {
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.navbar .username {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar {
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+.sidebar a {
+    color: var(--sidebar-text) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.sidebar a:hover {
+    background: var(--sidebar-hover-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    transform: translateX(6px);
+}
+
+.sidebar a.active, .sidebar a[href*="active"] {
+    background: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    box-shadow: 0 4px 12px var(--sidebar-active-glow) !important;
+}
+
+/* ==========================================================================
+   ANIMATED NEON BACKGROUND BLOBS
+   ========================================================================== */
+
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    opacity: 0.35;
+    pointer-events: none;
+    animation: floatBlob 25s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 350px;
+    height: 350px;
+    background: #3b82f6;
+    top: 5%;
+    left: 20%;
+}
+
+.blob-2 {
+    width: 400px;
+    height: 400px;
+    background: #06b6d4;
+    bottom: 5%;
+    right: 10%;
+    animation-delay: -7s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: #8b5cf6;
+    top: 45%;
+    left: 55%;
+    animation-delay: -14s;
+}
+
+@keyframes floatBlob {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    33% {
+        transform: translate(40px, -60px) scale(1.15) rotate(120deg);
+    }
+    66% {
+        transform: translate(-30px, 30px) scale(0.9) rotate(240deg);
+    }
+    100% {
+        transform: translate(0, 0) scale(1) rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   HEADER / PAGE TITLE
+   ========================================================================== */
+
+.page-title {
+    text-align: center;
+    margin: 20px 0 50px;
+    z-index: 10;
+    position: relative;
+}
+
+.page-title span {
+    font-size: 40px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 30%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.5px;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.page-title span::after {
+    content: '';
+    width: 140px;
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #06b6d4, #8b5cf6);
+    display: block;
+    margin: 15px auto 0;
+    border-radius: 99px;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.5);
+}
+
+/* ==========================================================================
+   MAIN GRID CONTAINER
+   ========================================================================== */
+
+.users-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+/* ==========================================================================
+   3D GLOSSY GLASS CARDS (THE CORE COMPONENT)
+   ========================================================================== */
+
+.user-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    padding: 40px 35px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* High-tech edge neon glow border */
+.user-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 24px;
+    padding: 1.5px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02) 50%, rgba(37,99,235,0.2) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Light beam gloss reflection sweep */
+.user-card::after {
+    content: '';
+    position: absolute;
+    top: -150%;
+    left: -150%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(-30deg);
+    transition: 0.8s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.user-card:hover::after {
+    top: -50%;
+    left: -50%;
+}
+
+.user-card:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(37, 99, 235, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Float Animation */
+@keyframes cardFloat {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(0.5deg); }
+    100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.user-card {
+    animation: cardFloat 6s ease-in-out infinite;
+}
+
+.user-card:hover {
+    animation-play-state: paused; /* Pause floating on hover for precise mouse control */
+}
+
+/* ==========================================================================
+   GLASS INNER SHAPES (CIRCLES)
+   ========================================================================== */
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.01) 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.circle:nth-child(1) {
+    width: 150px;
+    height: 150px;
+    top: -30px;
+    right: -30px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.circle:nth-child(2) {
+    width: 90px;
+    height: 90px;
+    bottom: -10px;
+    left: -20px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* ==========================================================================
+   CARD ICON (3D GLOBE RING)
+   ========================================================================== */
+
+.user-icon {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin: 0 auto 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    position: relative;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 15px 30px rgba(0, 0, 0, 0.25),
+        inset 0 1px 2px rgba(255,255,255,0.2);
+    z-index: 2;
+    transform: translateZ(30px); /* 3D depth pop out */
+}
+
+.user-icon::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    animation: rotateRing 20s linear infinite;
+}
+
+@keyframes rotateRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   CARD TYPOGRAPHY
+   ========================================================================== */
+
+.user-card h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 15px;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.2px;
+    transform: translateZ(25px);
+}
+
+.user-card p {
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.7;
+    font-size: 15px;
+    margin: 0 0 35px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    transform: translateZ(15px);
+}
+
+/* ==========================================================================
+   BUTTONS & ACTIONS
+   ========================================================================== */
+
+.user-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    transform: translateZ(20px);
+}
+
+.action-btn {
+    border: none;
+    outline: none;
+    padding: 12px 24px;
+    border-radius: 99px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Solid Glass 3D Blue Button */
+.primary-btn {
+    color: #ffffff;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 
+        0 4px 15px rgba(37, 99, 235, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 
+        0 8px 25px rgba(37, 99, 235, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Semi-transparent Frosted Glass Button */
+.secondary-btn {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.25),
+        0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+/* Gloss Sweep Reflection on Hover */
+.action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+}
+
+.action-btn:hover::before {
+    left: 120%;
+}
+
+/* ==========================================================================
+   GLOBAL ACTIONS (BOTTOM)
+   ========================================================================== */
+
+.global-actions {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+.global-btn {
+    border: none;
+    padding: 16px 36px;
+    border-radius: 99px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 15px 35px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.global-btn:hover {
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, #2563eb, #06b6d4);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 20px 40px rgba(37, 99, 235, 0.4),
+        0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN Breakpoints
+   ========================================================================== */
+
+@media (max-width: 900px) {
+    .users-container {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 10px;
+    }
+
+    .page-title span {
+        font-size: 32px;
+    }
+
+    .user-card {
+        padding: 30px 25px;
+    }
+
+    .user-icon {
+        width: 100px;
+        height: 100px;
+        font-size: 45px;
+    }
+}

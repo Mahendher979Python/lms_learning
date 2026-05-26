@@ -10,6 +10,7 @@ urlpatterns = [
     # =========================
     path("student-assignments/", views.student_assignments, name="student_assignments"),
     path("start-exam/<int:assignment_id>/", views.start_exam, name="start_exam"),
+    path("start_exam/<int:assignment_id>/", views.start_exam),
     path("submit-exam/<int:submission_id>/", views.submit_exam, name="submit_exam"),
     path("submit-pdf-exam/<int:assignment_id>/", views.submit_pdf_exam, name="submit_pdf_exam"),
     path("submit-gform-exam/<int:assignment_id>/", views.submit_gform_exam, name="submit_gform_exam"),
