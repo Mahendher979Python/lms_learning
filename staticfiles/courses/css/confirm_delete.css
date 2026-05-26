@@ -1,0 +1,116 @@
+/* =========================
+   PAGE
+========================= */
+
+body {
+    background: #f1f5f9;
+    font-family: "Segoe UI", sans-serif;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.delete-container {
+    max-width: 500px;
+    margin: 70px auto;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.delete-title {
+    font-size: 30px;
+    color: #dc2626;
+    margin-bottom: 20px;
+}
+
+/* =========================
+   TEXT
+========================= */
+
+.delete-text {
+    color: #475569;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.topic-name {
+    font-size: 24px;
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 30px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.delete-btn,
+.cancel-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background: #2563eb;
+}
+
+.cancel-btn:hover {
+    background: #1d4ed8;
+    transform: scale(1.05);
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .delete-container {
+        margin: 30px 15px;
+        padding: 25px;
+    }
+
+    .delete-title {
+        font-size: 24px;
+    }
+
+    .topic-name {
+        font-size: 20px;
+    }
+
+    .delete-btn,
+    .cancel-btn {
+        width: 100%;
+    }
+}

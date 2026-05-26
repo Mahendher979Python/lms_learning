@@ -1,0 +1,243 @@
+/* =========================
+   PAGE
+========================= */
+
+body{
+    background:#f1f5f9;
+    font-family:"Segoe UI",sans-serif;
+}
+
+/* =========================
+   CONTAINER
+========================= */
+
+.form-container{
+    max-width:750px;
+    margin:40px auto;
+    background:#ffffff;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   TITLE
+========================= */
+
+.form-title{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:30px;
+    font-weight:700;
+    color:#0f172a;
+}
+
+/* =========================
+   FORM GROUP
+========================= */
+
+.form-group{
+    margin-bottom:22px;
+}
+
+.form-group label{
+    font-weight:600;
+    display:block;
+    margin-bottom:8px;
+    color:#334155;
+    font-size:15px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+    transition:0.3s ease;
+    box-sizing:border-box;
+    background:white;
+}
+
+input:hover,
+textarea:hover,
+select:hover{
+    border-color:#94a3b8;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+    outline:none;
+}
+
+/* =========================
+   TEXTAREA
+========================= */
+
+textarea{
+    min-height:120px;
+    resize:vertical;
+}
+
+/* =========================
+   PRICE FIELD
+========================= */
+
+.price-wrapper{
+    display:flex;
+    align-items:center;
+    border-radius:12px;
+    overflow:hidden;
+}
+
+.price-wrapper span{
+    padding:12px 15px;
+    background:#f1f5f9;
+    border:1px solid #d1d5db;
+    border-right:none;
+    font-weight:700;
+}
+
+.price-wrapper input{
+    border-left:none;
+    border-radius:0 12px 12px 0;
+}
+
+/* =========================
+   COURSE TYPE
+========================= */
+
+.course-type-box{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.course-type-option{
+    flex:1;
+    min-width:200px;
+    border:2px solid #dbeafe;
+    padding:16px;
+    border-radius:14px;
+    cursor:pointer;
+    transition:0.3s ease;
+    background:#f8fafc;
+}
+
+.course-type-option:hover{
+    border-color:#2563eb;
+    background:#eff6ff;
+}
+
+.course-type-option.active{
+    border-color:#2563eb;
+    background:#dbeafe;
+}
+
+.course-type-option input{
+    width:auto;
+    margin-right:8px;
+}
+
+/* =========================
+   FILE INPUT
+========================= */
+
+input[type="file"]{
+    padding:10px;
+    background:#f8fafc;
+}
+
+/* =========================
+   MULTI SELECT
+========================= */
+
+select[multiple]{
+    min-height:160px;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.btn{
+    width:100%;
+    padding:15px;
+    background:linear-gradient(135deg,#2563eb,#1d4ed8);
+    color:white;
+    border:none;
+    border-radius:14px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(37,99,235,0.25);
+}
+
+/* =========================
+   HELP TEXT
+========================= */
+
+.help-text{
+    font-size:12px;
+    color:#64748b;
+    margin-top:6px;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.error{
+    margin-top:10px;
+    background:#fef2f2;
+    color:#dc2626;
+    padding:12px;
+    border-radius:12px;
+    font-size:13px;
+}
+
+/* =========================
+   HIDDEN
+========================= */
+
+.hidden{
+    display:none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+    .form-container{
+        margin:20px;
+        padding:22px;
+    }
+
+    .form-title{
+        font-size:24px;
+    }
+
+    .course-type-box{
+        flex-direction:column;
+    }
+
+    .btn{
+        padding:14px;
+    }
+}

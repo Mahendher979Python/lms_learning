@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import index, register_view, login_view
-from django.contrib.auth.views import LogoutView
 from .views import view_demo
 from . import views
 
@@ -18,7 +17,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('register/otp-verify/', views.register_otp_verify_view, name='register_otp_verify'),
     path('login/', login_view, name='login'),
-    path('logout/', LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout/', views.logout_view, name='logout'),
     path('demo/', view_demo, name='demo'),
     path('add-user/', views.add_user, name='add_user'),
     path('users/', views.view_users, name='view_users'),

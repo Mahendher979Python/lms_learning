@@ -1,0 +1,151 @@
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* Background */
+body {
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1523240795612-9a054b0db644")
+    no-repeat center center;
+
+    background-size: cover;
+}
+
+/* Dark overlay */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 30, 0.60);
+}
+
+/* Right side wrapper */
+.page-wrapper {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    padding: 40px;
+    min-height: 100vh;
+}
+
+/* Glass card */
+.form-container {
+    width: 100%;
+    max-width: 420px;
+
+    padding: 26px;
+
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 14px;
+
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+}
+
+/* Title */
+.form-title {
+    text-align: center;
+    margin-bottom: 18px;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 12px;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: 5px;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 9px 12px;
+
+    border-radius: 6px;
+    border: none;
+    outline: none;
+
+    font-size: 13px;
+
+    background: rgba(255, 255, 255, 0.92);
+    color: #111827;
+}
+
+/* Focus */
+input:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+/* Button */
+.btn {
+    width: 100%;
+    padding: 10px;
+
+    margin-top: 10px;
+
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    border: none;
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Error */
+.error-box {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fecaca;
+
+    padding: 10px;
+    border-radius: 6px;
+
+    margin-bottom: 12px;
+    font-size: 12px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .page-wrapper {
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .form-container {
+        max-width: 100%;
+    }
+}

@@ -30,6 +30,10 @@
     --sidebar-hover-bg: rgba(255, 255, 255, 0.1);
     --sidebar-active-bg: linear-gradient(135deg, #3b82f6, #8b5cf6);
     --sidebar-active-glow: rgba(59, 130, 246, 0.4);
+
+    /* Layout constants (used in both light/dark) */
+    --navbar-h: 70px;
+    --sidebar-w: 260px;
 }
 
 /* DARK MODE OVERRIDES */
@@ -68,8 +72,8 @@ body.dark {
 body {
     margin: 0;
     font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
+    background: var(--bg) !important;
+    color: var(--text) !important;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -79,7 +83,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 70px;
+    height: var(--navbar-h);
     background: var(--card);
     display: flex;
     justify-content: space-between;
@@ -95,10 +99,10 @@ body {
 /* PREMIUM DARK SIDEBAR - Always Dark Gradient */
 .sidebar {
     position: fixed;
-    top: 0;
+    top: var(--navbar-h);
     left: 0;
     width: 0;
-    height: 100vh;
+    height: calc(100vh - var(--navbar-h));
     background: var(--sidebar-bg) !important;
     padding: 0;
     overflow: hidden;
@@ -109,9 +113,11 @@ body {
 }
 
 .sidebar.closed {
-    width: 260px;
+    width: var(--sidebar-w);
     padding: 24px 16px;
-    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     border-right: none;
 }
 
@@ -125,6 +131,18 @@ body {
     margin-bottom: 6px;
     font-weight: 500;
     transition: all 0.2s ease;
+}
+
+.sidebar a i {
+    flex-shrink: 0;
+}
+
+.sidebar a span {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sidebar a:hover {
@@ -142,13 +160,13 @@ body {
 /* PREMIUM NEUMORPHIC MAIN CONTENT */
 .main {
     margin-left: 0;
-    padding: 70px 0 0;
+    padding: var(--navbar-h) 0 0;
     min-height: 100vh;
     transition: margin-left 0.3s ease;
 }
 
 .main.full {
-    margin-left: 260px;
+    margin-left: 0;
 }
 
 /* Sidebar Overlay */
@@ -169,6 +187,16 @@ body {
 .sidebar-overlay.active {
     opacity: 1;
     pointer-events: auto;
+}
+
+@media (min-width: 769px) {
+    .main.full {
+        margin-left: var(--sidebar-w);
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
 }
 
 /* GLOBAL OVERRIDES FOR INTERNAL PAGES - AUTOMATIC DARK THEME INJECTOR */
@@ -760,6 +788,9 @@ body.dark .theme-btn-3d .moon-icon {
 }
 
 @media (max-width: 768px) {
+    :root {
+        --navbar-h: 60px;
+    }
     /* Navbar */
     .navbar {
         padding: 0 12px;
@@ -835,6 +866,9 @@ body.dark .theme-btn-3d .moon-icon {
 }
 
 @media (max-width: 480px) {
+    :root {
+        --navbar-h: 56px;
+    }
     /* Navbar */
     .navbar {
         padding: 0 10px;

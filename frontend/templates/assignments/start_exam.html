@@ -1,5 +1,6 @@
 {% extends 'dashboard/student_base.html' %}
 {% load static %}
+{% load custom_filters %}
 
 {% block title %}Exam Portal | {{ assignment.title }}{% endblock %}
 
@@ -62,7 +63,7 @@
                         {% for opt in q.options.all %}
                         <label class="opt-row" id="opt_row_{{ forloop.parentloop.counter }}_{{ forloop.counter }}">
                             <input type="radio" name="q_{{ q.id }}" value="{{ opt.id }}"
-                                   onclick="updatePaletteStatus({{ forloop.parentloop.counter }}, 'answered')">
+                                   onclick="updatePaletteStatus('{{ forloop.parentloop.counter }}', 'answered')">
                             <span class="opt-letter">{{ forloop.counter|add:64|chr }}</span>
                             <span class="opt-text">{{ opt.text }}</span>
                             <span class="opt-check">✓</span>
@@ -137,7 +138,7 @@
             <div class="palette-heading">Question Palette</div>
             <div class="node-grid">
                 {% for q in questions %}
-                <button type="button" class="q-node node-grey" id="node_{{ forloop.counter }}" onclick="jumpTo({{ forloop.counter }})">
+                <button type="button" class="q-node node-grey" id="node_{{ forloop.counter }}" onclick="jumpTo('{{ forloop.counter }}')">
                     {{ forloop.counter }}
                 </button>
                 {% endfor %}
@@ -158,7 +159,7 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
+.exam-shell {
     --bg: #0a0f1e;
     --surface: #0f1729;
     --surface2: #141d35;
@@ -175,12 +176,10 @@
     --radius: 12px;
 }
 
-body { overflow: hidden; }
-
 .exam-shell {
     display: grid;
     grid-template-columns: 1fr 280px;
-    height: 100vh;
+    height: calc(100vh - var(--navbar-h));
     background: var(--bg);
     color: var(--text);
     font-family: 'DM Sans', sans-serif;
@@ -539,7 +538,6 @@ body { overflow: hidden; }
 .dot-red { background: var(--red); }
 .dot-grey { background: var(--grey); }
 .dot-purple { background: var(--purple); border-radius: 50%; }
-</style>
 
 /* ===== ENHANCED 3D GLASSMORPHIC UI ===== */
 
@@ -672,14 +670,19 @@ body { overflow: hidden; }
     background: rgba(255,255,255,0.12);
     border-radius: 20px;
 }
+</style>
+<script id="question-times-data" type="application/json">
+[
+{% for q in questions %}
+    {{ q.time_limit|default:"30" }}{% if not forloop.last %},{% endif %}
+{% endfor %}
+]
+</script>
 
-<!-- ✅ ADD HERE -->
 <script>
-let questionTimes = [
-    {% for q in questions %}
-        {{ q.time_limit }},
-    {% endfor %}
-];
+const questionTimes = JSON.parse(
+    document.getElementById("question-times-data").textContent
+);
 </script>
 
 <script>

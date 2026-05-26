@@ -15,7 +15,7 @@ class Attendance(models.Model):
     )
 
     date = models.DateField(
-        default=timezone.now
+        default=timezone.localdate
     )
 
     login_time = models.DateTimeField(
@@ -94,6 +94,11 @@ class Attendance(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "date"], name="unique_attendance_user_date")
+        ]
 
     def save(self, *args, **kwargs):
 

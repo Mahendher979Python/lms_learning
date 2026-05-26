@@ -92,7 +92,8 @@
           <!-- COURSE VIDEO -->
                 {% if course.video %}
                 <video controls>
-                    <source src="{{ course.video.url }}">
+                    <source src="{{ course.video.url }}" type="video/mp4">
+                    <a href="{{ course.video.url }}">Download video</a>
                 </video>
                 {% endif %}
 
@@ -116,7 +117,8 @@
 
                             {% if topic.video %}
                                 <video controls>
-                                    <source src="{{ topic.video.url }}">
+                                    <source src="{{ topic.video.url }}" type="video/mp4">
+                                    <a href="{{ topic.video.url }}">Download video</a>
                                 </video>
                             {% endif %}
 

@@ -1,14 +1,31 @@
 function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("closed");
-    document.getElementById("main").classList.toggle("full");
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    const overlay = document.getElementById("sidebar-overlay");
+    if (!sidebar || !main) return;
+
+    sidebar.classList.toggle("closed");
+    main.classList.toggle("full");
+    if (overlay) overlay.classList.toggle("active");
     const navbar = document.querySelector(".navbar");
     if (navbar) {
-        if (navbar.style.left === "260px") {
-            navbar.style.left = "0px";
+        if (window.innerWidth >= 769) {
+            navbar.style.left = sidebar.classList.contains("closed") ? "260px" : "0px";
         } else {
-            navbar.style.left = "260px";
+            navbar.style.left = "0px";
         }
     }
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    const overlay = document.getElementById("sidebar-overlay");
+    if (sidebar) sidebar.classList.remove("closed");
+    if (main) main.classList.remove("full");
+    if (overlay) overlay.classList.remove("active");
+    const navbar = document.querySelector(".navbar");
+    if (navbar) navbar.style.left = "0px";
 }
 
 function toggleDark() {
@@ -19,13 +36,15 @@ function toggleDark() {
 /* TOGGLE DROPDOWN */
 function toggleDropdown(e) {
     e.stopPropagation();
-    let d = document.getElementById("dropdown");
+    const d = document.getElementById("dropdown");
+    if (!d) return;
     d.style.display = (d.style.display === "block") ? "none" : "block";
 }
 
 /* CLOSE OUTSIDE */
 document.addEventListener("click", function () {
-    document.getElementById("dropdown").style.display = "none";
+    const d = document.getElementById("dropdown");
+    if (d) d.style.display = "none";
 });
 
 /* LOAD NOTIFICATIONS */
@@ -33,28 +52,33 @@ function loadNotifications() {
     fetch("/notifications/")
     .then(res => res.json())
     .then(data => {
+        const dropdown = document.getElementById("dropdown");
+        const count =
+            document.getElementById("count") ||
+            document.getElementById("notif-count"); // used by newer templates
 
-        let dropdown = document.getElementById("dropdown");
-        let count = document.getElementById("count");
+        if (count) count.innerText = data.unread_count || 0;
+
+        // If this page doesn't have a dropdown list, just update the badge count.
+        if (!dropdown) return;
 
         dropdown.innerHTML = "";
-        count.innerText = data.unread_count;
 
-        if (data.notifications.length === 0) {
+        if (!data.notifications || data.notifications.length === 0) {
             dropdown.innerHTML = "<div style='padding:10px;'>No notifications</div>";
             return;
         }
 
         data.notifications.forEach(n => {
-            let div = document.createElement("div");
+            const div = document.createElement("div");
 
-            div.className = "notif-item " + n.type;
+            div.className = "notif-item " + (n.type || "");
 
             div.innerHTML = `
-                <b>${n.type.toUpperCase()}</b><br>
-                ${n.message}<br>
+                <b>${n.type ? n.type.toUpperCase() : "INFO"}</b><br>
+                ${n.message || ""}<br>
                 <small>${n.course || ""}</small><br>
-                <small style="color:gray">${n.time}</small>
+                <small style="color:gray">${n.time || ""}</small>
             `;
 
             div.onclick = function () {
@@ -69,11 +93,24 @@ function loadNotifications() {
 
             dropdown.appendChild(div);
         });
-    });
+    })
+    .catch(() => {});
 }
 
-setInterval(loadNotifications, 5000);
-loadNotifications();
+document.addEventListener("DOMContentLoaded", function () {
+    const navbar = document.querySelector(".navbar");
+    const sidebar = document.getElementById("sidebar");
+    if (navbar) {
+        if (window.innerWidth >= 769 && sidebar && sidebar.classList.contains("closed")) {
+            navbar.style.left = "260px";
+        } else {
+            navbar.style.left = "0px";
+        }
+    }
+
+    loadNotifications();
+    setInterval(loadNotifications, 5000);
+});
 
 /* CSRF */
 function getCookie(name) {

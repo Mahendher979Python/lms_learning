@@ -112,6 +112,10 @@
                     <span id="notif-count">0</span>
                 </a>
             </div>
+            <a href="{% url 'teams:student_course_slides' %}"  class="notif-btn-3d" title="Messages" style="width: 48px; height: 48px; border-radius: 50%; background: var(--card); border: none; box-shadow: var(--shadow-light); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #3b82f6; transition: all 0.3s ease; text-decoration: none;">
+            <span style="font-weight: 900;">💬</span>
+            
+            </a>
 
             <!-- Theme Toggle Button -->
             <button class="theme-btn-3d" onclick="toggleDark()" title="Toggle Dark/Light Mode">
@@ -161,64 +165,6 @@
     </div>
 
     <script src="{% static 'dashboard/js/student_base.js' %}"></script>
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            const overlay = document.getElementById("sidebar-overlay");
-            const main = document.getElementById("main");
-            const navbar = document.querySelector(".navbar");
-            
-            sidebar.classList.toggle("closed");
-            overlay.classList.toggle("active");
-            main.classList.toggle("full");
-            
-            if (navbar) {
-                if (navbar.style.left === "260px") {
-                    navbar.style.left = "0px";
-                } else {
-                    navbar.style.left = "260px";
-                }
-            }
-        }
-
-        function closeSidebar() {
-            const sidebar = document.getElementById("sidebar");
-            const overlay = document.getElementById("sidebar-overlay");
-            const main = document.getElementById("main");
-            const navbar = document.querySelector(".navbar");
-            
-            sidebar.classList.remove("closed");
-            overlay.classList.remove("active");
-            main.classList.remove("full");
-            
-            if (navbar) {
-                navbar.style.left = "0px";
-            }
-        }
-
-        function toggleDark() {
-            document.body.classList.toggle("dark");
-            const isDark = document.body.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-        }
-
-        function loadNotifications() {
-            fetch("/notifications/")
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.getElementById("notif-count");
-                    if (data.unread_count > 0) {
-                        badge.innerText = data.unread_count;
-                        badge.style.display = "flex";
-                    } else {
-                        badge.style.display = "none";
-                    }
-                });
-        }
-
-        setInterval(loadNotifications, 5000);
-        loadNotifications();
-    </script>
 
     <!-- 3D LOGOUT CONFIRMATION MODAL -->
     <div id="logout-confirm-modal" class="modal-overlay-3d" onclick="closeLogoutModal()">

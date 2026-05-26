@@ -1,10 +1,13 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.utils import timezone
 from notifications.models import Notification
 from courses.models import Course
+from attendance.models import Attendance
 from .forms import (
     StudentRegisterForm,
     LoginForm,
@@ -226,6 +229,21 @@ def login_view(request):
         'form': form,
         'error': 'Invalid username or password'
     })
+
+
+@login_required
+def logout_view(request):
+    today = timezone.now().date()
+    attendance = Attendance.objects.filter(user=request.user, date=today).first()
+    if attendance and not attendance.logout_time and attendance.login_time:
+        attendance.logout_time = timezone.now()
+        diff = attendance.logout_time - attendance.login_time
+        hours = diff.total_seconds() / 3600
+        attendance.total_hours = round(hours - float(attendance.break_hours or 0), 2)
+        attendance.status = "Present"
+        attendance.save()
+    auth_logout(request)
+    return redirect("login")
 
 
 def is_admin(user):

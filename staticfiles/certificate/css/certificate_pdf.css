@@ -1,0 +1,312 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:#f4f7fb;
+    padding:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+/* CERTIFICATE */
+.certificate{
+    width:100%;
+    max-width:1000px;
+    background:#ffffff;
+    border:14px solid #2563eb;
+    border-radius:20px;
+    padding:50px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 10px 35px rgba(0,0,0,0.12);
+}
+
+/* TOP DECORATION */
+.certificate::before{
+    content:"";
+    position:absolute;
+    top:-80px;
+    right:-80px;
+    width:220px;
+    height:220px;
+    background:rgba(37,99,235,0.08);
+    border-radius:50%;
+}
+
+.certificate::after{
+    content:"";
+    position:absolute;
+    bottom:-100px;
+    left:-100px;
+    width:260px;
+    height:260px;
+    background:rgba(37,99,235,0.06);
+    border-radius:50%;
+}
+
+/* TITLE */
+h1{
+    font-size:52px;
+    color:#2563eb;
+    margin-bottom:15px;
+    font-weight:800;
+    position:relative;
+    z-index:1;
+}
+
+/* SUBTITLE */
+.subtitle{
+    font-size:22px;
+    color:#475569;
+    margin-bottom:25px;
+    position:relative;
+    z-index:1;
+}
+
+/* STUDENT NAME */
+.student-name{
+    font-size:42px;
+    font-weight:700;
+    color:#0f172a;
+    margin:20px 0;
+    position:relative;
+    z-index:1;
+}
+
+/* COURSE NAME */
+.course-name{
+    font-size:34px;
+    color:#1d4ed8;
+    margin-top:15px;
+    margin-bottom:20px;
+    font-weight:700;
+    position:relative;
+    z-index:1;
+}
+
+/* DESCRIPTION */
+.description{
+    font-size:20px;
+    line-height:1.8;
+    color:#475569;
+    margin-top:20px;
+    position:relative;
+    z-index:1;
+}
+
+/* DATE */
+.issue-date{
+    margin-top:25px;
+    font-size:18px;
+    color:#334155;
+    font-weight:600;
+    position:relative;
+    z-index:1;
+}
+
+/* PHOTO */
+.photo{
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    object-fit:cover;
+    margin:25px auto;
+    border:6px solid #dbeafe;
+    box-shadow:0 6px 15px rgba(0,0,0,0.12);
+    position:relative;
+    z-index:1;
+}
+
+/* SIGNATURE AREA */
+.signature{
+    margin-top:70px;
+    position:relative;
+    z-index:1;
+}
+
+.signature img{
+    width:190px;
+    object-fit:contain;
+}
+
+.signature h3{
+    margin-top:10px;
+    font-size:24px;
+    color:#0f172a;
+}
+
+.signature p{
+    color:#64748b;
+    font-size:16px;
+    margin-top:5px;
+}
+
+/* SEAL */
+.seal{
+    position:absolute;
+    bottom:30px;
+    right:30px;
+    width:120px;
+    height:120px;
+    border:6px solid #2563eb;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    font-weight:700;
+    color:#2563eb;
+    transform:rotate(-15deg);
+    background:#eff6ff;
+    z-index:1;
+}
+
+/* PRINT BUTTON */
+.print-btn{
+    margin-top:30px;
+    padding:14px 25px;
+    border:none;
+    background:#2563eb;
+    color:#fff;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.print-btn:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+/* LAPTOP */
+@media(max-width:992px){
+
+    .certificate{
+        padding:40px 25px;
+    }
+
+    h1{
+        font-size:42px;
+    }
+
+    .student-name{
+        font-size:34px;
+    }
+
+    .course-name{
+        font-size:28px;
+    }
+
+}
+
+/* TABLET */
+@media(max-width:768px){
+
+    body{
+        padding:15px;
+    }
+
+    .certificate{
+        padding:30px 18px;
+        border-width:10px;
+    }
+
+    h1{
+        font-size:32px;
+    }
+
+    .subtitle{
+        font-size:18px;
+    }
+
+    .student-name{
+        font-size:28px;
+    }
+
+    .course-name{
+        font-size:24px;
+    }
+
+    .description{
+        font-size:16px;
+    }
+
+    .issue-date{
+        font-size:15px;
+    }
+
+    .photo{
+        width:110px;
+        height:110px;
+    }
+
+    .signature img{
+        width:150px;
+    }
+
+    .seal{
+        width:90px;
+        height:90px;
+        font-size:11px;
+    }
+
+}
+
+/* PHONE */
+@media(max-width:480px){
+
+    h1{
+        font-size:26px;
+    }
+
+    .student-name{
+        font-size:22px;
+    }
+
+    .course-name{
+        font-size:20px;
+    }
+
+    .description{
+        font-size:14px;
+    }
+
+    .signature h3{
+        font-size:18px;
+    }
+
+    .print-btn{
+        width:100%;
+    }
+
+}
+
+/* PRINT */
+@media print{
+
+    body{
+        background:#fff;
+        padding:0;
+    }
+
+    .print-btn{
+        display:none;
+    }
+
+    .certificate{
+        box-shadow:none;
+        width:100%;
+        max-width:100%;
+        min-height:100vh;
+    }
+
+}

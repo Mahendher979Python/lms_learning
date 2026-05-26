@@ -1,0 +1,128 @@
+{% load static %}
+
+<style>
+    .ticket-wrap { display: grid; grid-template-columns: 1fr 0.35fr; gap: 18px; }
+    .ticket-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-light); padding: 18px; }
+    .ticket-title { font-size: 18px; font-weight: 900; margin-bottom: 10px; color: var(--text); }
+    .ticket-meta { font-size: 12px; color: var(--text-muted); font-weight: 800; }
+    .ticket-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .ticket-pill { font-size: 11px; font-weight: 900; padding: 5px 10px; border-radius: 999px; background: rgba(59,130,246,0.18); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); text-transform: uppercase; }
+    body:not(.dark) .ticket-pill { color: #1d4ed8; background: rgba(59,130,246,0.10); }
+    .ticket-messages { margin-top: 14px; padding: 12px; border-radius: 12px; background: rgba(0,0,0,0.12); border: 1px solid rgba(255,255,255,0.08); max-height: calc(100vh - 340px); overflow-y: auto; }
+    body:not(.dark) .ticket-messages { background: #fff; border-color: rgba(0,0,0,0.08); }
+    .tmsg { display: flex; gap: 10px; margin-bottom: 12px; }
+    .tmsg-bubble { padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05); color: var(--text); white-space: pre-wrap; max-width: 92%; }
+    body:not(.dark) .tmsg-bubble { background: rgba(59,130,246,0.06); border-color: rgba(0,0,0,0.08); }
+    .tmsg-name { font-size: 11px; font-weight: 900; color: var(--text-muted); margin-bottom: 4px; }
+    .ticket-form input, .ticket-form textarea, .ticket-form select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.12); color: var(--text); outline: none; }
+    body:not(.dark) .ticket-form input, body:not(.dark) .ticket-form textarea, body:not(.dark) .ticket-form select { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .ticket-form textarea { min-height: 90px; resize: vertical; }
+    .ticket-btn { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 10px 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+    .ticket-btn.secondary { background: linear-gradient(135deg, #ef4444, #b91c1c); }
+    .ticket-mini { padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.10); }
+    body:not(.dark) .ticket-mini { background: #fff; border-color: rgba(0,0,0,0.08); }
+    .ticket-list { display: grid; gap: 8px; margin-top: 10px; }
+    .ticket-list div { font-size: 12px; color: var(--text); font-weight: 800; }
+</style>
+
+<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;">
+    <div>
+        <div style="font-size:20px; font-weight:900; color:var(--text);">Ticket</div>
+        <div style="font-size:12px; color:var(--text-muted); font-weight:700;">{{ course.title }}</div>
+    </div>
+    <a href="{% url 'doubts:course_doubts' course.id %}" style="text-decoration:none; font-weight:900; color:#93c5fd;">Back to Doubts</a>
+</div>
+
+<div class="ticket-wrap">
+    <div class="ticket-card">
+        <div class="ticket-row">
+            <div>
+                <div class="ticket-title">{{ ticket.title }}</div>
+                <div class="ticket-meta">Created by {{ ticket.created_by.username }} • Updated {{ ticket.updated_at|timesince }} ago</div>
+            </div>
+            <div class="ticket-pill">{{ ticket.status }}</div>
+        </div>
+
+        <div class="ticket-messages" id="ticketMessages">
+            {% for m in messages %}
+                <div class="tmsg">
+                    <div class="tmsg-bubble">
+                        <div class="tmsg-name">{% if m.is_ai %}DoubtBot{% else %}{{ m.sender_name|default:m.sender.username }}{% endif %}</div>
+                        {{ m.content }}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="ticket-meta">No messages yet.</div>
+            {% endfor %}
+        </div>
+
+        {% if is_participant and ticket.status != 'closed' %}
+            <form method="POST" class="ticket-form" style="margin-top:14px;">
+                {% csrf_token %}
+                <textarea name="message" placeholder="Write a message..." required></textarea>
+                <button class="ticket-btn" type="submit">Send</button>
+            </form>
+        {% elif ticket.status == 'closed' %}
+            <div class="ticket-meta" style="margin-top:14px;">This ticket is closed.</div>
+        {% else %}
+            <div class="ticket-meta" style="margin-top:14px;">Accept the invite or get added as a participant to reply.</div>
+        {% endif %}
+
+        {% if is_participant and ticket.status != 'closed' and request.user.role != 'student' %}
+            <form method="POST" style="margin-top:10px;">
+                {% csrf_token %}
+                <button class="ticket-btn secondary" type="submit" name="close_ticket" value="1">Close Ticket</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="ticket-card">
+        <div class="ticket-title" style="margin-bottom:6px;">People</div>
+        <div class="ticket-mini">
+            <div class="ticket-meta">Participants</div>
+            <div class="ticket-list">
+                {% for u in participants %}
+                    <div>{{ u.username }} ({{ u.role }})</div>
+                {% empty %}
+                    <div class="ticket-meta">None</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div style="height:12px;"></div>
+
+        <div class="ticket-mini">
+            <div class="ticket-meta">Invites</div>
+            <div class="ticket-list">
+                {% for inv in invites %}
+                    <div>{{ inv.invited_user.username }} • {{ inv.status }}</div>
+                {% empty %}
+                    <div class="ticket-meta">None</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if inviteable_users %}
+            <div style="height:12px;"></div>
+            <div class="ticket-mini">
+                <div class="ticket-meta">Invite someone</div>
+                <form method="POST" action="{% url 'doubts:invite_to_ticket' ticket.id %}" class="ticket-form" style="margin-top:10px;">
+                    {% csrf_token %}
+                    <select name="invited_user_id" required>
+                        <option value="">Select user</option>
+                        {% for u in inviteable_users %}
+                            <option value="{{ u.id }}">{{ u.username }} ({{ u.role }})</option>
+                        {% endfor %}
+                    </select>
+                    <button class="ticket-btn" type="submit">Send Invite</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    const tm = document.getElementById("ticketMessages");
+    if (tm) tm.scrollTop = tm.scrollHeight;
+</script>
+

@@ -1,0 +1,189 @@
+{% load static %}
+
+<style>
+    .doubts-wrap { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 18px; }
+    .doubts-card { background: var(--card); border-radius: 14px; box-shadow: var(--shadow-light); padding: 18px; }
+    .doubts-title { font-size: 18px; font-weight: 800; margin-bottom: 14px; color: var(--text); }
+    .doubts-subtitle { font-size: 13px; font-weight: 800; margin: 18px 0 10px; color: var(--text); }
+    .doubts-list { display: grid; gap: 10px; }
+    .doubts-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); }
+    body:not(.dark) .doubts-item { background: #fff; border-color: rgba(0,0,0,0.06); }
+    .doubts-item a { color: inherit; text-decoration: none; font-weight: 800; }
+    .doubts-meta { font-size: 12px; color: var(--text-muted); }
+    .doubts-pill { font-size: 11px; font-weight: 800; padding: 5px 10px; border-radius: 999px; background: rgba(59,130,246,0.18); color: #93c5fd; border: 1px solid rgba(59,130,246,0.35); text-transform: uppercase; letter-spacing: 0.3px; }
+    body:not(.dark) .doubts-pill { color: #1d4ed8; background: rgba(59,130,246,0.10); }
+    .doubts-form input, .doubts-form textarea, .doubts-form select { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.12); color: var(--text); outline: none; }
+    body:not(.dark) .doubts-form input, body:not(.dark) .doubts-form textarea, body:not(.dark) .doubts-form select { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .doubts-form textarea { min-height: 90px; resize: vertical; }
+    .doubts-btn { margin-top: 10px; display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 10px 14px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+    .bot-box { display: grid; grid-template-rows: auto 1fr auto; gap: 12px; height: calc(100vh - 220px); min-height: 520px; }
+    .bot-messages { overflow-y: auto; padding: 12px; border-radius: 12px; background: rgba(0,0,0,0.12); border: 1px solid rgba(255,255,255,0.08); }
+    body:not(.dark) .bot-messages { background: #fff; border-color: rgba(0,0,0,0.08); }
+    .bot-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .bot-row.user { justify-content: flex-end; }
+    .bot-bubble { max-width: 85%; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.05); color: var(--text); white-space: pre-wrap; }
+    body:not(.dark) .bot-bubble { background: rgba(59,130,246,0.06); border-color: rgba(0,0,0,0.08); }
+    .bot-row.user .bot-bubble { background: rgba(59,130,246,0.18); border-color: rgba(59,130,246,0.30); }
+    body:not(.dark) .bot-row.user .bot-bubble { background: rgba(59,130,246,0.12); }
+    .bot-input { display: flex; gap: 10px; }
+    .bot-input input { flex: 1; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.12); color: var(--text); outline: none; }
+    body:not(.dark) .bot-input input { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .bot-send { width: 110px; border-radius: 12px; border: none; cursor: pointer; font-weight: 900; background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
+</style>
+
+<div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px;">
+    <div>
+        <div style="font-size:20px; font-weight:900; color:var(--text);">Doubts</div>
+        <div style="font-size:12px; color:var(--text-muted); font-weight:700;">{{ course.title }}</div>
+    </div>
+    <a href="{% url 'teams:course_teams' course.id %}" style="text-decoration:none; font-weight:900; color:#93c5fd;">Back to Chat</a>
+</div>
+
+<div class="doubts-wrap">
+    <div class="doubts-card">
+        <div class="doubts-title">Tickets</div>
+
+        {% if invites_received %}
+            <div class="doubts-subtitle">Invites</div>
+            <div class="doubts-list">
+                {% for inv in invites_received %}
+                    <div class="doubts-item">
+                        <div>
+                            <div style="font-weight:900;">{{ inv.ticket.title }}</div>
+                            <div class="doubts-meta">Invited by {{ inv.invited_by.username }}</div>
+                        </div>
+                        <form method="POST" action="{% url 'doubts:respond_ticket_invite' inv.id %}" style="display:flex; gap:8px;">
+                            {% csrf_token %}
+                            <button name="action" value="accept" class="doubts-pill" style="border:none; cursor:pointer; background: rgba(34,197,94,0.18); color:#86efac; border:1px solid rgba(34,197,94,0.35);">Accept</button>
+                            <button name="action" value="decline" class="doubts-pill" style="border:none; cursor:pointer; background: rgba(239,68,68,0.18); color:#fca5a5; border:1px solid rgba(239,68,68,0.35);">Decline</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="doubts-subtitle">Your course tickets</div>
+        <div class="doubts-list">
+            {% for t in tickets %}
+                <div class="doubts-item">
+                    <div>
+                        <a href="{% url 'doubts:ticket_detail' t.id %}">{{ t.title }}</a>
+                        <div class="doubts-meta">{{ t.updated_at|timesince }} ago</div>
+                    </div>
+                    <div class="doubts-pill">{{ t.status }}</div>
+                </div>
+            {% empty %}
+                <div class="doubts-meta">No tickets yet.</div>
+            {% endfor %}
+        </div>
+
+        <div class="doubts-subtitle">Create new ticket</div>
+        <form method="POST" class="doubts-form">
+            {% csrf_token %}
+            <input name="title" placeholder="Title (short summary)" required>
+            <div style="height:10px;"></div>
+            <textarea name="initial_message" placeholder="Describe your doubt (optional)"></textarea>
+            <button class="doubts-btn" type="submit">Create Ticket</button>
+        </form>
+    </div>
+
+    <div class="doubts-card bot-box">
+        <div>
+            <div class="doubts-title" style="margin-bottom:6px;">DoubtBot (AI)</div>
+            <div class="doubts-meta">Shared for this course</div>
+        </div>
+
+        <div class="bot-messages" id="botMessages">
+            {% for m in bot_messages %}
+                <div class="bot-row {% if m.role == 'user' %}user{% endif %}">
+                    <div class="bot-bubble">
+                        {% if m.role == 'user' %}
+                            <div style="font-size:11px; font-weight:900; color:var(--text-muted); margin-bottom:4px;">{{ m.sender.username }}</div>
+                        {% endif %}
+                        {{ m.content }}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="doubts-meta">Ask your first question.</div>
+            {% endfor %}
+        </div>
+
+        <div class="bot-input">
+            <input id="botInput" placeholder="Ask DoubtBot..." autocomplete="off">
+            <button class="bot-send" onclick="sendBotMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+        return "";
+    }
+
+    function appendBot(role, sender, content) {
+        const wrap = document.getElementById("botMessages");
+        const row = document.createElement("div");
+        row.className = "bot-row " + (role === "user" ? "user" : "");
+
+        const bubble = document.createElement("div");
+        bubble.className = "bot-bubble";
+
+        if (role === "user") {
+            const meta = document.createElement("div");
+            meta.style.fontSize = "11px";
+            meta.style.fontWeight = "900";
+            meta.style.color = "var(--text-muted)";
+            meta.style.marginBottom = "4px";
+            meta.textContent = sender || "You";
+            bubble.appendChild(meta);
+        }
+
+        const text = document.createElement("div");
+        text.textContent = content;
+        bubble.appendChild(text);
+
+        row.appendChild(bubble);
+        wrap.appendChild(row);
+        wrap.scrollTop = wrap.scrollHeight;
+    }
+
+    async function sendBotMessage() {
+        const input = document.getElementById("botInput");
+        const message = (input.value || "").trim();
+        if (!message) return;
+
+        input.value = "";
+        appendBot("user", "{{ request.user.username }}", message);
+
+        const res = await fetch("{% url 'doubts:ask_course_bot' course.id %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+            body: JSON.stringify({ message }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            appendBot("assistant", "", data.error || "Failed");
+            return;
+        }
+
+        appendBot("assistant", "DoubtBot", data.reply);
+    }
+
+    const botInput = document.getElementById("botInput");
+    if (botInput) {
+        botInput.addEventListener("keydown", function(e) {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                sendBotMessage();
+            }
+        });
+    }
+</script>
+

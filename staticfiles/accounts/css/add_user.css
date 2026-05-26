@@ -1,0 +1,388 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   CYBER DARK GLASS THEME SYSTEM (ADD USER)
+   ========================================================================== */
+
+body {
+    background: #080b11 !important;
+    color: #f8fafc !important;
+    font-family: 'Outfit', sans-serif !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    display: none !important; /* Remove old solid dark overlay */
+}
+
+/* ==========================================================================
+   GLOBAL LAYOUT OVERRIDES (NAVBAR & SIDEBAR COHESION)
+   ========================================================================== */
+
+.navbar {
+    background: rgba(8, 11, 17, 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.navbar strong {
+    color: #ffffff !important;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.navbar .username {
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #cbd5e1 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar {
+    background: var(--sidebar-bg) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+.sidebar a {
+    color: var(--sidebar-text) !important;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.sidebar a:hover {
+    background: var(--sidebar-hover-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    transform: translateX(6px);
+}
+
+.sidebar a.active, .sidebar a[href*="active"] {
+    background: var(--sidebar-active-bg) !important;
+    color: var(--sidebar-text-active) !important;
+    box-shadow: 0 4px 12px var(--sidebar-active-glow) !important;
+}
+
+/* ==========================================================================
+   ANIMATED NEON BACKGROUND BLOBS
+   ========================================================================== */
+
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    z-index: 0;
+    opacity: 0.35;
+    pointer-events: none;
+    animation: floatBlob 25s infinite alternate ease-in-out;
+}
+
+.blob-1 {
+    width: 300px;
+    height: 300px;
+    background: #3b82f6;
+    top: 10%;
+    left: 25%;
+}
+
+.blob-2 {
+    width: 350px;
+    height: 350px;
+    background: #06b6d4;
+    bottom: 10%;
+    right: 15%;
+    animation-delay: -7s;
+}
+
+.blob-3 {
+    width: 280px;
+    height: 280px;
+    background: #8b5cf6;
+    top: 40%;
+    left: 50%;
+    animation-delay: -14s;
+}
+
+@keyframes floatBlob {
+    0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    33% {
+        transform: translate(40px, -60px) scale(1.15) rotate(120deg);
+    }
+    66% {
+        transform: translate(-30px, 30px) scale(0.9) rotate(240deg);
+    }
+    100% {
+        transform: translate(0, 0) scale(1) rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   FORM CONTAINER (3D GLASS CARD)
+   ========================================================================== */
+
+.form-container {
+    position: relative;
+    z-index: 10;
+    max-width: 580px;
+    margin: 40px auto 80px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 24px;
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: formEntrance 1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes formEntrance {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.form-container:hover {
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 
+        0 35px 70px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(37, 99, 235, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ==========================================================================
+   FORM HEADER & TYPOGRAPHY
+   ========================================================================== */
+
+.form-title {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.form-title span {
+    font-size: 28px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.3px;
+}
+
+.form-title::after {
+    content: '';
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #06b6d4);
+    display: block;
+    margin: 12px auto 0;
+    border-radius: 99px;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.4);
+}
+
+/* ==========================================================================
+   FORM CONTROLS (LABELS & INPUTS)
+   ========================================================================== */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #cbd5e1;
+    letter-spacing: 0.5px;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* INPUT ICON CONTAINER */
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 18px;
+    color: #94a3b8;
+    font-size: 15px;
+    pointer-events: none;
+    z-index: 10;
+    transition: color 0.3s ease;
+}
+
+/* TARGET INPUTS AND SELECT DROPDOWNS */
+.input-container input,
+.input-container select {
+    width: 100%;
+    padding: 14px 20px 14px 48px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    outline: none;
+    font-size: 14px;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus and active styles */
+.input-container input:focus,
+.input-container select:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(37, 99, 235, 0.45);
+    box-shadow: 
+        0 0 15px rgba(37, 99, 235, 0.2),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Focus icon glow */
+.input-container:focus-within .input-icon {
+    color: #3b82f6;
+    text-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+}
+
+/* Select options container styling */
+.input-container select option {
+    background: #0f172a;
+    color: #ffffff;
+}
+
+/* Smooth Dynamic Box containers for dynamic roles */
+#courseBox,
+#trainerBox,
+#studentBox {
+    margin-top: 15px;
+    padding: 20px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.03);
+    animation: boxFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes boxFade {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ==========================================================================
+   PRIMARY BUTTON (CAPSULE GLOW EFFECT)
+   ========================================================================== */
+
+.btn {
+    width: 100%;
+    padding: 15px 30px;
+    margin-top: 25px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    cursor: pointer;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    box-shadow: 
+        0 4px 15px rgba(37, 99, 235, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    box-shadow: 
+        0 8px 25px rgba(37, 99, 235, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+}
+
+.btn:hover i {
+    transform: translateX(4px);
+}
+
+/* Glass Sweep sweep reflection effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg);
+    transition: 0.5s;
+}
+
+.btn:hover::before {
+    left: 120%;
+}
+
+/* ==========================================================================
+   FOOTER LINK (PREMIUM BOTTOM TEXT)
+   ========================================================================== */
+
+.link {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN Breakpoints
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .form-container {
+        margin: 20px;
+        padding: 30px 20px;
+        max-width: 100%;
+    }
+
+    .form-title span {
+        font-size: 24px;
+    }
+}

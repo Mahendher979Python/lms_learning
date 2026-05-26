@@ -27,7 +27,8 @@
 {% if course.demo_video %}
 <h3>🎥 Free Demo</h3>
 <video controls class="video-player">
-    <source src="{{ course.demo_video.url }}">
+    <source src="{{ course.demo_video.url }}" type="video/mp4">
+    <a href="{{ course.demo_video.url }}">Download video</a>
 </video>
 {% endif %}
 
@@ -40,7 +41,8 @@
 
         {% if course.video %}
         <video controls class="video-player" id="mainVideo">
-            <source src="{{ course.video.url }}">
+            <source src="{{ course.video.url }}" type="video/mp4">
+            <a href="{{ course.video.url }}">Download video</a>
         </video>
         {% endif %}
 

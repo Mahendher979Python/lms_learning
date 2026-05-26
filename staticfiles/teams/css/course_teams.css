@@ -1,0 +1,79 @@
+/* --- GLOBAL THEME --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body, html { height: 100%; font-family: 'Segoe UI', Tahoma, sans-serif; overflow: hidden; background-color: #f0f0f0; }
+        .app-container { display: flex; height: 100vh; width: 100vw; }
+
+        /* 1. ICON RAIL */
+        .icon-rail {
+            width: 68px; background-color: #f3f2f1; border-right: 1px solid #e1dfdd;
+            display: flex; flex-direction: column; align-items: center; padding-top: 15px; gap: 25px;
+        }
+        .rail-item { font-size: 22px; cursor: pointer; color: #616161; padding: 8px; border-radius: 4px; transition: 0.2s; }
+        .rail-item:hover { background: #e1dfdd; }
+        .rail-item.active { color: #5b5fc7; background: white; border-left: 3px solid #5b5fc7; border-radius: 0; }
+
+        /* 2. SIDEBAR */
+        .sidebar-container { width: 300px; background-color: #ffffff; border-right: 1px solid #e1dfdd; display: flex; flex-direction: column; }
+        .sidebar-view { display: none; flex-direction: column; height: 100%; }
+        .sidebar-view.active { display: flex; }
+        .sidebar-header { padding: 15px; border-bottom: 1px solid #f3f2f1; }
+        .sidebar-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        .create-btn { 
+            background: #5b5fc7; color: white; border: none; padding: 6px 12px; 
+            border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: 600;
+        }
+
+        /* LIST STYLE */
+        .list-scroll { flex: 1; overflow-y: auto; }
+        .chat-item { display: flex; align-items: center; padding: 12px 15px; gap: 12px; cursor: pointer; border-bottom: 1px solid #f9f9f9; text-decoration: none; color: inherit; }
+        .chat-item:hover { background-color: #f5f5f5; }
+        .chat-item.active { background-color: #edebe9; border-left: 4px solid #5b5fc7; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: #5b5fc7; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; flex-shrink: 0; }
+
+        /* 3. MAIN CONTENT */
+        .main-content { flex: 1; display: flex; flex-direction: column; background-color: #f0f0f0; padding: 8px; }
+        .surface { flex: 1; background: white; border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; position: relative; }
+        
+        .header-tools { display: flex; gap: 15px; align-items: center; font-size: 18px; color: #616161; }
+        .header-tools span { cursor: pointer; }
+
+        /* MESSAGE VIEWPORT */
+        .viewport { flex: 1; padding: 20px; overflow-y: auto; background-color: #fafafa; display: flex; flex-direction: column; gap: 15px; }
+        .msg-row { display: flex; gap: 12px; margin-bottom: 5px; }
+        .msg-reverse { flex-direction: row-reverse; }
+        .msg-bubble { background: white; padding: 10px 14px; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); max-width: 70%; border: 1px solid #edebe9; position: relative; }
+        .msg-reverse .msg-bubble { background: #e7e9ff; border-color: #d1d4f7; }
+
+        /* REPLY INDICATOR */
+        .reply-indicator { background: rgba(0,0,0,0.05); border-left: 3px solid #5b5fc7; padding: 5px 8px; margin-bottom: 8px; border-radius: 4px; font-size: 12px; color: #444; }
+
+        /* INPUT AREA */
+        .input-footer { padding: 15px 20px; background: white; border-top: 1px solid #edebe9; }
+        .input-box-wrapper { border: 1px solid #e1dfdd; border-radius: 8px; background: white; }
+        .input-box-wrapper input[type="text"] { width: 100%; border: none; outline: none; padding: 12px; font-size: 14px; }
+        .input-toolbar { display: flex; align-items: center; gap: 15px; padding: 8px 12px; border-top: 1px solid #f3f2f1; background: #fafafa; border-radius: 0 0 8px 8px; }
+
+        .reply-preview-bar { display: none; background: #f3f2f1; padding: 8px 15px; border-top: 1px solid #ddd; justify-content: space-between; align-items: center; font-size: 12px; border-radius: 8px 8px 0 0; }
+
+        /* ACTIONS */
+        .msg-actions { margin-top: 8px; font-size: 11px; display: flex; gap: 10px; visibility: hidden; }
+        .msg-bubble:hover .msg-actions { visibility: visible; }
+        .action-link { cursor: pointer; color: #5b5fc7; font-weight: 600; text-decoration: none; }
+        .action-link.delete { color: #d13438; }
+
+        /* MEMBERS LIST */
+        .members-dropdown {
+            display: none; position: absolute; right: 20px; top: 60px; width: 220px;
+            background: white; border: 1px solid #e1dfdd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 100; padding: 10px; max-height: 300px; overflow-y: auto;
+        }
+
+        /* POPUP & OVERLAY */
+        .popup {
+            display:none; position:fixed; top:50%; left:50%; transform: translate(-50%, -50%); background:white;
+            padding:25px; width:380px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border-radius: 12px; z-index: 1001;
+        }
+        .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:1000; }
+        .file-preview-name { font-size: 11px; color: #5b5fc7; margin-left: 10px; font-weight: bold; display: none; }
+  

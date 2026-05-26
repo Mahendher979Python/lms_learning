@@ -3,8 +3,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.utils import timezone
+from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.db.models import Sum
+from django.db.models import Q
 from django.core.files.base import ContentFile
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.timezone import now
@@ -17,12 +19,29 @@ from accounts.models import User
 from .models import Attendance, Break, LocationLog
 
 
+def _trainer_students(trainer_user):
+    if getattr(trainer_user, "role", None) != "trainer":
+        return User.objects.none()
+    return (
+        User.objects.filter(role="student")
+        .filter(Q(trainer=trainer_user) | Q(enrolled_courses__trainer=trainer_user))
+        .distinct()
+    )
+
+
+def _get_or_create_attendance(user, date):
+    attendance = Attendance.objects.filter(user=user, date=date).order_by("-id").first()
+    if attendance:
+        return attendance, False
+    return Attendance.objects.create(user=user, date=date), True
+
+
 # =========================
 # STUDENT ATTENDANCE
 # =========================
 @login_required
 def student_attendance(request):
-    today = timezone.now().date()
+    today = timezone.localdate()
     attendance = Attendance.objects.filter(user=request.user, date=today).first()
     records = Attendance.objects.filter(user=request.user).order_by('-date')
 
@@ -61,13 +80,17 @@ def student_attendance(request):
 # =========================
 @login_required
 def trainer_attendance(request):
-    today = timezone.now().date()
+    if request.user.role != "trainer":
+        return redirect("student_attendance")
+    get_token(request)
+    today = timezone.localdate()
     attendance = Attendance.objects.filter(user=request.user, date=today).first()
     trainer_records = Attendance.objects.filter(user=request.user).order_by('-date')
-    student_records = Attendance.objects.filter(user__trainer=request.user).order_by('-date')
+    students = _trainer_students(request.user)
+    student_records = Attendance.objects.filter(user__in=students).select_related("user").order_by("-date", "-id")
 
-    total_students = student_records.values('user').distinct().count()
-    present_today  = student_records.filter(date=today, login_time__isnull=False).count()
+    total_students = students.count()
+    present_today  = Attendance.objects.filter(user__in=students, date=today, login_time__isnull=False).values("user").distinct().count()
     absent_today   = total_students - present_today
     dates = [str(r.date) for r in trainer_records]
     hours = [float(r.total_hours or 0) for r in trainer_records]
@@ -102,7 +125,11 @@ def trainer_attendance(request):
 # =========================
 @login_required
 def student_attendance_view(request, user_id):
+    if request.user.role != "trainer":
+        return redirect("student_attendance")
     student = get_object_or_404(User, id=user_id)
+    if not _trainer_students(request.user).filter(id=student.id).exists():
+        return redirect("assigned_students")
     records = Attendance.objects.filter(user=student).order_by('-date')
     chart_data = Attendance.objects.filter(user=student).values('date').annotate(
         total=Sum('total_hours')).order_by('date')
@@ -121,9 +148,8 @@ def student_attendance_view(request, user_id):
 # =========================
 @login_required
 def login_time(request):
-    today = timezone.now().date()
-
-    attendance, created = Attendance.objects.get_or_create(user=request.user, date=today)
+    today = timezone.localdate()
+    attendance, created = _get_or_create_attendance(request.user, today)
 
     # Set login_time if not already clocked in
     if not attendance.login_time:
@@ -154,8 +180,7 @@ def login_time(request):
                 return JsonResponse({"status": "success", "location": place})
             else:
                 return JsonResponse({"status": "success", "location": ""})
-        except Exception as e:
-            print(f"Error in login_time POST: {e}")
+        except Exception:
             return JsonResponse({"status": "success", "location": ""})
 
     if request.user.role == "trainer":
@@ -168,8 +193,8 @@ def login_time(request):
 # =========================
 @login_required
 def logout_time(request):
-    today = timezone.now().date()
-    attendance = Attendance.objects.filter(user=request.user, date=today).first()
+    today = timezone.localdate()
+    attendance = Attendance.objects.filter(user=request.user, date=today).order_by("-id").first()
 
     if attendance and not attendance.logout_time:
         attendance.logout_time = timezone.now()
@@ -178,10 +203,8 @@ def logout_time(request):
             hours       = diff.total_seconds() / 3600
             final_hours = round(hours - float(attendance.break_hours or 0), 2)
             attendance.total_hours = final_hours
-            # ✅ Present only if worked >= 4 hours
-            attendance.status = "Present" if final_hours >= 4 else "Absent"
+            attendance.status = "Present"
         attendance.save()
-        print(f"Logout attendance saved: {attendance.user.username}, logout time: {attendance.logout_time}")
 
     if request.user.role == "trainer":
         return redirect('trainer_attendance')
@@ -194,8 +217,8 @@ def logout_time(request):
 @csrf_exempt
 @login_required
 def logout_attendance(request):
-    today = timezone.now().date()
-    attendance = Attendance.objects.filter(user=request.user, date=today).first()
+    today = timezone.localdate()
+    attendance = Attendance.objects.filter(user=request.user, date=today).order_by("-id").first()
 
     if attendance and not attendance.logout_time:
         attendance.logout_time = timezone.now()
@@ -203,6 +226,7 @@ def logout_attendance(request):
             diff = attendance.logout_time - attendance.login_time
             hours = diff.total_seconds() / 3600
             attendance.total_hours = round(hours - float(attendance.break_hours or 0), 2)
+            attendance.status = "Present"
         attendance.save()
 
     logout(request)
@@ -214,8 +238,12 @@ def logout_attendance(request):
 # =========================
 @login_required
 def start_break(request):
-    today = timezone.now().date()
-    attendance = Attendance.objects.get(user=request.user, date=today)
+    today = timezone.localdate()
+    attendance = Attendance.objects.filter(user=request.user, date=today).order_by("-id").first()
+    if not attendance or not attendance.login_time or attendance.logout_time:
+        return JsonResponse({"status": "not_checked_in"}, status=400)
+    if attendance.break_start:
+        return JsonResponse({"status": "already_on_break"}, status=400)
     attendance.break_start = timezone.now()
     attendance.save()
     return JsonResponse({"status": "break_started"})
@@ -226,8 +254,10 @@ def start_break(request):
 # =========================
 @login_required
 def end_break(request):
-    today = timezone.now().date()
-    attendance = Attendance.objects.get(user=request.user, date=today)
+    today = timezone.localdate()
+    attendance = Attendance.objects.filter(user=request.user, date=today).order_by("-id").first()
+    if not attendance or not attendance.break_start:
+        return JsonResponse({"status": "no_active_break"}, status=400)
     if attendance.break_start:
         diff = timezone.now() - attendance.break_start
         attendance.break_hours += diff.total_seconds() / 3600
@@ -256,11 +286,14 @@ def get_location_name(lat, lon):
 @login_required
 def auto_location(request):
     if request.method == "POST":
-        data  = json.loads(request.body)
-        lat   = data.get("lat")
-        lng   = data.get("lng")
-        today = timezone.now().date()
-        attendance = Attendance.objects.filter(user=request.user, date=today).first()
+        try:
+            data = json.loads(request.body)
+        except Exception:
+            data = {}
+        lat = data.get("lat")
+        lng = data.get("lng")
+        today = timezone.localdate()
+        attendance = Attendance.objects.filter(user=request.user, date=today).order_by("-id").first()
         if attendance and lat and lng:
             place = get_location_name(lat, lng)
             attendance.latitude      = lat
@@ -276,7 +309,10 @@ def auto_location(request):
 @login_required
 def track_location(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except Exception:
+            data = {}
         LocationLog.objects.create(
             user=request.user,
             latitude=data.get("lat"),
@@ -306,13 +342,16 @@ def latest_location(request):
 @login_required
 def face_attendance(request):
     if request.method == "POST":
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+        except Exception:
+            data = {}
         image_data = data.get("image")
         if image_data:
             format, imgstr = image_data.split(';base64,')
             file = ContentFile(base64.b64decode(imgstr), name=f"{request.user.username}.png")
-            today = timezone.now().date()
-            attendance, created = Attendance.objects.get_or_create(user=request.user, date=today)
+            today = timezone.localdate()
+            attendance, created = _get_or_create_attendance(request.user, today)
             if not attendance.login_time:
                 attendance.login_time = timezone.now()
             attendance.image = file
@@ -374,7 +413,9 @@ def attendance_prediction(request):
 # =========================
 @login_required
 def assigned_students(request):
-    students = User.objects.filter(trainer=request.user)
+    if request.user.role != "trainer":
+        return redirect("student_attendance")
+    students = _trainer_students(request.user)
     return render(request, "attendance/assigned_students.html", {"students": students})
 
 
@@ -399,7 +440,7 @@ def admin_attendance(request):
     if date: records = records.filter(date=date)
     if user: records = records.filter(user__username__icontains=user)
 
-    today         = now().date()
+    today         = timezone.localdate()
     total_users   = User.objects.count()
     present_today = Attendance.objects.filter(date=today).values('user').distinct().count()
     absent_today  = total_users - present_today
@@ -437,8 +478,7 @@ def export_attendance_csv(request):
         if user_query:
             records = records.filter(user__username__icontains=user_query)
     elif scope == 'students' and user.role == 'trainer':
-        # Trainer's assigned students
-        records = records.filter(user__trainer=user)
+        records = records.filter(user__in=_trainer_students(user))
     else:
         # Default: Export current user's own records
         records = records.filter(user=user)
@@ -454,7 +494,7 @@ def export_attendance_csv(request):
     writer.writerow(['Username', 'Date', 'Login Time', 'Logout Time', 'Work Hours', 'Break Hours', 'Status', 'Location'])
 
     for r in records:
-        status = "Present" if (r.logout_time and r.total_hours >= 4) else "Absent"
+        status = r.status or ("Present" if r.login_time else "Absent")
         writer.writerow([
             r.user.username,
             r.date,

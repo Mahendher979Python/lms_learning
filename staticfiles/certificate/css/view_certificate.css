@@ -1,0 +1,466 @@
+/* ===== PAGE ===== */
+.certificate-page{
+    padding:32px 20px;
+    background:#f3f4f6;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    box-sizing:border-box;
+}
+
+.page-title{
+    font-size:32px;
+    font-weight:700;
+    margin-bottom:24px;
+    color:#111827;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+/* ===== TOP ACTION BAR ===== */
+.top-bar{
+    background:#ffffff;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    padding:24px;
+    border-left:6px solid #22c55e;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+
+.course-title{
+    font-size:22px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:8px;
+}
+
+.completed-status{
+    color:#16a34a;
+    font-size:15px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.action-buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    padding:12px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    color:white;
+    font-size:14px;
+    font-weight:600;
+    transition:0.3s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-width:180px;
+}
+
+.download-btn{
+    background:#22c55e;
+}
+
+.download-btn:hover{
+    background:#16a34a;
+    transform:translateY(-2px);
+}
+
+.back-btn{
+    background:#6b7280;
+}
+
+.back-btn:hover{
+    background:#4b5563;
+    transform:translateY(-2px);
+}
+
+/* ===== CERTIFICATE ===== */
+.certificate-card,
+.certificate{
+    max-width:1100px;
+    margin:auto;
+    background:#111827;
+    border-radius:22px;
+    padding:45px 35px;
+    color:white;
+    position:relative;
+    border:4px solid gold;
+    box-shadow:0 10px 35px rgba(0,0,0,0.25);
+    overflow:hidden;
+}
+
+/* Wrapper used by updated template */
+.certificate-wrapper{
+    max-width:1100px;
+    margin:auto;
+}
+
+/* Decorative badges used by updated template */
+.left-badge,
+.right-badge{
+    position:absolute;
+    top:18px;
+    padding:10px 14px;
+    border-radius:12px;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    background:rgba(255,215,0,0.12);
+    border:1px solid rgba(255,215,0,0.35);
+    color:gold;
+}
+
+.left-badge{
+    left:18px;
+}
+
+.right-badge{
+    right:18px;
+    text-align:center;
+    line-height:1.1;
+}
+
+/* Decorative Stars */
+.corner-star{
+    position:absolute;
+    color:gold;
+    opacity:0.7;
+    font-size:24px;
+}
+
+.star-top-left{
+    top:16px;
+    left:16px;
+}
+
+.star-top-right{
+    top:16px;
+    right:16px;
+}
+
+.star-bottom-left{
+    bottom:16px;
+    left:16px;
+}
+
+.star-bottom-right{
+    bottom:16px;
+    right:16px;
+}
+
+/* ===== CONTENT ===== */
+.certificate-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:40px;
+}
+
+/* LEFT */
+.certificate-left{
+    flex:1;
+    text-align:center;
+}
+
+.trophy{
+    font-size:46px;
+    margin-bottom:10px;
+}
+
+.certificate-heading,
+.certificate-title{
+    font-size:42px;
+    color:gold;
+    letter-spacing:7px;
+    margin-bottom:8px;
+    font-weight:700;
+}
+
+.certificate-subtitle,
+.sub-title{
+    color:#cbd5e1;
+    font-size:14px;
+    letter-spacing:3px;
+    margin-bottom:24px;
+    font-weight:600;
+}
+
+.line{
+    width:80%;
+    height:1px;
+    background:rgba(255,215,0,0.35);
+    margin:18px auto;
+}
+
+.presented-text{
+    color:#d1d5db;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+    font-weight:700;
+}
+
+.description{
+    color:#d1d5db;
+    font-size:15px;
+    line-height:1.7;
+    margin:16px 0 18px;
+}
+
+.description strong{
+    color:#7efff5;
+}
+
+.label-text{
+    color:#d1d5db;
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.student-name{
+    font-size:34px;
+    color:gold;
+    margin-bottom:14px;
+    font-weight:700;
+    word-break:break-word;
+}
+
+.course-name{
+    font-size:26px;
+    color:#7efff5;
+    margin-bottom:18px;
+    font-weight:600;
+    word-break:break-word;
+}
+
+.certificate-date{
+    color:#d1d5db;
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.certificate-id{
+    color:#facc15;
+    font-size:12px;
+}
+
+/* ===== PHOTO ===== */
+.photo-section{
+    flex-shrink:0;
+    text-align:center;
+}
+
+.photo-frame{
+    width:180px;
+    height:180px;
+    border:4px solid gold;
+    border-radius:12px;
+    overflow:hidden;
+    background:rgba(255,215,0,0.06);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 0 20px rgba(255,215,0,0.25);
+}
+
+.photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.no-photo{
+    color:rgba(255,215,0,0.35);
+    font-size:14px;
+    padding:10px;
+}
+
+/* ===== SIGNATURE ===== */
+.signature-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:35px;
+}
+
+.signature-box{
+    width:220px;
+    text-align:center;
+}
+
+.bottom-section{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:35px;
+}
+
+.sign-box{
+    width:220px;
+    text-align:center;
+}
+
+.signature-image{
+    max-width:180px;
+    max-height:70px;
+    object-fit:contain;
+    margin-bottom:10px;
+}
+
+.director-name{
+    color:gold;
+    font-size:15px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.signature-line{
+    border-top:1px solid rgba(255,215,0,0.5);
+    margin-bottom:8px;
+}
+
+.signature-label{
+    color:#cbd5e1;
+    font-size:13px;
+}
+
+.sign-text{
+    color:gold;
+    font-size:15px;
+    font-weight:700;
+    margin-top:8px;
+}
+
+.sign-line{
+    border-top:1px solid rgba(255,215,0,0.5);
+    margin-top:12px;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width:992px){
+
+    .certificate-content{
+        flex-direction:column-reverse;
+        text-align:center;
+    }
+
+    .photo-frame{
+        width:160px;
+        height:160px;
+    }
+
+    .certificate-heading,
+    .certificate-title{
+        font-size:34px;
+        letter-spacing:4px;
+    }
+
+    .student-name{
+        font-size:28px;
+    }
+
+    .course-name{
+        font-size:22px;
+    }
+
+}
+
+@media (max-width:768px){
+
+    .certificate-page{
+        padding:20px 12px;
+    }
+
+    .page-title{
+        font-size:24px;
+    }
+
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .action-buttons{
+        width:100%;
+    }
+
+    .action-btn{
+        width:100%;
+        min-width:unset;
+    }
+
+    .certificate-card,
+    .certificate{
+        padding:28px 18px;
+    }
+
+    .certificate-heading,
+    .certificate-title{
+        font-size:28px;
+    }
+
+    .student-name{
+        font-size:24px;
+    }
+
+    .course-name{
+        font-size:20px;
+    }
+
+    .photo-frame{
+        width:140px;
+        height:140px;
+    }
+
+    .signature-row,
+    .bottom-section{
+        justify-content:center;
+    }
+
+}
+
+@media (max-width:480px){
+
+    .certificate-heading,
+    .certificate-title{
+        font-size:22px;
+        letter-spacing:2px;
+    }
+
+    .certificate-subtitle{
+        font-size:12px;
+    }
+
+    .student-name{
+        font-size:20px;
+    }
+
+    .course-name{
+        font-size:18px;
+    }
+
+    .photo-frame{
+        width:120px;
+        height:120px;
+    }
+
+    .certificate-card,
+    .certificate{
+        border-width:2px;
+        border-radius:16px;
+    }
+
+}

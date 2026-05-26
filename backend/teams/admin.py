@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Team, Message, PrivateMessage
+from .models import Team, Message, PrivateMessage, PrivateChatRequest
 
 
 @admin.register(Team)
@@ -22,3 +22,10 @@ class PrivateMessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'sender', 'receiver', 'timestamp')
     search_fields = ('message',)
     list_filter = ('sender', 'receiver')
+
+
+@admin.register(PrivateChatRequest)
+class PrivateChatRequestAdmin(admin.ModelAdmin):
+    list_display = ('id', 'requester', 'recipient', 'status', 'created_at')
+    search_fields = ('requester__username', 'recipient__username')
+    list_filter = ('status',)

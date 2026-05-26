@@ -1,0 +1,223 @@
+/* =========================
+   PAGE
+========================= */
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+/* =========================
+   SEARCH
+========================= */
+
+.search-box {
+    margin-bottom: 25px;
+}
+
+.search-form {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 240px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    outline: none;
+    font-size: 15px;
+}
+
+.search-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.search-btn:hover {
+    background: #1d4ed8;
+}
+
+/* =========================
+   COURSE GRID
+========================= */
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+    gap: 20px;
+    justify-content: left;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.course-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.course-desc {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 14px;
+}
+
+.price {
+    font-size: 18px;
+    font-weight: 600;
+    color: #16a34a;
+    margin-bottom: 16px;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.view-btn {
+    background: #2563eb;
+}
+
+.add-btn {
+    background: #16a34a;
+}
+
+.edit-btn {
+    background: #f59e0b;
+}
+
+.delete-btn {
+    background: #ef4444;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   TOPICS
+========================= */
+
+.topics-title {
+    margin-bottom: 14px;
+    font-size: 18px;
+    color: #111827;
+}
+
+.topic-box {
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.topic-box img {
+    width: 100%;
+    max-width: 180px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.topic-name {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.pagination a {
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .card {
+        padding: 16px;
+    }
+
+    .course-title {
+        font-size: 20px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        text-align: center;
+    }
+}

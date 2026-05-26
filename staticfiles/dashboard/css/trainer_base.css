@@ -1,0 +1,75 @@
+@import 'base.css';
+
+/* TRAINER-SPECIFIC STYLES */
+.notif-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Mobile styles for trainer navbar */
+@media (max-width: 768px) {
+    .navbar .username {
+        display: none !important;
+    }
+}
+
+#count {
+    background: red;
+    color: white;
+    padding: 2px 7px;
+    border-radius: 50%;
+    font-size: 12px;
+    min-width: 18px;
+    text-align: center;
+}
+
+#dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 35px;
+    width: 340px;
+    background: var(--card);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    max-height: 320px;
+    overflow-y: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.notif-item {
+    padding: 10px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.notif-item:hover {
+    background: var(--hover);
+}
+
+/* TYPES */
+.payment {
+    border-left: 4px solid var(--success);
+}
+
+.assignment_submitted {
+    border-left: 4px solid var(--accent);
+}
+
+.assignment_review {
+    border-left: 4px solid var(--danger);
+}
+
+.message {
+    border-left: 4px solid var(--warning);
+}
+
+.progress {
+    border-left: 4px solid #8b5cf6;
+}

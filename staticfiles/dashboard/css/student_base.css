@@ -1,0 +1,13 @@
+@import 'base.css';
+
+/* STUDENT-SPECIFIC STYLES */
+#dropdown {
+    width: 320px;
+}
+
+/* Mobile styles for student navbar */
+@media (max-width: 768px) {
+    .navbar .username {
+        display: none !important;
+    }
+}
