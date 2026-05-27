@@ -197,15 +197,26 @@ a {
 }
 
 .button-secondary-solid {
+<<<<<<< HEAD
+    background: #0f766e;
+    color: #ffffff;
+    box-shadow: 0 14px 28px rgba(15, 118, 110, 0.22);
+=======
     background: #2563eb;
     color: #ffffff;
     box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
 }
 
 .button-secondary-outline {
     background: #ffffff;
+<<<<<<< HEAD
+    color: #0f766e;
+    border-color: #0f766e;
+=======
     color: #2563eb;
     border-color: #2563eb;
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
 }
 
 .button-secondary-light {

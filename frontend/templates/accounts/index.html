@@ -18,8 +18,17 @@
             <span class="logo-text">LMS</span>
         </a>
 
+<<<<<<< HEAD
+        <nav class="nav-links" aria-label="Main navigation">
+            <a href="{% url 'index' %}" class="nav-link">Home</a>
+=======
         <nav class="nav-links" id="mainNavbarLinks" aria-label="Main navigation">
+<<<<<<< HEAD
             <a href="{% url 'index' %}" class="nav-link active">Home</a>
+=======
+            <a href="{% url 'index' %}" class="nav-link active" style="color: var(--primary-color);">Home</a>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
+>>>>>>> cb771841b1bc76b92df85c594a3ba87420cd35b3
             <a href="{% url 'courses' %}" class="nav-link">Courses</a>
             <a href="{% url 'about' %}" class="nav-link">About Us</a>
             <a href="{% url 'services' %}" class="nav-link">Services</a>
@@ -27,13 +36,22 @@
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
         </nav>
 
+<<<<<<< HEAD
+        <form class="searchbar" role="search">
+            <input type="search" placeholder="Search ..." aria-label="Search courses">
+=======
         <form class="searchbar" role="search" action="{% url 'courses' %}" method="GET">
             <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
         </form>
 
         <div class="nav-actions">
             <a class="button-secondary" href="{% url 'login' %}">Login</a>
+<<<<<<< HEAD
+
+=======
             <a class="button-secondary" href="{% url 'register' %}">Register</a>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
         </div>
 
         <button class="hamburger-btn" aria-label="Toggle menu">
@@ -56,12 +74,20 @@
             <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
             <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
         </nav>
+<<<<<<< HEAD
+        <form class="sidebar-searchbar" role="search">
+            <input type="search" placeholder="Search ..." aria-label="Search courses">
+        </form>
+        <div class="sidebar-actions">
+            <a class="button-secondary" href="{% url 'login' %}">Login</a>
+=======
         <form class="sidebar-searchbar" role="search" action="{% url 'courses' %}" method="GET">
             <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
         </form>
         <div class="sidebar-actions">
             <a class="button-secondary" href="{% url 'login' %}">Login</a>
             <a class="button-secondary" href="{% url 'register' %}">Register</a>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
         </div>
     </aside>
 
@@ -359,4 +385,8 @@
     </script>
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336

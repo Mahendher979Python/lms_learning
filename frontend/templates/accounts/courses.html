@@ -35,8 +35,24 @@
         </form>
 
         <div class="nav-actions">
+<<<<<<< HEAD
+            {% if user.is_authenticated %}
+                {% if user.role == 'student' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                {% elif user.role == 'trainer' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                {% else %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                {% endif %}
+                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
+                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+            {% endif %}
+=======
             <a class="button-secondary" href="{% url 'login' %}">Login</a>
             <a class="button-secondary" href="{% url 'register' %}">Register</a>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
         </div>
 
         <button class="hamburger-btn" aria-label="Toggle menu">
@@ -64,8 +80,24 @@
                 aria-label="Search courses">
         </form>
         <div class="sidebar-actions">
+<<<<<<< HEAD
+            {% if user.is_authenticated %}
+                {% if user.role == 'student' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                {% elif user.role == 'trainer' %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                {% else %}
+                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                {% endif %}
+                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
+                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+            {% endif %}
+=======
             <a class="button-secondary" href="{% url 'login' %}">Login</a>
             <a class="button-secondary" href="{% url 'register' %}">Register</a>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
         </div>
     </aside>
 
@@ -367,4 +399,8 @@
     </script>
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
