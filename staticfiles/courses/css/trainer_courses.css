@@ -1,5 +1,5 @@
 /* =========================
-   PAGE
+   GLOBAL PAGE
 ========================= */
 
 .page-title {
@@ -7,20 +7,27 @@
     font-weight: 700;
     margin-bottom: 20px;
     color: #111827;
+    text-align: center;
 }
 
 /* =========================
-   SEARCH
+   SEARCH SECTION
 ========================= */
 
 .search-box {
     margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
 }
 
 .search-form {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
 .search-input {
@@ -56,11 +63,12 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
     gap: 20px;
-    justify-content: left;
+    
+    padding: 10px;
 }
 
 /* =========================
-   CARD
+   COURSE CARD
 ========================= */
 
 .card {
@@ -68,44 +76,57 @@
     border-radius: 18px;
     padding: 20px;
     box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 .card:hover {
     transform: translateY(-5px);
 }
 
-.course-title {
-    font-size: 22px;
+/* Admin label */
+.card h1 {
+    font-size: 14px;
+    color: #10b981;
+    margin-bottom: 8px;
+}
+
+/* Course title */
+.course-title,
+.card h3 {
+    font-size: 20px;
     font-weight: 700;
     color: #111827;
     margin-bottom: 10px;
 }
 
-.course-desc {
+/* Description */
+.course-desc,
+.card p {
     color: #6b7280;
     line-height: 1.6;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
+/* Price */
 .price {
     font-size: 18px;
     font-weight: 600;
     color: #16a34a;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 /* =========================
-   BUTTONS
+   BUTTON GROUP
 ========================= */
 
 .action-buttons {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
+/* Base button */
 .btn {
     padding: 10px 14px;
     border-radius: 10px;
@@ -114,8 +135,11 @@
     font-size: 14px;
     font-weight: 600;
     transition: 0.3s;
+    display: inline-block;
+    text-align: center;
 }
 
+/* Button types */
 .view-btn {
     background: #2563eb;
 }
@@ -132,38 +156,77 @@
     background: #ef4444;
 }
 
+/* Hover effect */
 .btn:hover {
     opacity: 0.9;
+    transform: scale(1.03);
 }
 
 /* =========================
-   TOPICS
+   TOPICS SECTION
 ========================= */
 
 .topics-title {
-    margin-bottom: 14px;
+    margin: 12px 0;
     font-size: 18px;
+    font-weight: 600;
     color: #111827;
 }
 
+/* Topic grid */
+.topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+/* Topic box */
 .topic-box {
     background: #f8fafc;
     border-left: 5px solid #2563eb;
-    padding: 15px;
+    padding: 12px;
     border-radius: 12px;
-    margin-bottom: 14px;
+    transition: 0.3s;
+    text-align: center;
 }
 
-.topic-box img {
+.topic-box:hover {
+    background: #eef2ff;
+}
+
+/* Topic name */
+.topic-box b {
+    font-size: 15px;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Topic image */
+.topic-img {
     width: 100%;
     max-width: 180px;
     border-radius: 10px;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
-.topic-name {
-    font-size: 17px;
-    font-weight: 600;
+/* Topic actions */
+.topic-actions {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.empty-text {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+    padding: 10px;
 }
 
 /* =========================
@@ -185,10 +248,15 @@
     color: white;
     border-radius: 8px;
     text-decoration: none;
+    transition: 0.3s;
+}
+
+.pagination a:hover {
+    background: #1d4ed8;
 }
 
 /* =========================
-   MOBILE
+   MOBILE RESPONSIVE
 ========================= */
 
 @media (max-width: 768px) {
@@ -197,12 +265,8 @@
         font-size: 22px;
     }
 
-    .card {
-        padding: 16px;
-    }
-
-    .course-title {
-        font-size: 20px;
+    .cards {
+        grid-template-columns: 1fr;
     }
 
     .search-form {
@@ -218,6 +282,6 @@
     }
 
     .btn {
-        text-align: center;
+        width: 100%;
     }
 }
