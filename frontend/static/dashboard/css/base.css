@@ -146,12 +146,57 @@ body {
         margin-left: 0;
     }
 }
+/* ================= THEME TOGGLE (Sun/Moon SVG) ================= */
+.theme-btn-3d {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-light);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: var(--text); /* critical for stroke='currentColor' */
+    transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.theme-btn-3d svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* Show only one icon based on current theme */
+body.dark .theme-btn-3d .sun-icon {
+    display: block;
+}
+body.dark .theme-btn-3d .moon-icon {
+    display: none;
+}
+body:not(.dark) .theme-btn-3d .sun-icon {
+    display: none;
+}
+body:not(.dark) .theme-btn-3d .moon-icon {
+    display: block;
+}
+
+.theme-btn-3d:hover {
+    transform: translateY(-1px);
+}
+
+.theme-btn-3d:focus-visible {
+    outline: 3px solid rgba(59, 130, 246, 0.35);
+    outline-offset: 2px;
+}
+
 
 /* ================= MOBILE OVERLAY ================= */
 .sidebar-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
     z-index: 180;
     display: none;
 }
