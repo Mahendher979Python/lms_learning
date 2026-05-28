@@ -44,8 +44,7 @@
 
     <div class="auth-wrapper">
         <div class="card" id="interactiveCard">
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             <h2>Create Account</h2>
             <div class="card-subtitle">Sign up for immediate student access</div>
 
@@ -153,9 +152,7 @@
                 <button class="login-btn" id="terms-close-btn-bottom"
                     style="width:auto; display:inline-flex; padding:8px 20px;">Close</button>
             </div>
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
             <div class="login-panel" id="register-panel">
                 <h2>Create Account</h2>
                 <div class="card-subtitle">Sign up for immediate student access</div>
@@ -284,19 +281,23 @@
                     <p>We may terminate access when these conditions are violated.</p>
                 </div>
             </section>
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
         </div>
     </div>
 
     <script>
-        // Modern Dynamic 3D Interaction Engine
-        const card = document.getElementById('interactiveCard');
+document.addEventListener("DOMContentLoaded", () => {
+
+    // =========================
+    // 3D Card Interaction
+    // =========================
+    const card = document.getElementById('interactiveCard');
+
+    if (card) {
         document.addEventListener('mousemove', (e) => {
             let xAxis = (window.innerWidth / 2 - e.pageX) / 45;
             let yAxis = (window.innerHeight / 2 - e.pageY) / 45;
+
             if (window.innerWidth > 768) {
                 card.style.transform = `rotateY(${xAxis}deg) rotateX(${-yAxis}deg)`;
             }
@@ -305,101 +306,112 @@
         document.addEventListener('mouseleave', () => {
             card.style.transform = `rotateY(0deg) rotateX(0deg)`;
         });
+    }
 
-        // Universal Password View Handler
-        document.querySelectorAll('.toggle-password').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const input = this.parentElement.querySelector('input');
-                if (input) {
-                    const type = input.type === 'password' ? 'text' : 'password';
-                    input.type = type;
-                    this.classList.toggle('fa-eye');
-                    this.classList.toggle('fa-eye-slash');
-                }
-            });
+    // =========================
+    // Password Toggle
+    // =========================
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const input = this.parentElement.querySelector('input');
+            if (!input) return;
+
+            input.type = input.type === 'password' ? 'text' : 'password';
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
         });
+    });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        // Modal Interaction Code Blocks 
-        const termsLink = document.getElementById('terms-link');
-        const termsModalOverlay = document.getElementById('terms-modal-overlay');
-        const termsCloseBtn = document.getElementById('terms-close-btn');
-        const termsCloseBtnBottom = document.getElementById('terms-close-btn-bottom');
+    // =========================
+    // Mobile Menu
+    // =========================
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.getElementById("navMenu");
 
-        if (termsLink) {
-            termsLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                termsModalOverlay.classList.add('active');
-            });
-        }
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener("click", () => {
+            navMenu.classList.toggle("active");
+        });
+    }
 
-        const dropModal = () => {
-            termsModalOverlay.classList.remove('active');
-        };
+    // =========================
+    // MODAL (Terms Popup)
+    // =========================
+    const termsLink = document.getElementById('terms-link');
+    const modalOverlay = document.getElementById('terms-modal-overlay');
+    const closeBtns = document.querySelectorAll('#terms-close-btn, #terms-close-btn-bottom');
 
-        [termsCloseBtn, termsCloseBtnBottom].forEach(el => el && el.addEventListener('click', dropModal));
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-        // Inline terms and conditions panels inside the register card
-        const termsLink = document.getElementById('terms-link');
-        const conditionsLink = document.getElementById('conditions-link');
-        const registerPanel = document.getElementById('register-panel');
-        const termsPanel = document.getElementById('terms-panel');
-        const conditionsPanel = document.getElementById('conditions-panel');
-        const legalPanels = [termsPanel, conditionsPanel];
-
-        const showLegalPanel = (panel) => {
-            registerPanel.hidden = true;
-            legalPanels.forEach(item => {
-                item.hidden = item !== panel;
-                item.classList.toggle('active', item === panel);
-                item.setAttribute('aria-hidden', item === panel ? 'false' : 'true');
-            });
-        };
-
-        const hideLegalPanels = () => {
-            registerPanel.hidden = false;
-            legalPanels.forEach(item => {
-                item.hidden = true;
-                item.classList.remove('active');
-                item.setAttribute('aria-hidden', 'true');
-            });
-        };
-
+    if (termsLink && modalOverlay) {
         termsLink.addEventListener('click', (e) => {
             e.preventDefault();
-            showLegalPanel(termsPanel);
+            modalOverlay.classList.add('active');
         });
+    }
 
+    closeBtns.forEach(btn => {
+        if (btn) {
+            btn.addEventListener('click', () => {
+                modalOverlay.classList.remove('active');
+            });
+        }
+    });
+
+    // =========================
+    // INLINE LEGAL PANELS
+    // =========================
+    const registerPanel = document.getElementById('register-panel');
+    const termsPanel = document.getElementById('terms-panel');
+    const conditionsPanel = document.getElementById('conditions-panel');
+
+    const conditionsLink = document.getElementById('conditions-link');
+
+    const legalPanels = [termsPanel, conditionsPanel];
+
+    function showPanel(panel) {
+        if (!registerPanel) return;
+
+        registerPanel.hidden = true;
+
+        legalPanels.forEach(p => {
+            if (!p) return;
+            p.hidden = p !== panel;
+            p.setAttribute('aria-hidden', p !== panel ? 'true' : 'false');
+        });
+    }
+
+    function hidePanels() {
+        if (!registerPanel) return;
+
+        registerPanel.hidden = false;
+
+        legalPanels.forEach(p => {
+            if (!p) return;
+            p.hidden = true;
+            p.setAttribute('aria-hidden', 'true');
+        });
+    }
+
+    if (termsLink) {
+        termsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPanel(termsPanel);
+        });
+    }
+
+    if (conditionsLink) {
         conditionsLink.addEventListener('click', (e) => {
             e.preventDefault();
-            showLegalPanel(conditionsPanel);
+            showPanel(conditionsPanel);
         });
+    }
 
-        document.querySelectorAll('[data-close-legal]').forEach(button => {
-            button.addEventListener('click', hideLegalPanels);
-        });
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+    document.querySelectorAll('[data-close-legal]').forEach(btn => {
+        btn.addEventListener('click', hidePanels);
+    });
 
-        // Header Responsive Trigger
-        document.getElementById("menuToggle").addEventListener("click", function () {
-            document.getElementById("navMenu").classList.toggle("active");
-        });
-    </script>
-
+});
+</script>
 </body>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 </html>
-=======
-</html>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-</html>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b

@@ -26,46 +26,25 @@ body {
 
 /* Header Correction */
 .navbar {
-<<<<<<< HEAD
-<<<<<<< HEAD
     font-family: var(--font-outfit);
-=======
     font-family: 'Inter', sans-serif;
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
     font-family: 'Inter', sans-serif;
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
 }
 
 .nav-links a {
-<<<<<<< HEAD
-<<<<<<< HEAD
     font-family: var(--font-outfit);
-=======
     font-family: 'Inter', sans-serif;
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
     font-family: 'Inter', sans-serif;
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
     font-weight: 500;
     transition: var(--transition-smooth);
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
 .nav-links a.active {
     color: #ffffff;
 }
 
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
 /* Dynamic Page Hero Section */
 .page-hero {
     position: relative;
@@ -117,7 +96,6 @@ body {
 
 /* ==========================================================================
    ABOUT PAGE SPECIFIC STYLES
-   ========================================================================== */
 
 /* Modern Statistics Section */
 .stats-strip {
@@ -340,7 +318,6 @@ body {
 
 /* ==========================================================================
    COURSES PAGE SPECIFIC STYLES
-   ========================================================================== */
 
 /* Filter System and Controls */
 .courses-browser {
@@ -574,7 +551,6 @@ body {
 
 /* ==========================================================================
    SERVICES PAGE SPECIFIC STYLES
-   ========================================================================== */
 
 /* Immersive Grid */
 .services-section {
@@ -734,7 +710,6 @@ body {
 
 /* ==========================================================================
    FAQ PAGE SPECIFIC STYLES
-   ========================================================================== */
 
 .faq-browser {
     max-width: 900px;
@@ -868,7 +843,6 @@ body {
 
 /* ==========================================================================
    CONTACT PAGE SPECIFIC STYLES
-   ========================================================================== */
 
 .contact-layout-split {
     padding: 60px 6%;
@@ -1153,7 +1127,6 @@ body {
 
 /* ==========================================================================
    ANIMATIONS
-   ========================================================================== */
 
 @keyframes pulsateGlow {
     0% {
@@ -1168,7 +1141,6 @@ body {
 
 /* ==========================================================================
    RESPONSIVE DESIGN BREAKPOINTS
-   ========================================================================== */
 
 @media (max-width: 1024px) {
     .team-grid {

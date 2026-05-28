@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Courses | LMS eLearning</title>
+
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/pages.css' %}">
@@ -13,24 +14,19 @@
 </head>
 
 <body>
+
     <!-- Premium Global Header Navbar -->
     <header class="navbar">
+
         <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
-            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height: 38px; width: auto;" alt="Logo">
+            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img"
+                style="height: 38px; width: auto;" alt="Logo">
             <span class="logo-text">LMS</span>
         </a>
 
         <nav class="nav-links" id="mainNavbarLinks" aria-label="Main navigation">
             <a href="{% url 'index' %}" class="nav-link">Home</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'courses' %}" class="nav-link active" style="color: var(--primary-color);">Courses</a>
-=======
             <a href="{% url 'courses' %}" class="nav-link active">Courses</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'courses' %}" class="nav-link active">Courses</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
             <a href="{% url 'about' %}" class="nav-link">About Us</a>
             <a href="{% url 'services' %}" class="nav-link">Services</a>
             <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
@@ -38,391 +34,274 @@
         </nav>
 
         <form class="searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" id="headerSearch" placeholder="Search courses..."
-                aria-label="Search courses">
+            <input type="search" name="search" id="headerSearch"
+                placeholder="Search courses..." aria-label="Search courses">
         </form>
 
         <div class="nav-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
             {% if user.is_authenticated %}
+
                 {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'student_view' %}">
+                        Dashboard
+                    </a>
+
                 {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'trainer_view' %}">
+                        Dashboard
+                    </a>
+
                 {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'manage_users' %}">
+                        Admin Portal
+                    </a>
                 {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'logout' %}">
+                    Logout
+                </a>
+
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+
+                <a class="button-secondary button-secondary-solid"
+                    href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'register' %}">
+                    Register
+                </a>
+
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
         </div>
 
         <button class="hamburger-btn" aria-label="Toggle menu">
             <i class="fas fa-bars"></i>
         </button>
+
     </header>
 
+    <!-- Sidebar -->
     <div class="sidebar-overlay"></div>
+
     <aside class="sidebar">
+
         <div class="sidebar-close">
             <button class="close-btn" aria-label="Close menu">
                 <i class="fas fa-times"></i>
             </button>
         </div>
+
         <nav class="sidebar-nav" aria-label="Mobile navigation">
             <a href="{% url 'index' %}" class="sidebar-link">Home</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'courses' %}" class="sidebar-link">Courses</a>
-=======
             <a href="{% url 'courses' %}" class="sidebar-link active">Courses</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'courses' %}" class="sidebar-link active">Courses</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
             <a href="{% url 'about' %}" class="sidebar-link">About Us</a>
             <a href="{% url 'services' %}" class="sidebar-link">Services</a>
             <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
             <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
         </nav>
-        <form class="sidebar-searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" id="sidebarSearch" placeholder="Search courses..."
+
+        <form class="sidebar-searchbar" role="search"
+            action="{% url 'courses' %}" method="GET">
+
+            <input type="search" name="search" id="sidebarSearch"
+                placeholder="Search courses..."
                 aria-label="Search courses">
         </form>
+
         <div class="sidebar-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
             {% if user.is_authenticated %}
+
                 {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'student_view' %}">
+                        Dashboard
+                    </a>
+
                 {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'trainer_view' %}">
+                        Dashboard
+                    </a>
+
                 {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'manage_users' %}">
+                        Admin Portal
+                    </a>
                 {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'logout' %}">
+                    Logout
+                </a>
+
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+
+                <a class="button-secondary button-secondary-solid"
+                    href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'register' %}">
+                    Register
+                </a>
+
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
         </div>
+
     </aside>
 
+    <!-- Main Content -->
     <main>
+
         <!-- Hero Section -->
         <section class="page-hero">
             <div class="page-hero-content">
                 <p class="eyebrow">Course Directory</p>
-                <h1>Expand Your Potential with <span>Accredited Courses</span></h1>
-                <p>Browse our catalog of highly practical courses built by field practitioners. Learn development,
-                    executive business planning, data insight structures, and complete actual coding assessments.</p>
+
+                <h1>
+                    Expand Your Potential with
+                    <span>Accredited Courses</span>
+                </h1>
+
+                <p>
+                    Browse our catalog of highly practical courses built by field
+                    practitioners. Learn development, executive business planning,
+                    data insight structures, and complete actual coding assessments.
+                </p>
             </div>
         </section>
 
-        <!-- Course Browser Section -->
+        <!-- Course Browser -->
         <section class="courses-browser">
+
             <div class="browser-header">
-                <!-- Filtering tabs -->
+
                 <div class="filter-group">
-                    <button class="filter-btn active" data-filter="all">All Categories</button>
-                    <button class="filter-btn" data-filter="development">Web Development</button>
-                    <button class="filter-btn" data-filter="business">Business &amp; Management</button>
-                    <button class="filter-btn" data-filter="data">Data Science &amp; Analytics</button>
+                    <button class="filter-btn active" data-filter="all">
+                        All Categories
+                    </button>
+
+                    <button class="filter-btn" data-filter="development">
+                        Web Development
+                    </button>
+
+                    <button class="filter-btn" data-filter="business">
+                        Business &amp; Management
+                    </button>
+
+                    <button class="filter-btn" data-filter="data">
+                        Data Science &amp; Analytics
+                    </button>
                 </div>
 
-                <!-- Text Search filter box -->
                 <div class="search-filter-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="coursesSearchInput" placeholder="Filter by keywords...">
+
+                    <input type="text"
+                        id="coursesSearchInput"
+                        placeholder="Filter by keywords...">
                 </div>
+
             </div>
 
             <!-- Courses Grid -->
             <div class="courses-page-grid">
+
                 <!-- Course 1 -->
-                <article class="premium-course-card" data-category="development">
+                <article class="premium-course-card"
+                    data-category="development">
+
                     <div class="card-banner">
                         <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80"
                             alt="Web Development Course Banner">
+
                         <span class="card-tag">Bestseller</span>
                     </div>
+
                     <div class="card-body">
+
                         <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 48 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 32 Lessons</span>
+                            <span>
+                                <i class="far fa-clock"></i> 48 Hours
+                            </span>
+
+                            <span>
+                                <i class="far fa-file-alt"></i> 32 Lessons
+                            </span>
                         </div>
+
                         <h3>Full Stack JavaScript Mastery</h3>
-                        <p>Master HTML5, CSS3, ES6 JavaScript, React, Node.js, and Express to build real dynamic
-                            applications.</p>
-                        <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.8</span>
-                            <span class="rating-count">(3,420 Students)</span>
-                        </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="Marcus Chen">
-                                <span>Marcus Chen</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$199</span>$99
-                            </div>
-                        </div>
-                    </div>
-                </article>
 
-                <!-- Course 2 -->
-                <article class="premium-course-card" data-category="business">
-                    <div class="card-banner">
-                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80"
-                            alt="Business Skills Course Banner">
-                        <span class="card-tag">New</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 24 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 18 Lessons</span>
-                        </div>
-                        <h3>Executive Business Operations</h3>
-                        <p>Learn core operations management, corporate team leadership, resource planning, and critical
-                            metrics.</p>
-                        <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.7</span>
-                            <span class="rating-count">(1,150 Students)</span>
-                        </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="Elena Rostova">
-                                <span>Elena Rostova</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$149</span>$79
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Course 3 -->
-                <article class="premium-course-card" data-category="data">
-                    <div class="card-banner">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
-                            alt="Data Analytics Course Banner">
-                        <span class="card-tag">Hot</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 36 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 24 Lessons</span>
-                        </div>
-                        <h3>Advanced Python Data Science</h3>
-                        <p>Utilize NumPy, Pandas, Matplotlib, and Seaborn to construct interactive analytics dashboards.
+                        <p>
+                            Master HTML5, CSS3, ES6 JavaScript, React,
+                            Node.js, and Express to build real dynamic applications.
                         </p>
+
                         <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.9</span>
-                            <span class="rating-count">(2,890 Students)</span>
+                            <span class="stars">
+                                <i class="fas fa-star"></i> 4.8
+                            </span>
+
+                            <span class="rating-count">
+                                (3,420 Students)
+                            </span>
                         </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="David Miller">
-                                <span>David Miller</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$249</span>$129
-                            </div>
-                        </div>
+
                     </div>
                 </article>
 
-                <!-- Course 4 -->
-                <article class="premium-course-card" data-category="development">
-                    <div class="card-banner">
-                        <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=600&q=80"
-                            alt="React Native Banner">
-                        <span class="card-tag">Featured</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 30 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 20 Lessons</span>
-                        </div>
-                        <h3>React Native Mobile Dev</h3>
-                        <p>Build natively compiled iOS and Android mobile software solutions using React frameworks.</p>
-                        <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.6</span>
-                            <span class="rating-count">(890 Students)</span>
-                        </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="Marcus Chen">
-                                <span>Marcus Chen</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$180</span>$89
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Course 5 -->
-                <article class="premium-course-card" data-category="business">
-                    <div class="card-banner">
-                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80"
-                            alt="Communication Banner">
-                    </div>
-                    <div class="card-body">
-                        <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 12 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 10 Lessons</span>
-                        </div>
-                        <h3>High-Impact Communication</h3>
-                        <p>Refine presentation frameworks, public speaking, negotiation logic, and stakeholder
-                            messaging.</p>
-                        <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.8</span>
-                            <span class="rating-count">(1,540 Students)</span>
-                        </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="Elena Rostova">
-                                <span>Elena Rostova</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$99</span>$49
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Course 6 -->
-                <article class="premium-course-card" data-category="data">
-                    <div class="card-banner">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
-                            alt="SQL analytics banner">
-                        <span class="card-tag">Bestseller</span>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-meta-top">
-                            <span><i class="far fa-clock"></i> 28 Hours</span>
-                            <span><i class="far fa-file-alt"></i> 18 Lessons</span>
-                        </div>
-                        <h3>SQL &amp; Database Optimization</h3>
-                        <p>Master complex queries, indexing structures, schema design, and performant analytics
-                            aggregations.</p>
-                        <div class="card-rating">
-                            <span class="stars"><i class="fas fa-star"></i> 4.7</span>
-                            <span class="rating-count">(2,110 Students)</span>
-                        </div>
-                        <div class="card-footer">
-                            <div class="instructor-info">
-                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-                                    class="instructor-avatar" alt="David Miller">
-                                <span>David Miller</span>
-                            </div>
-                            <div class="card-price">
-                                <span class="price-old">$199</span>$99
-                            </div>
-                        </div>
-                    </div>
-                </article>
             </div>
+
         </section>
+
     </main>
 
-    <!-- Premium Unified Footer -->
+    <!-- Footer -->
     <footer class="footer">
+
         <div>
             <h3>LMS eLearning</h3>
-            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
+
+            <p>
+                Online courses, live classes, exams,
+                and learning tools for modern education.
+            </p>
+
             <div class="social-links">
-                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i
-                        class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i
-                        class="fab fa-instagram"></i></a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i
-                        class="fab fa-linkedin-in"></i></a>
-                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i
-                        class="fab fa-youtube"></i></a>
+                <a href="https://facebook.com" target="_blank" rel="noopener">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a href="https://instagram.com" target="_blank" rel="noopener">
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="https://linkedin.com" target="_blank" rel="noopener">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a href="https://youtube.com" target="_blank" rel="noopener">
+                    <i class="fab fa-youtube"></i>
+                </a>
             </div>
         </div>
 
-        <div>
-            <h3>Courses</h3>
-            <a href="{% url 'courses' %}?filter=development">Web Development</a>
-            <a href="{% url 'courses' %}?filter=business">Business Skills</a>
-            <a href="{% url 'courses' %}?filter=data">Data Analytics</a>
-            <a href="{% url 'index' %}#blog">Blog</a>
-        </div>
-
-        <div>
-            <h3>Navigation</h3>
-            <a href="{% url 'about' %}">Our Platform</a>
-            <a href="{% url 'services' %}">LMS Services</a>
-            <a href="{% url 'faq' %}">Help & FAQs</a>
-            <a href="{% url 'contact' %}">Contact Us</a>
-        </div>
-
-        <div>
-            <h3>Support</h3>
-            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
-            <a href="tel:9998887776">9998887776</a>
-            <a href="{% url 'faq' %}">Help Center</a>
-        </div>
-
-        <div>
-            <h3>Legal</h3>
-            <a href="#privacy-notice">Privacy Notice</a>
-            <a href="{% url 'terms_page' %}">Terms</a>
-            <a href="{% url 'conditions_page' %}">Conditions</a>
-            <a href="#cookies">Cookies</a>
-        </div>
     </footer>
 
-    <!-- JS Scripts -->
+    <!-- JS -->
     <script src="{% static 'accounts/js/pages.js' %}"></script>
+
     <script>
+
         const hamburgerBtn = document.querySelector('.hamburger-btn');
         const sidebar = document.querySelector('.sidebar');
         const sidebarOverlay = document.querySelector('.sidebar-overlay');
@@ -432,7 +311,11 @@
         function toggleSidebar() {
             sidebar.classList.toggle('active');
             sidebarOverlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+
+            document.body.style.overflow =
+                sidebar.classList.contains('active')
+                    ? 'hidden'
+                    : '';
         }
 
         hamburgerBtn.addEventListener('click', toggleSidebar);
@@ -442,20 +325,9 @@
         sidebarLinks.forEach(link => {
             link.addEventListener('click', toggleSidebar);
         });
+
     </script>
+
 </body>
 
-<<<<<<< HEAD
 </html>
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-</html>
-=======
-</html>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-</html>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b

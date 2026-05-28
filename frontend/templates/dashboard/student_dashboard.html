@@ -1,35 +1,26 @@
 {% extends 'dashboard/student_base.html' %}
+{% load static %}
+
 {% block title %}Student Dashboard{% endblock %}
 
 {% block content %}
-{% load static %}
 
 <link rel="stylesheet" href="{% static 'dashboard/css/student_dashboard.css' %}">
 
-<!-- ================= HEADER ================= -->
-
+<!-- HEADER -->
 <div class="premium-header">
     <h2>👋 Welcome, {{ request.user.username }}</h2>
-    <p>Keep learning and improving your skills </p>
+    <p>Keep learning and improving your skills</p>
 </div>
 
-<!-- ================= TOP CARDS ================= -->
-
+<!-- TOP CARDS -->
 <div class="dashboard-grid">
 
     <div class="premium-stat-card">
         <div class="premium-stat-card-icon blue">
             <i class="fas fa-book"></i>
         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <div class="premium-stat-card-value">{{ total_courses|default:0 }}</div>
-=======
         <div class="premium-stat-card-value">{{ request.user.courses.count }}</div>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-        <div class="premium-stat-card-value">{{ request.user.courses.count }}</div>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
         <div class="premium-stat-card-label">Assigned Courses</div>
     </div>
 
@@ -45,15 +36,7 @@
         <div class="premium-stat-card-icon orange">
             <i class="fas fa-trophy"></i>
         </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <div class="premium-stat-card-value">{{ certificates|default:0 }}</div>
-=======
         <div class="premium-stat-card-value">{{ certificates }}</div>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-        <div class="premium-stat-card-value">{{ certificates }}</div>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
         <div class="premium-stat-card-label">Certificates</div>
     </div>
 
@@ -67,64 +50,43 @@
 
 </div>
 
-<!-- ================= COURSES ================= -->
-
+<!-- COURSES -->
 <div class="premium-section">
-
     <h3>📚 My Assigned Courses</h3>
 
     <div class="premium-course-grid">
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        {% for course in courses %}
-=======
         {% for course in request.user.courses.all %}
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-        {% for course in request.user.courses.all %}
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
 
         <div class="premium-course-card">
-
             <h3>{{ course.title }}</h3>
 
             <span class="premium-badge">Active</span>
 
-            <p style="margin:8px 0;">Trainer: {{ course.trainer.username }}</p>
+            <p>Trainer: {{ course.trainer.username }}</p>
 
             <div class="premium-progress">
-
                 <div class="premium-progress-fill"
-                data-progress="{{ course.progress|default:40 }}">
+                     data-progress="{{ course.progress|default:40 }}">
                 </div>
-
             </div>
 
             <p>Progress: {{ course.progress|default:40 }}%</p>
-
         </div>
 
         {% empty %}
-
         <p style="color:#9ca3af;">No assigned courses yet.</p>
-
         {% endfor %}
 
     </div>
-
 </div>
 
-<!-- ================= ASSIGNMENTS ================= -->
-
+<!-- ASSIGNMENTS -->
 <div class="premium-section">
-
     <h3>📝 Recent Assignments</h3>
 
     <div class="premium-table-box">
-
         <table class="premium-table">
-
             <thead>
                 <tr>
                     <th>Title</th>
@@ -133,80 +95,44 @@
             </thead>
 
             <tbody>
-
                 {% for assignment in assignments %}
-
                 <tr>
-
                     <td>{{ assignment.title }}</td>
-
                     <td>
-                        <span class="premium-badge">
-                            {{ assignment.status }}
-                        </span>
+                        <span class="premium-badge">{{ assignment.status }}</span>
                     </td>
-
                 </tr>
-
                 {% empty %}
-
                 <tr>
-                    <td colspan="2" style="padding:40px; text-align:center; color:#9ca3af;">
+                    <td colspan="2" style="text-align:center; color:#9ca3af;">
                         No assignments
                     </td>
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
-
     </div>
-
 </div>
 
-<!-- ================= CHARTS ================= -->
-
+<!-- CHARTS -->
 <div class="premium-chart-grid">
 
     <div class="premium-chart-card">
-
-        <h3>
-            📊 Learning Progress
-        </h3>
-
+        <h3>📊 Learning Progress</h3>
         <canvas id="studentProgressChart"></canvas>
-
     </div>
 
     <div class="premium-chart-card">
-
-        <h3>
-            📈 Overall Performance
-        </h3>
-
+        <h3>📈 Overall Performance</h3>
         <canvas id="studentPerformanceChart"></canvas>
-
     </div>
 
 </div>
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-{{ total_courses|default:0|json_script:"courses-data" }}
-{{ total_assignments|json_script:"assignments-data" }}
-{{ certificates|default:0|json_script:"certificates-data" }}
-=======
+<!-- JSON DATA -->
 {{ request.user.courses.count|json_script:"courses-data" }}
 {{ total_assignments|json_script:"assignments-data" }}
 {{ certificates|json_script:"certificates-data" }}
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-{{ request.user.courses.count|json_script:"courses-data" }}
-{{ total_assignments|json_script:"assignments-data" }}
-{{ certificates|json_script:"certificates-data" }}
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
 {{ progress_percent|json_script:"progress-data" }}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

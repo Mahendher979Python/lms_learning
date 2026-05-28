@@ -1,14 +1,43 @@
-function toggleSidebar() {
-    document.getElementById("sidebar").classList.toggle("closed");
-    document.getElementById("main").classList.toggle("full");
+// Shared student dashboard helpers (sidebar, theme, notifications, logout)
+
+function syncSidebarLayout() {
+    const sidebar = document.getElementById("sidebar");
+    const overlay = document.getElementById("sidebar-overlay");
     const navbar = document.querySelector(".navbar");
-    if (navbar) {
-        if (navbar.style.left === "260px") {
-            navbar.style.left = "0px";
-        } else {
-            navbar.style.left = "260px";
-        }
+
+    if (!sidebar) return;
+
+    const isMobile = window.innerWidth <= 768;
+    const isClosed = sidebar.classList.contains("closed");
+
+    if (overlay) {
+        if (isMobile && !isClosed) overlay.classList.add("active");
+        else overlay.classList.remove("active");
     }
+
+    if (navbar && isMobile) navbar.style.left = "0px";
+    else if (navbar) navbar.style.left = "";
+}
+
+function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    if (!sidebar) return;
+
+    sidebar.classList.toggle("closed");
+    if (main) main.classList.toggle("full");
+    syncSidebarLayout();
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("main");
+    const overlay = document.getElementById("sidebar-overlay");
+
+    if (sidebar) sidebar.classList.add("closed");
+    if (main) main.classList.add("full");
+    if (overlay) overlay.classList.remove("active");
+    syncSidebarLayout();
 }
 
 function toggleDark() {
@@ -16,107 +45,45 @@ function toggleDark() {
     localStorage.setItem("theme", isDark ? "dark" : "light");
 }
 
-/* NOTIFICATIONS (FIXED + SAFE) */
 function loadNotifications() {
-    fetch("/notifications/")
-    .then(res => res.json())
-    .then(data => {
+    const url = (window.NOTIFICATIONS_API || "/notifications/");
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            const badge = document.getElementById("notif-count");
+            if (!badge) return;
 
-        const dropdown = document.getElementById("dropdown");
-        const count = document.getElementById("count");
-
-        dropdown.innerHTML = "";
-        count.innerText = data.unread_count || 0;
-
-        if (!data.notifications || data.notifications.length === 0) {
-            dropdown.innerHTML = "<div style='padding:10px;'>No notifications</div>";
-            return;
-        }
-
-        data.notifications.forEach(n => {
-            let div = document.createElement("div");
-
-            div.className = "notif-item " + (n.type || "");
-
-            div.innerHTML = `
-                <b>${n.type ? n.type.toUpperCase() : "INFO"}</b><br>
-                ${n.message || ""}<br>
-                <small>${n.course || ""}</small><br>
-                <small style="color:gray">${n.time || ""}</small>
-            `;
-
-            div.onclick = function () {
-                fetch(`/notifications/read/${n.id}/`, {
-                    method: "POST",
-                    headers: {
-                        "X-CSRFToken": getCookie("csrftoken")
-                    }
-                });
-                div.style.opacity = "0.5";
-            };
-
-            dropdown.appendChild(div);
-        });
-    });
+            const unread = data && typeof data.unread_count === "number" ? data.unread_count : 0;
+            badge.innerText = unread;
+            badge.style.display = unread > 0 ? "flex" : "none";
+        })
+        .catch(() => { });
 }
 
-/* dropdown toggle */
-document.addEventListener("DOMContentLoaded", function () {
-
-    const box = document.getElementById("notifBox");
-    const dropdown = document.getElementById("dropdown");
-
-    box.addEventListener("click", function (e) {
-        dropdown.style.display =
-            dropdown.style.display === "block" ? "none" : "block";
-        e.stopPropagation();
-    });
-
-    document.addEventListener("click", function () {
-        dropdown.style.display = "none";
-    });
-
-    loadNotifications();
-    setInterval(loadNotifications, 5000);
-});
-
-/* CSRF */
-function getCookie(name) {
-    let cookieValue = null;
-    document.cookie.split(";").forEach(c => {
-        c = c.trim();
-        if (c.startsWith(name + "=")) {
-            cookieValue = decodeURIComponent(c.substring(name.length + 1));
-        }
-    });
-    return cookieValue;
-}
-
-/* 3D LOGOUT MODAL ACTION HANDLERS */
 function showLogoutModal(e) {
     if (e) {
         e.preventDefault();
         e.stopPropagation();
     }
     const modal = document.getElementById("logout-confirm-modal");
-    if (modal) {
-        modal.classList.add("active");
-    }
+    if (modal) modal.classList.add("active");
 }
 
 function closeLogoutModal() {
     const modal = document.getElementById("logout-confirm-modal");
-    if (modal) {
-        modal.classList.remove("active");
-    }
+    if (modal) modal.classList.remove("active");
 }
 
 function confirmLogout() {
     const form = document.getElementById("logout-post-form");
-    if (form) {
-        form.submit();
-    } else {
-        // Fallback to simple redirect if form is not found
-        window.location.href = "/en/logout/";
-    }
+    if (form) form.submit();
+    else window.location.href = "/en/logout/";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    syncSidebarLayout();
+    loadNotifications();
+    setInterval(loadNotifications, 5000);
+});
+
+window.addEventListener("resize", syncSidebarLayout);

@@ -6,17 +6,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frequently Asked Questions | LMS eLearning</title>
+
     <!-- CSS Dependencies -->
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/pages.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+
     <!-- Premium Global Header Navbar -->
     <header class="navbar">
+
         <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
-            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height: 38px; width: auto;" alt="Logo">
+            <img src="{% static 'accounts/images/spylogo.png' %}"
+                class="logo-img"
+                style="height: 38px; width: auto;"
+                alt="Logo">
+
             <span class="logo-text">LMS</span>
         </a>
 
@@ -25,297 +33,398 @@
             <a href="{% url 'courses' %}" class="nav-link">Courses</a>
             <a href="{% url 'about' %}" class="nav-link">About Us</a>
             <a href="{% url 'services' %}" class="nav-link">Services</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'faq' %}" class="nav-link active" style="color: var(--primary-color);">FAQs</a>
-=======
             <a href="{% url 'faq' %}" class="nav-link active">FAQs</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'faq' %}" class="nav-link active">FAQs</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
             <a href="{% url 'contact' %}" class="nav-link">Contact</a>
         </nav>
 
-        <form class="searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
+        <form class="searchbar"
+            role="search"
+            action="{% url 'courses' %}"
+            method="GET">
+
+            <input type="search"
+                name="search"
+                placeholder="Search courses..."
+                aria-label="Search courses">
         </form>
 
         <div class="nav-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
             {% if user.is_authenticated %}
+
                 {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'student_view' %}">
+                        Dashboard
+                    </a>
+
                 {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'trainer_view' %}">
+                        Dashboard
+                    </a>
+
                 {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'manage_users' %}">
+                        Admin Portal
+                    </a>
+
                 {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'logout' %}">
+                    Logout
+                </a>
+
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+
+                <a class="button-secondary button-secondary-solid"
+                    href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'register' %}">
+                    Register
+                </a>
+
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
         </div>
 
         <button class="hamburger-btn" aria-label="Toggle menu">
             <i class="fas fa-bars"></i>
         </button>
+
     </header>
 
+    <!-- Sidebar -->
     <div class="sidebar-overlay"></div>
+
     <aside class="sidebar">
+
         <div class="sidebar-close">
             <button class="close-btn" aria-label="Close menu">
                 <i class="fas fa-times"></i>
             </button>
         </div>
+
         <nav class="sidebar-nav" aria-label="Mobile navigation">
             <a href="{% url 'index' %}" class="sidebar-link">Home</a>
             <a href="{% url 'courses' %}" class="sidebar-link">Courses</a>
             <a href="{% url 'about' %}" class="sidebar-link">About Us</a>
             <a href="{% url 'services' %}" class="sidebar-link">Services</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
-=======
             <a href="{% url 'faq' %}" class="sidebar-link active">FAQs</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'faq' %}" class="sidebar-link active">FAQs</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
             <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
         </nav>
-        <form class="sidebar-searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
+
+        <form class="sidebar-searchbar"
+            role="search"
+            action="{% url 'courses' %}"
+            method="GET">
+
+            <input type="search"
+                name="search"
+                placeholder="Search courses..."
+                aria-label="Search courses">
         </form>
+
         <div class="sidebar-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
             {% if user.is_authenticated %}
+
                 {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'student_view' %}">
+                        Dashboard
+                    </a>
+
                 {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'trainer_view' %}">
+                        Dashboard
+                    </a>
+
                 {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
+                    <a class="button-secondary button-secondary-solid"
+                        href="{% url 'manage_users' %}">
+                        Admin Portal
+                    </a>
+
                 {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'logout' %}">
+                    Logout
+                </a>
+
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+
+                <a class="button-secondary button-secondary-solid"
+                    href="{% url 'login' %}">
+                    Login
+                </a>
+
+                <a class="button-secondary button-secondary-outline"
+                    href="{% url 'register' %}">
+                    Register
+                </a>
+
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+
         </div>
+
     </aside>
 
+    <!-- Main -->
     <main>
+
         <!-- Hero Section -->
         <section class="page-hero">
+
             <div class="page-hero-content">
+
                 <p class="eyebrow">Support Hub</p>
-                <h1>Frequently Asked <span>Questions</span></h1>
-                <p>Have questions about registration, dynamic classrooms, assignments, or billing? Find immediate answers below or search our knowledge database.</p>
+
+                <h1>
+                    Frequently Asked
+                    <span>Questions</span>
+                </h1>
+
+                <p>
+                    Have questions about registration, dynamic classrooms,
+                    assignments, or billing? Find immediate answers below
+                    or search our knowledge database.
+                </p>
+
             </div>
+
         </section>
 
-        <!-- FAQ Browser Section -->
+        <!-- FAQ Browser -->
         <section class="faq-browser">
-            <!-- Search bar -->
+
+            <!-- Search -->
             <div class="faq-search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="faqSearch" placeholder="Type your question or topic...">
+
+                <input type="text"
+                    id="faqSearch"
+                    placeholder="Type your question or topic...">
             </div>
 
-            <!-- Category 1: General Platform -->
+            <!-- Category 1 -->
             <h2 class="faq-category-title">General Platform</h2>
+
             <div class="faq-accordion-group">
-                <!-- FAQ 1 -->
+
                 <div class="accordion-item">
+
                     <button class="accordion-header">
                         <h3>What is LMS eLearning and how does it work?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            LMS eLearning is a modern educational management platform that allows students to access rich pre-recorded lessons, attend interactive live webinars with trainers, attempt comprehensive tests, collaborate in project squads, and obtain verified completions.
+                            LMS eLearning is a modern educational management
+                            platform that allows students to access rich
+                            pre-recorded lessons, attend interactive live
+                            webinars with trainers, attempt comprehensive
+                            tests, collaborate in project squads, and obtain
+                            verified completions.
                         </div>
                     </div>
+
                 </div>
 
-                <!-- FAQ 2 -->
                 <div class="accordion-item">
+
                     <button class="accordion-header">
                         <h3>Is the learning platform mobile-friendly?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            Yes! Our platform is constructed using standard responsive CSS grid and flex systems, meaning it functions natively and fluidly across all tablets, mobile devices, laptops, and desktop computers.
+                            Yes! Our platform is fully responsive and works
+                            smoothly on tablets, smartphones, laptops,
+                            and desktops.
                         </div>
                     </div>
+
                 </div>
+
             </div>
 
-            <!-- Category 2: Live Classes & Learning -->
-            <h2 class="faq-category-title">Live Classes &amp; Learning</h2>
+            <!-- Category 2 -->
+            <h2 class="faq-category-title">
+                Live Classes &amp; Learning
+            </h2>
+
             <div class="faq-accordion-group">
-                <!-- FAQ 3 -->
+
                 <div class="accordion-item">
+
                     <button class="accordion-header">
-                        <h3>How do I join a scheduled live class session?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        <h3>
+                            How do I join a scheduled live class session?
+                        </h3>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            Once you log in, navigate to your Student Dashboard. Under the "Active Scheduled Classes" module, you will see a card for any live class starting within the day. Simply click the "Join Live Session" action to join the virtual call.
+                            Login to your Student Dashboard and click
+                            "Join Live Session" from the Active Classes section.
                         </div>
                     </div>
+
                 </div>
 
-                <!-- FAQ 4 -->
                 <div class="accordion-item">
+
                     <button class="accordion-header">
-                        <h3>What happens if I miss a live classroom webinar?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        <h3>
+                            What happens if I miss a live webinar?
+                        </h3>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            No worries! All live virtual streams are automatically recorded. Once the session finishes, the recorded class video file is uploaded directly to that specific course lesson list within 1-2 hours.
+                            All live sessions are automatically recorded
+                            and uploaded to the course within a few hours.
                         </div>
                     </div>
+
                 </div>
 
-                <!-- FAQ 5 -->
-                <div class="accordion-item">
-                    <button class="accordion-header">
-                        <h3>How are student final exams graded?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
-                    </button>
-                    <div class="accordion-collapse">
-                        <div class="accordion-body">
-                            Standard quizzes and coding tasks are graded automatically by our evaluation parser, showing immediate scores. Subjective tasks or projects are reviewed manually by your assigned trainer within 3 working days.
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Category 3: Access & Billing -->
-            <h2 class="faq-category-title">Access &amp; Billing</h2>
+            <!-- Category 3 -->
+            <h2 class="faq-category-title">
+                Access &amp; Billing
+            </h2>
+
             <div class="faq-accordion-group">
-                <!-- FAQ 6 -->
+
                 <div class="accordion-item">
+
                     <button class="accordion-header">
-                        <h3>How long do I keep access to purchased courses?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        <h3>
+                            How long do I keep access to purchased courses?
+                        </h3>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            You get lifetime access! Once you complete a purchase, all lessons, code files, reading worksheets, and future course updates are open to you indefinitely.
+                            You receive lifetime access to purchased courses,
+                            including future updates and downloadable resources.
                         </div>
                     </div>
+
                 </div>
 
-                <!-- FAQ 7 -->
                 <div class="accordion-item">
+
                     <button class="accordion-header">
-                        <h3>What payment options are supported?</h3>
-                        <span class="accordion-icon"><i class="fas fa-chevron-down"></i></span>
+                        <h3>
+                            What payment options are supported?
+                        </h3>
+
+                        <span class="accordion-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
                     </button>
+
                     <div class="accordion-collapse">
                         <div class="accordion-body">
-                            We support all primary credit and debit cards, net banking, UPI, and major electronic wallets through secure Razorpay integration.
+                            We support UPI, credit cards, debit cards,
+                            net banking, and digital wallets via Razorpay.
                         </div>
                     </div>
+
                 </div>
+
             </div>
+
         </section>
+
     </main>
 
-    <!-- Premium Unified Footer -->
+    <!-- Footer -->
     <footer class="footer">
+
         <div>
             <h3>LMS eLearning</h3>
-            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
+
+            <p>
+                Online courses, live classes, exams,
+                and learning tools for modern education.
+            </p>
+
             <div class="social-links">
-                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+
+                <a href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Facebook">
+
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+
+                <a href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="Instagram">
+
+                    <i class="fab fa-instagram"></i>
+                </a>
+
+                <a href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="LinkedIn">
+
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+
+                <a href="https://youtube.com"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label="YouTube">
+
+                    <i class="fab fa-youtube"></i>
+                </a>
+
             </div>
         </div>
 
-        <div>
-            <h3>Courses</h3>
-            <a href="{% url 'courses' %}?filter=development">Web Development</a>
-            <a href="{% url 'courses' %}?filter=business">Business Skills</a>
-            <a href="{% url 'courses' %}?filter=data">Data Analytics</a>
-            <a href="{% url 'index' %}#blog">Blog</a>
-        </div>
-
-        <div>
-            <h3>Navigation</h3>
-            <a href="{% url 'about' %}">Our Platform</a>
-            <a href="{% url 'services' %}">LMS Services</a>
-            <a href="{% url 'faq' %}">Help & FAQs</a>
-            <a href="{% url 'contact' %}">Contact Us</a>
-        </div>
-
-        <div>
-            <h3>Support</h3>
-            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
-            <a href="tel:9998887776">9998887776</a>
-            <a href="{% url 'faq' %}">Help Center</a>
-        </div>
-
-        <div>
-            <h3>Legal</h3>
-            <a href="#privacy-notice">Privacy Notice</a>
-            <a href="{% url 'terms_page' %}">Terms</a>
-            <a href="{% url 'conditions_page' %}">Conditions</a>
-            <a href="#cookies">Cookies</a>
-        </div>
     </footer>
 
-    <!-- JS Scripts -->
+    <!-- JS -->
     <script src="{% static 'accounts/js/pages.js' %}"></script>
+
     <script>
+
         const hamburgerBtn = document.querySelector('.hamburger-btn');
         const sidebar = document.querySelector('.sidebar');
         const sidebarOverlay = document.querySelector('.sidebar-overlay');
@@ -325,7 +434,11 @@
         function toggleSidebar() {
             sidebar.classList.toggle('active');
             sidebarOverlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+
+            document.body.style.overflow =
+                sidebar.classList.contains('active')
+                    ? 'hidden'
+                    : '';
         }
 
         hamburgerBtn.addEventListener('click', toggleSidebar);
@@ -335,7 +448,9 @@
         sidebarLinks.forEach(link => {
             link.addEventListener('click', toggleSidebar);
         });
+
     </script>
+
 </body>
 
 </html>

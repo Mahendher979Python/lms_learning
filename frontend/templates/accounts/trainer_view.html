@@ -111,13 +111,14 @@ tr:hover {
         <button type="button">Trainers</button>
     </a>
 
-    <form method="get">
+    <form method="get" id="searchForm">
         <input
             type="text"
             name="search"
             placeholder="Search by username/email"
             value="{{ request.GET.search }}"
             class="search-box"
+            id="searchInput"
         >
 
         <input type="hidden" name="role" value="{{ request.GET.role }}">

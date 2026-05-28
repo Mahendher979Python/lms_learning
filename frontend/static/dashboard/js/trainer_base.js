@@ -1,40 +1,31 @@
 // Shared trainer dashboard helpers (sidebar, theme, notifications, logout)
-// Note: trainer_base.html also includes inline fallbacks; this file ensures
-// functionality works even if the inline script is removed/changed.
 
 function syncSidebarLayout() {
     const sidebar = document.getElementById("sidebar");
-    const main = document.getElementById("main");
     const overlay = document.getElementById("sidebar-overlay");
     const navbar = document.querySelector(".navbar");
 
-    if (window.innerWidth >= 769) {
-        if (overlay) overlay.classList.remove("active");
-        if (navbar) {
-            navbar.style.left = sidebar && sidebar.classList.contains("closed") ? "260px" : "0px";
-        }
-        return;
+    if (!sidebar) return;
+
+    const isMobile = window.innerWidth <= 768;
+    const isClosed = sidebar.classList.contains("closed");
+
+    if (overlay) {
+        if (isMobile && !isClosed) overlay.classList.add("active");
+        else overlay.classList.remove("active");
     }
 
-    if (navbar) navbar.style.left = "0px";
-    if (overlay) {
-        if (sidebar && sidebar.classList.contains("closed")) {
-            overlay.classList.add("active");
-        } else {
-            overlay.classList.remove("active");
-        }
-    }
+    if (navbar && isMobile) navbar.style.left = "0px";
+    else if (navbar) navbar.style.left = "";
 }
 
 function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
     const main = document.getElementById("main");
-    const overlay = document.getElementById("sidebar-overlay");
-    if (!sidebar || !main) return;
+    if (!sidebar) return;
 
     sidebar.classList.toggle("closed");
-    main.classList.toggle("full");
-    if (overlay && window.innerWidth >= 769) overlay.classList.remove("active");
+    if (main) main.classList.toggle("full");
     syncSidebarLayout();
 }
 
@@ -42,8 +33,9 @@ function closeSidebar() {
     const sidebar = document.getElementById("sidebar");
     const main = document.getElementById("main");
     const overlay = document.getElementById("sidebar-overlay");
-    if (sidebar) sidebar.classList.remove("closed");
-    if (main) main.classList.remove("full");
+
+    if (sidebar) sidebar.classList.add("closed");
+    if (main) main.classList.add("full");
     if (overlay) overlay.classList.remove("active");
     syncSidebarLayout();
 }
@@ -54,66 +46,44 @@ function toggleDark() {
 }
 
 function loadNotifications() {
-    fetch("/notifications/")
+    const url = (window.NOTIFICATIONS_API || "/notifications/");
+    fetch(url)
         .then(res => res.json())
         .then(data => {
             const badge = document.getElementById("notif-count");
             if (!badge) return;
 
-            const unread = data.unread_count || 0;
+            const unread = data && typeof data.unread_count === "number" ? data.unread_count : 0;
             badge.innerText = unread;
             badge.style.display = unread > 0 ? "flex" : "none";
         })
-        .catch(() => {});
+        .catch(() => { });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    syncSidebarLayout();
-
-    loadNotifications();
-    setInterval(loadNotifications, 5000);
-});
-
-window.addEventListener("resize", function () {
-    syncSidebarLayout();
-});
-
-/* CSRF */
-function getCookie(name) {
-    let cookieValue = null;
-    document.cookie.split(";").forEach(c => {
-        c = c.trim();
-        if (c.startsWith(name + "=")) {
-            cookieValue = decodeURIComponent(c.substring(name.length + 1));
-        }
-    });
-    return cookieValue;
-}
-
-/* 3D LOGOUT MODAL ACTION HANDLERS */
 function showLogoutModal(e) {
     if (e) {
         e.preventDefault();
         e.stopPropagation();
     }
     const modal = document.getElementById("logout-confirm-modal");
-    if (modal) {
-        modal.classList.add("active");
-    }
+    if (modal) modal.classList.add("active");
 }
 
 function closeLogoutModal() {
     const modal = document.getElementById("logout-confirm-modal");
-    if (modal) {
-        modal.classList.remove("active");
-    }
+    if (modal) modal.classList.remove("active");
 }
 
 function confirmLogout() {
     const form = document.getElementById("logout-post-form");
-    if (form) {
-        form.submit();
-    } else {
-        window.location.href = "/en/logout/";
-    }
+    if (form) form.submit();
+    else window.location.href = "/en/logout/";
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    syncSidebarLayout();
+    loadNotifications();
+    setInterval(loadNotifications, 5000);
+});
+
+window.addEventListener("resize", syncSidebarLayout);

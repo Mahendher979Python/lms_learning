@@ -6,333 +6,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Services | LMS eLearning</title>
-    <!-- CSS Dependencies -->
+
     <link rel="stylesheet" href="{% static 'accounts/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'accounts/css/pages.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <!-- Premium Global Header Navbar -->
-    <header class="navbar">
-        <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
-            <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height: 38px; width: auto;" alt="Logo">
-            <span class="logo-text">LMS</span>
-        </a>
 
-        <nav class="nav-links" id="mainNavbarLinks" aria-label="Main navigation">
-            <a href="{% url 'index' %}" class="nav-link">Home</a>
-            <a href="{% url 'courses' %}" class="nav-link">Courses</a>
-            <a href="{% url 'about' %}" class="nav-link">About Us</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'services' %}" class="nav-link active" style="color: var(--primary-color);">Services</a>
-=======
-            <a href="{% url 'services' %}" class="nav-link active">Services</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'services' %}" class="nav-link active">Services</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-            <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
-            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
-        </nav>
+<!-- ================= NAVBAR ================= -->
+<header class="navbar">
 
-        <form class="searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
-        </form>
+    <a class="logo" href="{% url 'index' %}">
+        <img src="{% static 'accounts/images/spylogo.png' %}" class="logo-img" style="height:38px;" alt="Logo">
+        <span class="logo-text">LMS</span>
+    </a>
 
-        <div class="nav-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-            {% if user.is_authenticated %}
-                {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
-                {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
-                {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
-                {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+    <nav class="nav-links" id="mainNavbarLinks">
+        <a href="{% url 'index' %}" class="nav-link">Home</a>
+        <a href="{% url 'courses' %}" class="nav-link">Courses</a>
+        <a href="{% url 'about' %}" class="nav-link">About Us</a>
+        <a href="{% url 'services' %}" class="nav-link active">Services</a>
+        <a href="{% url 'faq' %}" class="nav-link">FAQs</a>
+        <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+    </nav>
+
+    <form class="searchbar" action="{% url 'courses' %}" method="GET">
+        <input type="search" name="search" placeholder="Search courses...">
+    </form>
+
+    <div class="nav-actions">
+        {% if user.is_authenticated %}
+            {% if user.role == 'student' %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+            {% elif user.role == 'trainer' %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+                <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-        </div>
+            <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
+            <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
 
-        <button class="hamburger-btn" aria-label="Toggle menu">
-            <i class="fas fa-bars"></i>
+    <button class="hamburger-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+</header>
+
+<div class="sidebar-overlay"></div>
+
+<aside class="sidebar">
+
+    <div class="sidebar-close">
+        <button class="close-btn">
+            <i class="fas fa-times"></i>
         </button>
-    </header>
+    </div>
 
-    <div class="sidebar-overlay"></div>
-    <aside class="sidebar">
-        <div class="sidebar-close">
-            <button class="close-btn" aria-label="Close menu">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <nav class="sidebar-nav" aria-label="Mobile navigation">
-            <a href="{% url 'index' %}" class="sidebar-link">Home</a>
-            <a href="{% url 'courses' %}" class="sidebar-link">Courses</a>
-            <a href="{% url 'about' %}" class="sidebar-link">About Us</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <a href="{% url 'services' %}" class="sidebar-link">Services</a>
-=======
-            <a href="{% url 'services' %}" class="sidebar-link active">Services</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a href="{% url 'services' %}" class="sidebar-link active">Services</a>
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-            <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
-            <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
-        </nav>
-        <form class="sidebar-searchbar" role="search" action="{% url 'courses' %}" method="GET">
-            <input type="search" name="search" placeholder="Search courses..." aria-label="Search courses">
-        </form>
-        <div class="sidebar-actions">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-            {% if user.is_authenticated %}
-                {% if user.role == 'student' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
-                {% elif user.role == 'trainer' %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
-                {% else %}
-                    <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
-                {% endif %}
-                <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+    <nav class="sidebar-nav">
+        <a href="{% url 'index' %}" class="sidebar-link">Home</a>
+        <a href="{% url 'courses' %}" class="sidebar-link">Courses</a>
+        <a href="{% url 'about' %}" class="sidebar-link">About Us</a>
+        <a href="{% url 'services' %}" class="sidebar-link active">Services</a>
+        <a href="{% url 'faq' %}" class="sidebar-link">FAQs</a>
+        <a href="{% url 'contact' %}" class="sidebar-link">Contact</a>
+    </nav>
+
+    <form class="sidebar-searchbar" action="{% url 'courses' %}" method="GET">
+        <input type="search" name="search" placeholder="Search courses...">
+    </form>
+
+    <div class="sidebar-actions">
+        {% if user.is_authenticated %}
+            {% if user.role == 'student' %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'student_view' %}">Dashboard</a>
+            {% elif user.role == 'trainer' %}
+                <a class="button-secondary button-secondary-solid" href="{% url 'trainer_view' %}">Dashboard</a>
             {% else %}
-                <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
-                <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+                <a class="button-secondary button-secondary-solid" href="{% url 'manage_users' %}">Admin Portal</a>
             {% endif %}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-            <a class="button-secondary" href="{% url 'login' %}">Login</a>
-            <a class="button-secondary" href="{% url 'register' %}">Register</a>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
-<<<<<<< HEAD
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
+            <a class="button-secondary button-secondary-outline" href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a class="button-secondary button-secondary-solid" href="{% url 'login' %}">Login</a>
+            <a class="button-secondary button-secondary-outline" href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main>
+
+    <section class="page-hero">
+        <div class="page-hero-content">
+            <p class="eyebrow">Platform Capabilities</p>
+            <h1>Comprehensive Services for <span>Accredited Learning</span></h1>
+            <p>From live classes to certifications, we support both trainers and students.</p>
         </div>
-    </aside>
+    </section>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="page-hero">
-            <div class="page-hero-content">
-                <p class="eyebrow">Platform Capabilities</p>
-                <h1>Comprehensive Services for <span>Accredited Learning</span></h1>
-                <p>From live class portals to accredited certifications, we offer a versatile suite of tools that
-                    support trainers in scheduling lessons and empower students in completing assignments.</p>
-            </div>
-        </section>
+    <section class="services-section">
+        <div class="services-grid">
 
-        <!-- Services Grid Section -->
-        <section class="services-section">
-            <div class="services-grid">
-                <!-- Service 1 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-video"></i></div>
-                    <h3>Interactive Live Classes</h3>
-                    <p>Attend scheduled webinars and live sessions. Connect directly with trainers, ask doubts live, and
-                        work together with peer squads.</p>
-                </article>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-video"></i></div>
+                <h3>Interactive Live Classes</h3>
+                <p>Attend live sessions and interact with trainers.</p>
+            </article>
 
-                <!-- Service 2 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-file-signature"></i></div>
-                    <h3>Gamified Coding & Exams</h3>
-                    <p>Attempt timed exercises, online coding challenges, and comprehensive final examinations with
-                        immediate grading feedback.</p>
-                </article>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-file-signature"></i></div>
+                <h3>Gamified Coding & Exams</h3>
+                <p>Timed coding challenges and instant feedback.</p>
+            </article>
 
-                <!-- Service 3 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3>Smart Progress Analytics</h3>
-                    <p>Visualize your progress through interactive charts. Track lesson completion times, test accuracy
-                        percentages, and average skill growth.</p>
-                </article>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-chart-line"></i></div>
+                <h3>Smart Progress Analytics</h3>
+                <p>Track learning progress with analytics dashboards.</p>
+            </article>
 
-                <!-- Service 4 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-brain"></i></div>
-                    <h3>AI Learning Assistant</h3>
-                    <p>Boost understanding with an AI tutor that helps you review complex topics, construct flashcards,
-                        and practice interactive quizzes.</p>
-                </article>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-brain"></i></div>
+                <h3>AI Learning Assistant</h3>
+                <p>AI-powered help for concepts and quizzes.</p>
+            </article>
 
-                <!-- Service 5 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-comments"></i></div>
-                    <h3>Direct Instructor Support</h3>
-                    <p>Send messages, coordinate review schedules, ask assignment questions, and receive targeted
-                        coaching directly from your mentors.</p>
-                </article>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-comments"></i></div>
+                <h3>Direct Instructor Support</h3>
+                <p>Communicate directly with mentors.</p>
+            </article>
 
-                <!-- Service 6 -->
-                <article class="service-card">
-                    <div class="service-icon"><i class="fas fa-award"></i></div>
-                    <h3>Verifiable Certificates</h3>
-                    <p>Receive verifiable digital achievements immediately upon completing all lessons and passing final
-                        course criteria.</p>
-                </article>
-            </div>
-        </section>
+            <article class="service-card">
+                <div class="service-icon"><i class="fas fa-award"></i></div>
+                <h3>Verifiable Certificates</h3>
+                <p>Get certificates after course completion.</p>
+            </article>
 
-        <!-- Spotlight Section -->
-        <section class="spotlight-section">
-            <div class="spotlight-content">
-                <p class="eyebrow">Platform Spotlight</p>
-                <h2>A Complete Virtual Campus Experience</h2>
-                <p>Our platform handles all operational needs for both instructors and learners, organizing class
-                    materials, scheduled timetables, and learning evaluations in a single dashboard.</p>
-
-                <div class="spotlight-features">
-                    <div class="spotlight-item">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <h4>Dynamic Attendance Tracking</h4>
-                            <p>Instructors can record virtual class logs, track student active session minutes, and
-                                manage rosters.</p>
-                        </div>
-                    </div>
-                    <div class="spotlight-item">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <h4>Collaborative Team Channels</h4>
-                            <p>Create groups, complete student group assignments, and share resource docs inside study
-                                channels.</p>
-                        </div>
-                    </div>
-                    <div class="spotlight-item">
-                        <i class="fas fa-check-circle"></i>
-                        <div>
-                            <h4>Unified Notifications Hub</h4>
-                            <p>Receive alert feeds for newly published exams, grade adjustments, and calendar updates.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="spotlight-gfx">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
-                    alt="Students studying online">
-            </div>
-        </section>
-    </main>
-
-    <!-- Premium Unified Footer -->
-    <footer class="footer">
-        <div>
-            <h3>LMS eLearning</h3>
-            <p>Online courses, live classes, exams, and learning tools for modern education.</p>
-            <div class="social-links">
-                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            </div>
         </div>
+    </section>
 
-        <div>
-            <h3>Courses</h3>
-            <a href="{% url 'courses' %}?filter=development">Web Development</a>
-            <a href="{% url 'courses' %}?filter=business">Business Skills</a>
-            <a href="{% url 'courses' %}?filter=data">Data Analytics</a>
-            <a href="{% url 'index' %}#blog">Blog</a>
-        </div>
+</main>
 
-        <div>
-            <h3>Navigation</h3>
-            <a href="{% url 'about' %}">Our Platform</a>
-            <a href="{% url 'services' %}">LMS Services</a>
-            <a href="{% url 'faq' %}">Help & FAQs</a>
-            <a href="{% url 'contact' %}">Contact Us</a>
-        </div>
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+    <div>
+        <h3>LMS eLearning</h3>
+        <p>Modern online learning platform.</p>
+    </div>
+</footer>
 
-        <div>
-            <h3>Support</h3>
-            <a href="mailto:support@lmslearning.com">support@lmslearning.com</a>
-            <a href="tel:9998887776">9998887776</a>
-            <a href="{% url 'faq' %}">Help Center</a>
-        </div>
+<script>
+const hamburgerBtn = document.querySelector('.hamburger-btn');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.querySelector('.sidebar-overlay');
+const closeBtn = document.querySelector('.close-btn');
 
-        <div>
-            <h3>Legal</h3>
-            <a href="#privacy-notice">Privacy Notice</a>
-            <a href="{% url 'terms_page' %}">Terms</a>
-            <a href="{% url 'conditions_page' %}">Conditions</a>
-            <a href="#cookies">Cookies</a>
-        </div>
-    </footer>
+function toggleSidebar() {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+}
 
-    <!-- JS Scripts -->
-    <script src="{% static 'accounts/js/pages.js' %}"></script>
-    <script>
-        const hamburgerBtn = document.querySelector('.hamburger-btn');
-        const sidebar = document.querySelector('.sidebar');
-        const sidebarOverlay = document.querySelector('.sidebar-overlay');
-        const closeBtn = document.querySelector('.close-btn');
-        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+hamburgerBtn.addEventListener('click', toggleSidebar);
+closeBtn.addEventListener('click', toggleSidebar);
+overlay.addEventListener('click', toggleSidebar);
+</script>
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('active');
-            sidebarOverlay.classList.toggle('active');
-            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-        }
-
-        hamburgerBtn.addEventListener('click', toggleSidebar);
-        closeBtn.addEventListener('click', toggleSidebar);
-        sidebarOverlay.addEventListener('click', toggleSidebar);
-
-        sidebarLinks.forEach(link => {
-            link.addEventListener('click', toggleSidebar);
-        });
-    </script>
 </body>
-
-<<<<<<< HEAD
 </html>
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-</html>
-=======
-</html>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-</html>
->>>>>>> 7783240fc9d765a835dba1becb00cde7e0172336
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b

@@ -9,16 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ================= COUNTER ================= */
     document.querySelectorAll('.premium-stat-card-value').forEach(counter => {
-<<<<<<< HEAD
-<<<<<<< HEAD
         let final = parseInt(counter.innerText);
         if (Number.isNaN(final)) final = 0;
-=======
-        const final = parseInt(counter.innerText);
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
-=======
-        const final = parseInt(counter.innerText);
->>>>>>> 6b52b9bc0b1e9f5483366f3a07c3ebb731af950b
         let current = 0;
         const increment = final / 50;
         counter.innerText = '0';
