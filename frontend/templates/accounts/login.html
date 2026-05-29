@@ -100,59 +100,14 @@
                 </a>
 
                 <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-                    <a href="#" id="terms-link" class="footer-link" style="margin-top: 0; font-size:12px;">Terms &amp; Privacy</a>
-                    <a href="#" id="conditions-link" class="footer-link" style="margin-top: 0; font-size:12px;">Conditions</a>
+                    <a href="{% url 'terms_page' %}" class="footer-link" style="margin-top: 0; font-size:12px;">Terms &amp; Privacy</a>
+                    <a href="{% url 'conditions_page' %}" class="footer-link" style="margin-top: 0; font-size:12px;">Conditions</a>
                 </div>
 
                 <div class="copyright-footer">
                     © 2026 LMS. All rights reserved.
                 </div>
             </div>
-
-            <section class="login-legal-panel" id="terms-panel" aria-hidden="true" hidden>
-                <button type="button" class="legal-back-btn" data-close-legal>
-                    <i class="fas fa-arrow-left"></i> Back to Login
-                </button>
-                <h2>Terms &amp; Privacy</h2>
-                <div class="terms-meta">Last updated: May 18, 2026</div>
-                <div class="terms-content">
-                    <p>Welcome to LMS. By signing in or signing up, you agree to use the platform responsibly and protect your account.</p>
-                    <h3>1. Account Protection</h3>
-                    <p>Keep your login details private. Sharing account access may violate platform security rules.</p>
-                    <h3>2. Content Guidelines</h3>
-                    <p>Do not upload harmful files, scripts, spam, or any content that disrupts the learning experience.</p>
-                    <h3>3. Privacy</h3>
-                    <p>Your account information is used to provide access to courses, attendance, certificates, and learning progress features.</p>
-                </div>
-            </section>
-
-            <section class="login-legal-panel" id="conditions-panel" aria-hidden="true" hidden>
-                <button type="button" class="legal-back-btn" data-close-legal>
-                    <i class="fas fa-arrow-left"></i> Back to Login
-                </button>
-                <h2>Conditions</h2>
-                <div class="terms-meta">Last updated: May 18, 2026</div>
-                <div class="terms-content">
-                    <h3>1. Payment Terms</h3>
-                    <p>All payments for courses are processed through the platform and are subject to these conditions.</p>
-                    <h3>2. Refund Policy</h3>
-                    <ul>
-                        <li>Refund requests must be submitted within 7 days of purchase.</li>
-                        <li>Refunds are processed within 5-7 business days.</li>
-                        <li>Partial refunds may be offered for completed course access.</li>
-                    </ul>
-                    <h3>3. Course Access</h3>
-                    <p>Course access is granted after successful payment and remains active for the duration specified in the course details.</p>
-                    <h3>4. Content Usage</h3>
-                    <ul>
-                        <li>Course materials are for personal use only.</li>
-                        <li>Sharing or redistributing content is prohibited.</li>
-                        <li>Downloading content may be restricted.</li>
-                    </ul>
-                    <h3>5. Termination</h3>
-                    <p>We may terminate access when these conditions are violated.</p>
-                </div>
-            </section>
 
         </div>
     </div>
@@ -187,46 +142,6 @@
         const navMenu = document.getElementById("navMenu");
         menuToggle.addEventListener("click", () => {
             navMenu.classList.toggle("active");
-        });
-
-        // Inline terms and conditions panels inside the login card
-        const termsLink = document.getElementById('terms-link');
-        const conditionsLink = document.getElementById('conditions-link');
-        const loginPanel = document.getElementById('login-panel');
-        const termsPanel = document.getElementById('terms-panel');
-        const conditionsPanel = document.getElementById('conditions-panel');
-        const legalPanels = [termsPanel, conditionsPanel];
-
-        const showLegalPanel = (panel) => {
-            loginPanel.hidden = true;
-            legalPanels.forEach(item => {
-                item.hidden = item !== panel;
-                item.classList.toggle('active', item === panel);
-                item.setAttribute('aria-hidden', item === panel ? 'false' : 'true');
-            });
-        };
-
-        const hideLegalPanels = () => {
-            loginPanel.hidden = false;
-            legalPanels.forEach(item => {
-                item.hidden = true;
-                item.classList.remove('active');
-                item.setAttribute('aria-hidden', 'true');
-            });
-        };
-
-        termsLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLegalPanel(termsPanel);
-        });
-
-        conditionsLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLegalPanel(conditionsPanel);
-        });
-
-        document.querySelectorAll('[data-close-legal]').forEach(button => {
-            button.addEventListener('click', hideLegalPanels);
         });
 
     </script>

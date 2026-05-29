@@ -228,57 +228,47 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // =========================
-    // INLINE LEGAL PANELS
-    // =========================
     const termsLink = document.getElementById('terms-link');
     const conditionsLink = document.getElementById('conditions-link');
     const registerPanel = document.getElementById('register-panel');
     const termsPanel = document.getElementById('terms-panel');
     const conditionsPanel = document.getElementById('conditions-panel');
-
     const legalPanels = [termsPanel, conditionsPanel];
 
-    function showPanel(panel) {
-        if (!registerPanel) return;
-
+    const showLegalPanel = (panel) => {
         registerPanel.hidden = true;
-
-        legalPanels.forEach(p => {
-            if (!p) return;
-            p.hidden = p !== panel;
-            p.setAttribute('aria-hidden', p !== panel ? 'true' : 'false');
+        legalPanels.forEach(item => {
+            item.hidden = item !== panel;
+            item.classList.toggle('active', item === panel);
+            item.setAttribute('aria-hidden', item === panel ? 'false' : 'true');
         });
-    }
+    };
 
-    function hidePanels() {
-        if (!registerPanel) return;
-
+    const hideLegalPanels = () => {
         registerPanel.hidden = false;
-
-        legalPanels.forEach(p => {
-            if (!p) return;
-            p.hidden = true;
-            p.setAttribute('aria-hidden', 'true');
+        legalPanels.forEach(item => {
+            item.hidden = true;
+            item.classList.remove('active');
+            item.setAttribute('aria-hidden', 'true');
         });
-    }
+    };
 
     if (termsLink) {
         termsLink.addEventListener('click', (e) => {
             e.preventDefault();
-            showPanel(termsPanel);
+            showLegalPanel(termsPanel);
         });
     }
 
     if (conditionsLink) {
         conditionsLink.addEventListener('click', (e) => {
             e.preventDefault();
-            showPanel(conditionsPanel);
+            showLegalPanel(conditionsPanel);
         });
     }
 
-    document.querySelectorAll('[data-close-legal]').forEach(btn => {
-        btn.addEventListener('click', hidePanels);
+    document.querySelectorAll('[data-close-legal]').forEach(button => {
+        button.addEventListener('click', hideLegalPanels);
     });
 
 });
