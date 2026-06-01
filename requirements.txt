@@ -15,3 +15,6 @@ requests
 django-channels
 google-generativeai
 razorpay
+PyJWT
+qrcode[pil]
+openpyxl
