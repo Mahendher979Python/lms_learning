@@ -112,12 +112,12 @@ DEBUG=False
 ALLOWED_HOSTS=your-domain.com,www.your-domain.com,your-elastic-ip,localhost,127.0.0.1
 CSRF_TRUSTED_ORIGINS=https://your-domain.com,https://www.your-domain.com,http://your-elastic-ip
 
-DB_ENGINE=django.db.backends.postgresql
+DB_ENGINE=django.db.backends.mysql
 DB_NAME=lms_db
 DB_USER=lms_user
 DB_PASSWORD=your_strong_password
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=3306
 
 # Email settings (for OTP, notifications)
 EMAIL_HOST_USER=your-email@gmail.com

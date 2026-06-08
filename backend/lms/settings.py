@@ -12,8 +12,9 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_ROOT = BASE_DIR.parent
 
-# Load environment variables
+# Load environment variables - try both locations for compatibility
 load_dotenv(PROJECT_ROOT / '.env')
+load_dotenv(BASE_DIR / '.env')
 
 
 # SECURITY

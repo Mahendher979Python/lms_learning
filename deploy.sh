@@ -58,8 +58,8 @@ if [ ! -f ".env" ]; then
     echo "⚠️  Please edit .env file with your actual values!"
 fi
 
-# Step 8: Set Up PostgreSQL Database
-echo "Step 8: Setting up PostgreSQL database..."
+# Step 8: Set Up MySQL Database
+echo "Step 8: Setting up MySQL database..."
 # Note: User must configure DB credentials in .env first
 # This step is manual for security reasons
 

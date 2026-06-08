@@ -15,6 +15,12 @@ source $PROJECT_DIR/.env
 
 echo "Starting backup at $DATE"
 
+# Backup MySQL database
+if [ "$DB_ENGINE" = "django.db.backends.mysql" ]; then
+    echo "Backing up MySQL database..."
+    mysqldump -u $DB_USER -p$DB_PASSWORD -h $DB_HOST -P $DB_PORT $DB_NAME | gzip > $BACKUP_DIR/db_backup_$DATE.sql.gz
+fi
+
 # Backup PostgreSQL database
 if [ "$DB_ENGINE" = "django.db.backends.postgresql" ]; then
     echo "Backing up PostgreSQL database..."
