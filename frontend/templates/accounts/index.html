@@ -3,289 +3,321 @@
 {% block title %}LMS eLearning Home{% endblock %}
 
 {% block extra_css %}
-    <style>
+<style>
+    .hero {
+        position: relative;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    }
+
+    .hero-content h1 {
+        color: #ffffff;
+        font-size: clamp(28px, 4.5vw, 48px);
+    }
+
+    .hero-text {
+        color: #cbd5e1;
+    }
+
+    @media (max-width: 980px) {
         .hero {
-            position: relative;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            height: auto !important;
+            min-height: auto !important;
+            padding-top: 100px;
+            padding-bottom: 60px;
         }
-
-        .hero-content h1 {
-            color: #ffffff;
-            font-size: clamp(28px, 4.5vw, 48px);
-        }
-
-        .hero-text {
-            color: #cbd5e1;
-        }
-
-        @media (max-width: 980px) {
-            .hero {
-                height: auto !important;
-                min-height: auto !important;
-                padding-top: 100px;
-                padding-bottom: 60px;
-            }
-        }
-    </style>
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-    <!-- Hero Section with 3D Elements -->
-    <section class="hero" id="home">
+<!-- Hero Section with 3D Elements -->
+<section class="hero" id="home">
 
-        <div class="hero-content">
-            <p class="eyebrow" style="color: #38bdf8;">🚀 LMS eLearning Platform</p>
+    <div class="hero-content">
+        <h2 class="eyebrow" style="color: #38bdf8;">🚀 LMS eLearning Platform</h2>
 
-            <h1>
-                Learn smarter with
-                <span style="background: linear-gradient(135deg, #38bdf8, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                    online courses
-                </span>,
-                exams, and live classes.
-            </h1>
+        <h1>
+            Learn smarter with
+            <span
+                style="background: linear-gradient(135deg, #38bdf8, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                online courses
+            </span>,
+            exams, and live classes.
+        </h1>
 
-            <p class="hero-text">
-                Access quality learning resources,
-                track your progress, join instructor-led
-                sessions, and complete assignments
-                from one simple LMS dashboard.
-            </p>
+        <p class="hero-text">
+            Access quality learning resources,
+            track your progress, join instructor-led
+            sessions, and complete assignments
+            from one simple LMS dashboard.
+        </p>
 
-            <div class="hero-actions">
-                <a class="button-secondary" href="{% url 'student_view' %}">
-                    🔥 Get Started
-                </a>
+        <div class="hero-actions">
+            <a class="button-secondary" href="{% url 'student_view' %}">
+                🔥 Get Started
+            </a>
 
-                <a class="button-secondary-outline" href="{% url 'trainer_view' %}">
-                    🎬 Demo
-                </a>
+            <a class="button-secondary-outline" href="{% url 'trainer_view' %}">
+                🎬 Demo
+            </a>
 
-                <a class="button-secondary-light" href="#courses">
-                    📖 Explore Courses
-                </a>
-            </div>
+            <a class="button-secondary-light" href="#courses">
+                📖 Explore Courses
+            </a>
         </div>
+    </div>
 
-        <div class="hero-image">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
-                alt="Students learning together online"
-                style="border-radius: 16px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);">
-        </div>
-    </section>
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80"
+            alt="Students learning together online"
+            style="border-radius: 16px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);">
+    </div>
+</section>
 
-    <!-- Marquee with enhanced styling -->
-    <section class="image-marquee" aria-label="Learning gallery" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
+<!-- Marquee with enhanced styling -->
+<section class="image-marquee" aria-label="Learning gallery"
+    style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);">
 
-        <div class="marquee-track">
+    <div class="marquee-track">
 
+        <!-- First set of images -->
+        <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" title="Visit Coursera">
             <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80"
-                alt="Online learning workspace">
+                alt="Online learning workspace (Coursera)">
+        </a>
 
+        <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer" title="Visit Udemy">
             <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80"
-                alt="Students studying together">
+                alt="Students studying together (Udemy)">
+        </a>
 
+        <a href="https://www.khanacademy.org" target="_blank" rel="noopener noreferrer" title="Visit Khan Academy">
             <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
-                alt="Student using laptop for learning">
+                alt="Student using laptop for learning (Khan Academy)">
+        </a>
 
+        <a href="https://www.edx.org" target="_blank" rel="noopener noreferrer" title="Visit edX">
             <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
-                alt="Group learning session">
+                alt="Group learning session (edX)">
+        </a>
 
-        </div>
+        <!-- Duplicated second set for seamless loop -->
+        <a href="https://www.coursera.org" target="_blank" rel="noopener noreferrer" title="Visit Coursera">
+            <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=700&q=80"
+                alt="Online learning workspace (Coursera)">
+        </a>
 
-    </section>
+        <a href="https://www.udemy.com" target="_blank" rel="noopener noreferrer" title="Visit Udemy">
+            <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=700&q=80"
+                alt="Students studying together (Udemy)">
+        </a>
 
-    <!-- Courses with gradient background -->
-    <section class="section" id="courses" style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
+        <a href="https://www.khanacademy.org" target="_blank" rel="noopener noreferrer" title="Visit Khan Academy">
+            <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=700&q=80"
+                alt="Student using laptop for learning (Khan Academy)">
+        </a>
 
-        <div class="section-heading">
-            <p class="eyebrow">Courses</p>
+        <a href="https://www.edx.org" target="_blank" rel="noopener noreferrer" title="Visit edX">
+            <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80"
+                alt="Group learning session (edX)">
+        </a>
 
-            <h2>Explore Popular Courses</h2>
+    </div>
 
-            <p>
-                Start learning with practical courses
-                built for students, instructors,
-                and working professionals.
-            </p>
-        </div>
+</section>
 
-        <div class="course-grid">
+<!-- Courses with gradient background -->
+<section class="section" id="courses" style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);">
 
-            <article class="course-card">
+    <div class="section-heading">
+        <p class="eyebrow">Courses</p>
 
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
-                    alt="Web Development">
+        <h2>Explore Popular Courses</h2>
 
-                <div class="course-content">
-                    <span>Beginner</span>
+        <p>
+            Start learning with practical courses
+            built for students, instructors,
+            and working professionals.
+        </p>
+    </div>
 
-                    <h3>Web Development</h3>
+    <div class="course-grid">
 
-                    <p>
-                        Learn HTML, CSS, JavaScript,
-                        and responsive website design.
-                    </p>
-                </div>
+        <article class="course-card">
 
-            </article>
+            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
+                alt="Web Development">
 
-            <article class="course-card">
+            <div class="course-content">
+                <span>Beginner</span>
 
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80"
-                    alt="Business Skills">
+                <h3>Web Development</h3>
 
-                <div class="course-content">
-                    <span>Professional</span>
+                <p>
+                    Learn HTML, CSS, JavaScript,
+                    and responsive website design.
+                </p>
+            </div>
 
-                    <h3>Business Skills</h3>
+        </article>
 
-                    <p>
-                        Improve leadership,
-                        communication, and planning.
-                    </p>
-                </div>
+        <article class="course-card">
 
-            </article>
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=900&q=80"
+                alt="Business Skills">
 
-            <article class="course-card">
+            <div class="course-content">
+                <span>Professional</span>
 
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80"
-                    alt="Data Analytics">
+                <h3>Business Skills</h3>
 
-                <div class="course-content">
-                    <span>Advanced</span>
+                <p>
+                    Improve leadership,
+                    communication, and planning.
+                </p>
+            </div>
 
-                    <h3>Data Analytics</h3>
+        </article>
 
-                    <p>
-                        Practice dashboards,
-                        spreadsheets, and analytics.
-                    </p>
-                </div>
+        <article class="course-card">
 
-            </article>
+            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80"
+                alt="Data Analytics">
 
-        </div>
+            <div class="course-content">
+                <span>Advanced</span>
 
-    </section>
+                <h3>Data Analytics</h3>
 
-    <!-- About -->
-    <section class="section split-section" id="about">
+                <p>
+                    Practice dashboards,
+                    spreadsheets, and analytics.
+                </p>
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+<!-- About -->
+<section class="section split-section" id="about">
+
+    <div>
+
+        <p class="eyebrow">About Us</p>
+
+        <h2>
+            Built for simple and effective
+            online learning.
+        </h2>
+
+        <p>
+            Our LMS helps students attend
+            live classes, explore courses,
+            submit exams, and stay organized.
+        </p>
+
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80"
+        alt="Students studying">
+
+</section>
+
+<!-- Contact -->
+<section class="section contact-section" id="contact">
+
+    <div class="section-heading">
+
+        <p class="eyebrow">Contact Us</p>
+
+        <h2>
+            Need help with your learning journey?
+        </h2>
+
+        <p>
+            Email, call, or visit us to learn more
+            about courses and platform support.
+        </p>
+
+    </div>
+
+    <div class="contact-grid">
 
         <div>
-
-            <p class="eyebrow">About Us</p>
-
-            <h2>
-                Built for simple and effective
-                online learning.
-            </h2>
-
-            <p>
-                Our LMS helps students attend
-                live classes, explore courses,
-                submit exams, and stay organized.
-            </p>
-
+            <h3>Email</h3>
+            <p>support@lmslearning.com</p>
         </div>
 
-        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80"
-            alt="Students studying">
-
-    </section>
-
-    <!-- Contact -->
-    <section class="section contact-section" id="contact">
-
-        <div class="section-heading">
-
-            <p class="eyebrow">Contact Us</p>
-
-            <h2>
-                Need help with your learning journey?
-            </h2>
-
-            <p>
-                Email, call, or visit us to learn more
-                about courses and platform support.
-            </p>
-
+        <div>
+            <h3>Phone</h3>
+            <p>9998887776</p>
         </div>
 
-        <div class="contact-grid">
+        <div>
+            <h3>Location</h3>
+            <p>Digital Learning Campus, India</p>
+        </div>
 
-            <div>
-                <h3>Email</h3>
-                <p>support@lmslearning.com</p>
+    </div>
+
+</section>
+
+<section class="section" id="blog">
+
+    <div class="section-heading">
+        <p class="eyebrow">From the Blog</p>
+
+        <h2>Fresh insights for modern learners</h2>
+
+        <p>
+            Explore practical tips, course updates,
+            and learning stories that help students
+            stay motivated and informed.
+        </p>
+    </div>
+
+    <div class="course-grid">
+
+        <article class="course-card">
+            <div class="course-content">
+                <span>Learning Tips</span>
+                <h3>How to build a daily study habit</h3>
+                <p>
+                    Simple routines that improve focus,
+                    retention, and steady progress on any
+                    course.
+                </p>
             </div>
+        </article>
 
-            <div>
-                <h3>Phone</h3>
-                <p>9998887776</p>
+        <article class="course-card">
+            <div class="course-content">
+                <span>Productivity</span>
+                <h3>Using LMS tools for better course completion</h3>
+                <p>
+                    Learn how dashboards, reminders, and
+                    progress tracking keep learners on pace.
+                </p>
             </div>
+        </article>
 
-            <div>
-                <h3>Location</h3>
-                <p>Digital Learning Campus, India</p>
+        <article class="course-card">
+            <div class="course-content">
+                <span>Community</span>
+                <h3>Why learner communities boost motivation</h3>
+                <p>
+                    Discover how peer support and shared goals
+                    make online learning more engaging.
+                </p>
             </div>
+        </article>
 
-        </div>
+    </div>
 
-    </section>
-
-    <section class="section" id="blog">
-
-        <div class="section-heading">
-            <p class="eyebrow">From the Blog</p>
-
-            <h2>Fresh insights for modern learners</h2>
-
-            <p>
-                Explore practical tips, course updates,
-                and learning stories that help students
-                stay motivated and informed.
-            </p>
-        </div>
-
-        <div class="course-grid">
-
-            <article class="course-card">
-                <div class="course-content">
-                    <span>Learning Tips</span>
-                    <h3>How to build a daily study habit</h3>
-                    <p>
-                        Simple routines that improve focus,
-                        retention, and steady progress on any
-                        course.
-                    </p>
-                </div>
-            </article>
-
-            <article class="course-card">
-                <div class="course-content">
-                    <span>Productivity</span>
-                    <h3>Using LMS tools for better course completion</h3>
-                    <p>
-                        Learn how dashboards, reminders, and
-                        progress tracking keep learners on pace.
-                    </p>
-                </div>
-            </article>
-
-            <article class="course-card">
-                <div class="course-content">
-                    <span>Community</span>
-                    <h3>Why learner communities boost motivation</h3>
-                    <p>
-                        Discover how peer support and shared goals
-                        make online learning more engaging.
-                    </p>
-                </div>
-            </article>
-
-        </div>
-
-    </section>
+</section>
 {% endblock %}
 
 {% block extra_js %}

@@ -15,6 +15,8 @@ body {
     --input-color: #f8fafc;
     --input-border: rgba(255, 255, 255, 0.15);
     --header-text: #ffffff;
+    --toggle-bg: #475569;
+    --toggle-active: #3b82f6;
 }
 
 body.light {
@@ -26,6 +28,8 @@ body.light {
     --input-color: #1e293b;
     --input-border: #cbd5e1;
     --header-text: #0f172a;
+    --toggle-bg: #cbd5e1;
+    --toggle-active: #3b82f6;
 }
 
 
@@ -62,10 +66,50 @@ body.light {
     color:var(--label-color);
 }
 
-.switch-row input{
-    width:22px;
-    height:22px;
-    cursor:pointer;
+/* Toggle switch */
+.toggle-switch {
+    position: relative;
+    width: 56px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-bg);
+    transition: 0.4s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--toggle-active);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(28px);
 }
 
 .select-box{
@@ -110,7 +154,7 @@ body.light {
 
         {% csrf_token %}
 
-        <label>
+        <label style="display:block; margin-bottom:8px; font-weight:600; color:var(--label-color);">
             🌐 Language
         </label>
 
@@ -145,47 +189,62 @@ body.light {
 
         <div class="switch-row">
             <label>🌙 Dark Mode</label>
-            <input type="checkbox"
-                   name="dark_mode"
-                   {% if settings_obj.dark_mode %}
-                   checked
-                   {% endif %}>
+            <label class="toggle-switch">
+                <input type="checkbox"
+                       name="dark_mode"
+                       {% if settings_obj.dark_mode %}
+                       checked
+                       {% endif %}>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div class="switch-row">
             <label>📧 Email Notifications</label>
-            <input type="checkbox"
-                   name="email_notifications"
-                   {% if settings_obj.email_notifications %}
-                   checked
-                   {% endif %}>
+            <label class="toggle-switch">
+                <input type="checkbox"
+                       name="email_notifications"
+                       {% if settings_obj.email_notifications %}
+                       checked
+                       {% endif %}>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div class="switch-row">
             <label>🔔 Push Notifications</label>
-            <input type="checkbox"
-                   name="push_notifications"
-                   {% if settings_obj.push_notifications %}
-                   checked
-                   {% endif %}>
+            <label class="toggle-switch">
+                <input type="checkbox"
+                       name="push_notifications"
+                       {% if settings_obj.push_notifications %}
+                       checked
+                       {% endif %}>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div class="switch-row">
             <label>🔐 Two Factor Authentication</label>
-            <input type="checkbox"
-                   name="two_factor_auth"
-                   {% if settings_obj.two_factor_auth %}
-                   checked
-                   {% endif %}>
+            <label class="toggle-switch">
+                <input type="checkbox"
+                       name="two_factor_auth"
+                       {% if settings_obj.two_factor_auth %}
+                       checked
+                       {% endif %}>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <div class="switch-row">
             <label>💬 Allow Chat</label>
-            <input type="checkbox"
-                   name="allow_chat"
-                   {% if settings_obj.allow_chat %}
-                   checked
-                   {% endif %}>
+            <label class="toggle-switch">
+                <input type="checkbox"
+                       name="allow_chat"
+                       {% if settings_obj.allow_chat %}
+                       checked
+                       {% endif %}>
+                <span class="toggle-slider"></span>
+            </label>
         </div>
 
         <button type="submit"

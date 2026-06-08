@@ -226,13 +226,13 @@ body {
 
 .sidebar-link:hover {
     background: rgba(255, 255, 255, 0.08);
-    color: #ffffff;
+    color: #ffffff !important;
     transform: translateX(4px);
 }
 
 .sidebar-link.active {
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #ffffff;
+    color: #ffffff !important;
     box-shadow: 0 10px 20px rgba(59, 130, 246, 0.22);
 }
 

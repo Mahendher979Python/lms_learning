@@ -14,6 +14,8 @@ body {
     --input-color: #f8fafc;
     --input-border: rgba(255, 255, 255, 0.15);
     --header-text: #ffffff;
+    --toggle-bg: #475569;
+    --toggle-active: #3b82f6;
 }
 
 body.light {
@@ -25,6 +27,8 @@ body.light {
     --input-color: #1e293b;
     --input-border: #cbd5e1;
     --header-text: #0f172a;
+    --toggle-bg: #cbd5e1;
+    --toggle-active: #3b82f6;
 }
 
 
@@ -79,7 +83,9 @@ body{
     font-size:14px;
 }
 
-.form-group input,
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
 .form-group select{
     width:100%;
     padding:14px;
@@ -96,6 +102,67 @@ body{
 .form-group select:focus{
     border-color:#3b82f6;
     box-shadow:0 0 0 4px rgba(59,130,246,0.2);
+}
+
+/* TOGGLE SWITCH STYLES */
+.toggle-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+
+.toggle-label {
+    margin-bottom: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 56px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--toggle-bg);
+    transition: 0.4s;
+    border-radius: 28px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+    background-color: var(--toggle-active);
+}
+
+.toggle-switch input:checked + .toggle-slider:before {
+    transform: translateX(28px);
 }
 
 /* BUTTON */
@@ -187,63 +254,93 @@ body{
             </div>
 
             <!-- DARK MODE -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">🌙 Dark Mode Active</label>
-                <input type="checkbox" name="dark_mode" {% if settings_obj.dark_mode %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">🌙 Dark Mode Active</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="dark_mode" {% if settings_obj.dark_mode %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- EMAIL NOTIFICATIONS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">📧 Email Notifications</label>
-                <input type="checkbox" name="email_notifications" {% if settings_obj.email_notifications %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">📧 Email Notifications</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="email_notifications" {% if settings_obj.email_notifications %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- PUSH NOTIFICATIONS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">🔔 Push Notifications</label>
-                <input type="checkbox" name="push_notifications" {% if settings_obj.push_notifications %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">🔔 Push Notifications</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="push_notifications" {% if settings_obj.push_notifications %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- FINGERPRINT LOGIN -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">👆 Fingerprint Login</label>
-                <input type="checkbox" name="fingerprint_login" {% if settings_obj.fingerprint_login %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">👆 Fingerprint Login</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="fingerprint_login" {% if settings_obj.fingerprint_login %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- TWO FACTOR AUTH -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">🔒 Two-Factor Authentication</label>
-                <input type="checkbox" name="two_factor_auth" {% if settings_obj.two_factor_auth %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">🔒 Two-Factor Authentication</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="two_factor_auth" {% if settings_obj.two_factor_auth %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- AUTOPLAY VIDEOS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">▶️ Autoplay Videos</label>
-                <input type="checkbox" name="autoplay_videos" {% if settings_obj.autoplay_videos %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">▶️ Autoplay Videos</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="autoplay_videos" {% if settings_obj.autoplay_videos %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- OFFLINE DOWNLOADS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">📥 Offline Downloads</label>
-                <input type="checkbox" name="offline_downloads" {% if settings_obj.offline_downloads %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">📥 Offline Downloads</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="offline_downloads" {% if settings_obj.offline_downloads %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- LIVE CLASS REMINDERS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">⏰ Live Class Reminders</label>
-                <input type="checkbox" name="live_class_reminders" {% if settings_obj.live_class_reminders %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">⏰ Live Class Reminders</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="live_class_reminders" {% if settings_obj.live_class_reminders %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- ALLOW CHAT -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">💬 Allow Chat</label>
-                <input type="checkbox" name="allow_chat" {% if settings_obj.allow_chat %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">💬 Allow Chat</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="allow_chat" {% if settings_obj.allow_chat %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
             <!-- ALLOW DISCUSSIONS -->
-            <div class="form-group" style="flex-direction: row; align-items: center; justify-content: space-between; padding: 10px 0;">
-                <label style="margin-bottom: 0;">🗣️ Allow Discussions</label>
-                <input type="checkbox" name="allow_discussions" {% if settings_obj.allow_discussions %}checked{% endif %} style="width: auto; height: 20px; cursor: pointer;">
+            <div class="toggle-group">
+                <label class="toggle-label">🗣️ Allow Discussions</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" name="allow_discussions" {% if settings_obj.allow_discussions %}checked{% endif %}>
+                    <span class="toggle-slider"></span>
+                </label>
             </div>
 
         </div>

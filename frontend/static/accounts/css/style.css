@@ -25,7 +25,8 @@ img {
 }
 
 /* Prevent horizontal overflow on root elements */
-body, html {
+body,
+html {
     overflow-x: hidden !important;
     overflow-y: auto !important;
     width: 100% !important;
@@ -40,7 +41,8 @@ body {
     background: #f6f8fb;
     line-height: 1.6;
     overflow-x: hidden !important;
-    padding-top: 60px; /* Space for fixed premium navbar */
+    padding-top: 60px;
+    /* Space for fixed premium navbar */
     position: relative;
 }
 
@@ -63,7 +65,7 @@ a {
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
     border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-    box-shadow: 
+    box-shadow:
         0 8px 32px 0 rgba(0, 0, 0, 0.3),
         0 0 60px rgba(56, 189, 248, 0.1);
     transition: all 0.3s ease;
@@ -89,7 +91,8 @@ a {
     font-family: 'Outfit', sans-serif;
     font-size: 22px;
     font-weight: 800;
-    color: #ffffff; /* White text for contrast */
+    color: #ffffff;
+    /* White text for contrast */
     letter-spacing: -0.5px;
 }
 
@@ -107,14 +110,17 @@ a {
     display: flex;
     align-items: center;
     gap: 28px;
-    margin-left: auto; /* Push nav links to the right side */
+    margin-left: auto;
+    /* Push nav links to the right side */
     font-weight: 600;
     font-family: 'Inter', sans-serif;
     gap: 32px;
-    margin-left: auto; /* Push nav links to the right side */
+    margin-left: auto;
+    /* Push nav links to the right side */
     transform-style: preserve-3d;
     gap: 32px;
-    margin-left: auto; /* Push nav links to the right side */
+    margin-left: auto;
+    /* Push nav links to the right side */
     transform-style: preserve-3d;
 }
 
@@ -147,9 +153,12 @@ a {
     left: 0;
     width: 0;
     height: 2px;
-    background: #38bdf8; /* Sky blue active/hover underline */
-    background: var(--nav-underline); /* Sky blue active/hover underline */
-    background: var(--nav-underline); /* Sky blue active/hover underline */
+    background: #38bdf8;
+    /* Sky blue active/hover underline */
+    background: var(--nav-underline);
+    /* Sky blue active/hover underline */
+    background: var(--nav-underline);
+    /* Sky blue active/hover underline */
     transition: width 0.25s ease;
     border-radius: 99px;
 }
@@ -397,7 +406,8 @@ a {
     align-items: center;
     min-height: 100vh;
     height: 100vh;
-    padding-top: 40px; /* 60px navbar + 20px content gap */
+    padding-top: 40px;
+    /* 60px navbar + 20px content gap */
     padding-bottom: 68px;
     padding-left: 6%;
     padding-right: 6%;
@@ -512,6 +522,7 @@ a {
     overflow: hidden;
     padding: 22px 0;
     background: #0f766e;
+    perspective: 1200px;
 }
 
 .marquee-track {
@@ -519,6 +530,15 @@ a {
     width: max-content;
     gap: 18px;
     animation: scrollGallery 28s linear infinite;
+    transform-style: preserve-3d;
+}
+
+.marquee-track a {
+    display: block;
+    outline: none;
+    text-decoration: none;
+    transform-style: preserve-3d;
+    perspective: 800px;
 }
 
 .marquee-track img {
@@ -528,10 +548,31 @@ a {
     border-radius: 8px;
     object-fit: cover;
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+    animation: rotate360Img 15s linear infinite;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+@keyframes rotate360Img {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
 }
 
 .image-marquee:hover .marquee-track {
     animation-play-state: paused;
+}
+
+.marquee-track a:hover img {
+    animation-play-state: paused;
+    transform: scale(1.1) rotateY(0deg);
+    border-color: #38bdf8;
+    box-shadow: 0 20px 40px rgba(56, 189, 248, 0.45);
+    z-index: 10;
 }
 
 .section {
@@ -940,6 +981,7 @@ a {
 }
 
 @keyframes floatCard {
+
     0%,
     100% {
         translate: 0 0;
@@ -1001,6 +1043,7 @@ a {
 }
 
 @media (max-width: 640px) {
+
     .navbar,
     .hero,
     .section,
@@ -1060,4 +1103,19 @@ a {
     .split-section img {
         min-height: 280px;
     }
+}
+}
+
+.course-grid,
+.blog-grid,
+.contact-grid,
+.feature-list-grid,
+.footer {
+    grid-template-columns: 1fr;
+}
+
+.hero-image,
+.split-section img {
+    min-height: 280px;
+}
 }
