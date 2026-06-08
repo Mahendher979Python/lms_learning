@@ -22,10 +22,11 @@
     <!-- Navbar -->
     <header class="navbar">
         <a class="logo" href="{% url 'index' %}" aria-label="LMS home">
-            <img src="{% static 'accounts/images/spylogo.png' %}"
+            <img src="{% static 'accounts/images/lmslogo.png' %}"
                 class="logo-img"
-                style="height: 55px; width: auto;"
+                style="height: 42px; width: 42px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255, 255, 255, 0.2);"
                 alt="LMS eLearning Logo">
+            <span class="logo-text">LMS <span style="color: var(--nav-underline);">Learn</span></span>
         </a>
 
         <nav class="nav-links" id="mainNavbarLinks" aria-label="Main navigation">

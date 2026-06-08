@@ -9,12 +9,12 @@
   "theme_color": "#3b82f6",
   "icons": [
     {
-      "src": "/static/accounts/images/spylogo.png",
+      "src": "/static/accounts/images/lmslogo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/static/accounts/images/spylogo.png",
+      "src": "/static/accounts/images/lmslogo.png",
       "sizes": "512x512",
       "type": "image/png"
     }

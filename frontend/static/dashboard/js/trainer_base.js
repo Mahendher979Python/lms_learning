@@ -58,13 +58,34 @@ function closeSidebar() {
 }
 
 function toggleDark() {
-    const isLight = document.body.classList.toggle('light');
-    const newTheme = isLight ? 'light' : 'dark';
+    const currentTheme = document.body.classList.contains('light') ? 'light' : 
+                         document.body.classList.contains('darth') ? 'darth' : 'dark';
+    
+    // Cycle through themes: dark → light → darth → dark
+    let newTheme;
+    if (currentTheme === 'dark') {
+        newTheme = 'light';
+    } else if (currentTheme === 'light') {
+        newTheme = 'darth';
+    } else {
+        newTheme = 'dark';
+    }
+
+    // Remove all theme classes
+    document.body.classList.remove('light', 'darth');
+    
+    // Add new theme class if not dark
+    if (newTheme === 'light') {
+        document.body.classList.add('light');
+    } else if (newTheme === 'darth') {
+        document.body.classList.add('darth');
+    }
+
     localStorage.setItem('theme', newTheme);
 
     const darkModeCheckbox = document.querySelector('input[name="dark_mode"]');
     if (darkModeCheckbox) {
-        darkModeCheckbox.checked = (newTheme === 'dark');
+        darkModeCheckbox.checked = (newTheme === 'dark' || newTheme === 'darth');
     }
 
     if (window.TOGGLE_THEME_API) {
@@ -112,6 +133,15 @@ function confirmLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Initialize theme from localStorage or default to dark
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.classList.remove('light', 'darth');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light');
+    } else if (savedTheme === 'darth') {
+        document.body.classList.add('darth');
+    }
+    
     initSidebar();
     syncSidebarLayout();
     loadNotifications();
@@ -128,11 +158,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const darkModeCheckbox = document.querySelector('input[name="dark_mode"]');
     if (darkModeCheckbox) {
+        darkModeCheckbox.checked = (savedTheme === 'dark' || savedTheme === 'darth');
         darkModeCheckbox.addEventListener('change', () => {
-            const currentThemeIsLight = document.body.classList.contains('light');
+            const currentTheme = document.body.classList.contains('light') ? 'light' : 
+                                 document.body.classList.contains('darth') ? 'darth' : 'dark';
             const checkboxIsChecked = darkModeCheckbox.checked;
-            if ((checkboxIsChecked && currentThemeIsLight) || (!checkboxIsChecked && !currentThemeIsLight)) {
+            
+            if (!checkboxIsChecked && currentTheme === 'light') {
                 toggleDark();
+            } else if (checkboxIsChecked && currentTheme === 'darth') {
+                // Already dark/darth
+            } else if (!checkboxIsChecked && currentTheme === 'dark') {
+                // Already dark/darth
+            } else if (!checkboxIsChecked) {
+                // Already dark/darth
+            } else {
+                // If unchecking and currently darth/dark, set to light
+                if (currentTheme !== 'light') {
+                    toggleDark();
+                }
             }
         });
     }

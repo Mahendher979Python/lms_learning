@@ -40,8 +40,8 @@
     <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <div class="sidebar-brand-logo" style="background: none;">
-                <img src="{% static 'accounts/images/spylogo.png' %}" alt="LMS Logo" style="width: 100%; height: 100%; object-fit: contain;">
+            <div class="sidebar-brand-logo" style="background: #ffffff; border-radius: 50%; overflow: hidden; padding: 2px; border: 1px solid rgba(255, 255, 255, 0.2);">
+                <img src="{% static 'accounts/images/lmslogo.png' %}" alt="LMS Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
             </div>
             <span>LMS STUDENT</span>
         </div>
@@ -87,8 +87,9 @@
             <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-            <div class="navbar-title">
-                LMS STUDENT
+            <div class="navbar-title" style="display: flex; align-items: center; gap: 10px;">
+                <img src="{% static 'accounts/images/lmslogo.png' %}" alt="LMS Logo" style="height: 40px; width: 40px; border-radius: 50%; object-fit: cover; border: 1px solid rgba(0, 0, 0, 0.1);">
+                <span>LMS STUDENT</span>
             </div>
         </div>
 

@@ -105,18 +105,21 @@ body.light {
     position: relative;
     z-index: 2;
     width: 100%;
+    height: calc(100vh - var(--navbar-h) - (var(--content-padding) * 2));
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+    align-items: center;
+    padding: 0;
+    overflow: hidden;
 }
 
 /* Form container */
 .form-container {
     width: 100%;
-    max-width: 650px;
+    max-width: 600px;
+    max-height: 100%;
     margin: auto;
-    padding: 50px 45px;
+    padding: 24px 30px;
     background: var(--card-bg);
     backdrop-filter: blur(25px);
     -webkit-backdrop-filter: blur(25px);
@@ -125,6 +128,8 @@ body.light {
     box-shadow: 
         0 30px 60px rgba(0, 0, 0, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
@@ -138,11 +143,34 @@ body.light {
     background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
 }
 
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-bottom: 0;
+}
+
+/* Slim custom scrollbar */
+.form-container form::-webkit-scrollbar {
+    width: 6px;
+}
+.form-container form::-webkit-scrollbar-track {
+    background: transparent;
+}
+.form-container form::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 99px;
+}
+.form-container form::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+}
+
 /* Title */
 .form-container h2 {
     text-align: center;
-    margin-bottom: 40px;
-    font-size: 32px;
+    margin-bottom: 20px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--form-text);
 }
@@ -154,19 +182,19 @@ body.light {
 
 /* Header buttons */
 .form-container .header-buttons {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .back-btn {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 8px 16px;
     background: var(--back-btn-bg);
     color: var(--back-btn-text);
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14px;
     text-decoration: none;
     transition: all 0.3s ease;
     border: 1px solid var(--input-border);
@@ -179,12 +207,17 @@ body.light {
     border-color: rgba(59, 130, 246, 0.5);
 }
 
+/* Form group */
+.form-container .form-group {
+    margin-bottom: 16px;
+}
+
 /* Label */
 .form-container label {
     display: block;
-    margin-bottom: 12px;
-    margin-top: 20px;
-    font-size: 16px;
+    margin-bottom: 6px;
+    margin-top: 0;
+    font-size: 14px;
     font-weight: 600;
     color: var(--label-text);
 }
@@ -201,11 +234,11 @@ body.light {
 .form-container input[type="file"],
 .form-container select {
     width: 100%;
-    padding: 16px 18px;
-    border-radius: 14px;
+    padding: 10px 14px;
+    border-radius: 10px;
     border: 1px solid var(--input-border);
     outline: none;
-    font-size: 15px;
+    font-size: 14px;
     background: var(--input-bg);
     color: var(--input-color);
     font-family: 'Poppins', sans-serif;
@@ -225,11 +258,11 @@ body.light {
 
 /* Preview box */
 .form-container .preview-box {
-    margin-top: 12px;
-    padding: 16px;
+    margin-top: 10px;
+    padding: 12px;
     background: var(--input-bg);
     border-left: 4px solid #3b82f6;
-    border-radius: 14px;
+    border-radius: 10px;
 }
 
 .form-container .preview-box b {
@@ -237,29 +270,86 @@ body.light {
 }
 
 .form-container .preview-box img {
-    margin-top: 10px;
+    margin-top: 8px;
     width: 100%;
-    max-width: 180px;
-    border-radius: 10px;
+    max-width: 140px;
+    border-radius: 8px;
     object-fit: cover;
 }
 
 .form-container .preview-box p {
-    margin-top: 6px;
+    margin-top: 4px;
     color: #94a3b8;
+    font-size: 13px;
+}
+
+/* Course box */
+.form-container .course-box {
+    margin-top: 6px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: var(--course-box-bg);
+    border: 1px solid var(--course-box-border);
+    backdrop-filter: blur(10px);
+    max-height: 160px;
+    overflow-y: auto;
+}
+
+.form-container .course-box::-webkit-scrollbar {
+    width: 6px;
+}
+.form-container .course-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+.form-container .course-box::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 99px;
+}
+.form-container .course-box::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+}
+
+/* Course item */
+.form-container .course-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--course-item-bg);
+    transition: all 0.3s ease;
     font-size: 14px;
+    color: var(--course-item-text);
+}
+
+.form-container .course-item:hover {
+    background: rgba(59, 130, 246, 0.15);
+    transform: scale(1.02);
+}
+
+.form-container .course-item input {
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Counter */
+.form-container .counter {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--counter-text);
 }
 
 /* Button */
 .form-container button {
     width: 100%;
-    padding: 18px;
-    margin-top: 30px;
+    padding: 12px;
+    margin-top: 16px;
     background: linear-gradient(135deg, #3b82f6, #8b5cf6);
     color: var(--back-btn-text);
     border: none;
-    border-radius: 14px;
-    font-size: 16px;
+    border-radius: 10px;
+    font-size: 15px;
     font-weight: 700;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
@@ -267,8 +357,8 @@ body.light {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+    gap: 8px;
+    box-shadow: 0 6px 15px rgba(59, 130, 246, 0.25);
 }
 
 .form-container button:hover {

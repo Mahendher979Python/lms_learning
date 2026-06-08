@@ -1,156 +1,390 @@
 {% extends 'dashboard/base.html' %}
-
+{% load static %}
 {% block content %}
 
-<h2>
-    {% if request.GET.role == 'trainer' %}
-        Trainers List
-    {% elif request.GET.role == 'student' %}
-        Students List
-    {% else %}
-        All Users
-    {% endif %}
-</h2>
-
 <style>
-.table-container {
-    margin-top: 20px;
-    overflow-x: auto;
+/* ===================================
+   GLOBAL
+=================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: rgba(30, 41, 59, 0.8);
-    border-radius: 10px;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
+body{
+    font-family:Arial, Helvetica, sans-serif;
 }
 
-th {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.4), rgba(139, 92, 246, 0.4));
-    color: #ffffff;
-    padding: 12px;
-    font-weight: 600;
+/* ===================================
+   TOP BAR
+=================================== */
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:25px;
 }
 
-td {
-    padding: 10px;
-    text-align: center;
-    color: #e2e8f0;
+.top-bar h2{
+    font-size:30px;
+    font-weight:800;
+    color:var(--text);
 }
 
-tr:nth-child(even) {
-    background: rgba(51, 65, 85, 0.6);
+/* ===================================
+   CREATE BUTTON
+=================================== */
+
+.create-btn{
+    text-decoration:none;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:14px 22px;
+    border-radius:14px;
+    font-weight:700;
+    transition:0.3s;
+    box-shadow:0 10px 25px rgba(37,99,235,0.25);
 }
 
-tr:hover {
-    background: rgba(71, 85, 105, 0.8);
+.create-btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 16px 30px rgba(37,99,235,0.35);
 }
 
-.action-btn {
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    color: white;
-    font-size: 14px;
+/* ===================================
+   FILTER BUTTONS
+=================================== */
+.filter-buttons {
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+.filter-btn {
+    padding:10px 18px;
+    border:none;
+    border-radius:10px;
+    background:var(--card);
+    color:var(--text);
+    font-weight:700;
+    cursor:pointer;
+    transition:0.3s;
+    text-decoration:none;
+    border:1px solid var(--border);
+}
+.filter-btn:hover, .filter-btn.active {
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
 }
 
-.edit {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+/* ===================================
+   SEARCH BOX
+=================================== */
+
+.search-box{
+    margin-bottom:25px;
+    display:flex;
+    justify-content:flex-start;
 }
 
-.delete {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+.search-box form{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
-.top-actions {
-    margin-top: 15px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
+/* SMALL SEARCH INPUT */
+
+.search-box input{
+    width:260px;
+    max-width:100%;
+    padding:12px 15px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    outline:none;
+    font-size:14px;
+    background:var(--card);
+    color:var(--text);
+    transition:0.3s;
 }
 
-.top-actions button {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.search-box input:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,0.1);
+    transform:scale(1.01);
 }
 
-.top-actions button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+.search-box button{
+    border:none;
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:12px 18px;
+    border-radius:14px;
+    cursor:pointer;
+    font-weight:700;
+    transition:0.3s;
 }
 
-.search-box {
-    padding: 8px;
-    width: 250px;
-    border: 1px solid rgba(148, 163, 184, 0.4);
-    border-radius: 6px;
-    outline: none;
-    background: rgba(30, 41, 59, 0.8);
-    color: #ffffff;
+.search-box button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 20px rgba(37,99,235,0.25);
 }
 
-.search-box::placeholder {
-    color: rgba(203, 213, 225, 0.6);
+/* ===================================
+   TABLE BOX
+=================================== */
+
+.table-box{
+    background:var(--card);
+    border-radius:22px;
+    overflow-x:auto;
+    box-shadow:var(--shadow-light);
+    border:1px solid var(--border);
 }
 
-.search-btn {
-    padding: 8px 15px;
-    background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* ===================================
+   TABLE
+=================================== */
+
+table{
+    width:100%;
+    min-width:800px;
+    border-collapse:collapse;
 }
 
-.search-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+th{
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:white;
+    padding:18px 14px;
+    text-align:left;
+    font-size:14px;
+    white-space:nowrap;
 }
 
-h2 {
-    color: #ffffff;
-    font-weight: 700;
+td{
+    padding:18px 14px;
+    border-bottom:1px solid var(--border);
+    color:var(--text);
+    font-size:14px;
+}
+
+tbody tr{
+    transition:0.3s;
+}
+
+tbody tr:hover{
+    background:var(--hover);
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.btn{
+    display:inline-block;
+    padding:9px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:white;
+    font-size:13px;
+    font-weight:700;
+    margin:3px;
+    transition:0.3s;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.edit{
+    background:#f59e0b;
+}
+
+.delete{
+    background:#ef4444;
+}
+
+/* ===================================
+   SCROLLBAR
+=================================== */
+
+.table-box::-webkit-scrollbar{
+    height:8px;
+}
+
+.table-box::-webkit-scrollbar-thumb{
+    background:#2563eb;
+    border-radius:20px;
+}
+
+/* ===================================
+   MOBILE VIEW
+=================================== */
+
+@media(max-width:768px){
+
+    .top-bar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .top-bar h2{
+        font-size:24px;
+    }
+
+    .create-btn{
+        width:100%;
+        text-align:center;
+    }
+
+    .search-box{
+        width:100%;
+    }
+
+    .search-box form{
+        width:100%;
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .search-box input{
+        width:100%;
+    }
+
+    .search-box button{
+        width:100%;
+    }
+
+    .table-box{
+        overflow:visible;
+        background:transparent;
+        border:none;
+        box-shadow:none;
+    }
+
+    table,
+    thead,
+    tbody,
+    tr,
+    td{
+        display:block;
+        width:100%;
+    }
+
+    thead{
+        display:none;
+    }
+
+    tr{
+        background:var(--card);
+        margin-bottom:18px;
+        border-radius:20px;
+        padding:14px;
+        box-shadow:var(--shadow-light);
+        border:1px solid var(--border);
+    }
+
+    td{
+        border:none;
+        padding:12px 10px;
+        padding-left:48%;
+        position:relative;
+        min-height:48px;
+        word-break:break-word;
+    }
+
+    td::before{
+        position:absolute;
+        left:12px;
+        top:12px;
+        font-weight:700;
+        color:var(--text-muted);
+    }
+
+    td:nth-child(1)::before{
+        content:"Username";
+    }
+
+    td:nth-child(2)::before{
+        content:"Email";
+    }
+
+    td:nth-child(3)::before{
+        content:"Phone";
+    }
+
+    td:nth-child(4)::before{
+        content:"Role";
+    }
+
+    td:nth-child(5)::before{
+        content:"Actions";
+    }
+
+    .btn{
+        display:block;
+        width:100%;
+        text-align:center;
+        margin-top:8px;
+    }
+
+}
+
+/* ===================================
+   TABLET VIEW
+=================================== */
+
+@media(min-width:769px) and (max-width:1024px){
+
+    .top-bar h2{
+        font-size:26px;
+    }
+
+    th,
+    td{
+        padding:14px 10px;
+        font-size:13px;
+    }
+
+    .btn{
+        padding:8px 10px;
+        font-size:12px;
+    }
+
+    .search-box input{
+        width:220px;
+    }
+
 }
 </style>
 
-<!-- TOP ACTIONS -->
-<div class="top-actions">
-    <a href="{% url 'view_users' %}?role=student">
-        <button>Students</button>
+<div class="top-bar">
+    <h2>👨‍🎓 All Students</h2>
+
+    <a href="{% url 'add_student' %}" class="create-btn">
+        + Add New Student
     </a>
-
-    <!-- Search Form -->
-    <form method="get">
-        <input 
-            type="text" 
-            name="search" 
-            placeholder="Search by username/email"
-            value="{{ request.GET.search }}"
-            class="search-box"
-        >
-
-        <input type="hidden" name="role" value="{{ request.GET.role }}">
-
-        <button type="submit" class="search-btn">Search</button>
-    </form>
-
-    
-    <a href="{% url 'add_student' %}">
-        <button>➕ Add New User</button>
-    </a>
-
 </div>
 
-<div class="table-container">
+<!-- SEARCH -->
+<div class="search-box">
+    <form method="GET" id="searchForm">
+        <input type="text"
+               name="search"
+               value="{{ request.GET.search }}"
+               placeholder="🔍 Search by username/email">
+        <input type="hidden" name="role" value="student">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div class="table-box">
 
 <table>
     <tr>
@@ -166,25 +400,34 @@ h2 {
         <td>{{ user.username }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.phone }}</td>
-        <td>{{ user.role }}</td>
+        <td>{{ user.role|capfirst }}</td>
         <td>
-            <a href="{% url 'edit_user' user.id %}" class="action-btn edit">Edit</a>
-            <a href="{% url 'delete_user' user.id %}" class="action-btn delete">Delete</a>
+            <a class="btn edit" href="{% url 'edit_user' user.id %}">
+                Edit
+            </a>
+
+            <a class="btn delete" href="{% url 'delete_user' user.id %}">
+                Delete
+            </a>
         </td>
     </tr>
+
     {% empty %}
     <tr>
-        <td colspan="5">No users found</td>
+        <td colspan="5" style="text-align:center;">
+            No students found.
+        </td>
     </tr>
     {% endfor %}
 
 </table>
 
 </div>
+
 <script>
-document.getElementById("searchInput").addEventListener("keyup", function(event) {
+document.getElementById('searchInput')?.addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
-        document.getElementById("searchForm").submit();
+        document.getElementById('searchForm').submit();
     }
 });
 </script>
