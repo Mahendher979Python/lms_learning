@@ -1,5 +1,3 @@
-# online-learning-system
-Team LMS project for remote collaboration using Django and MySQL
 # 🎓 Online Learning System
 
 A modern Learning Management System (LMS) built using Django and MySQL. This platform enables students, instructors, and administrators to manage online learning efficiently.
@@ -57,7 +55,7 @@ online-learning-system/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/Mahendher979Python/online-learning-system.git
+git clone https://github.com/Mahendher979Python/lms_online_education.git
 cd online-learning-system
 ```
 
