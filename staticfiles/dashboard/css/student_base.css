@@ -1,7 +1,0 @@
-/* Student-specific tweaks (kept minimal) */
-
-@media (max-width: 768px) {
-    .navbar .username {
-        display: none !important;
-    }
-}
